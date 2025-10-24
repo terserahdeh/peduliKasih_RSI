@@ -252,7 +252,15 @@
 
                         <form action="{{ route('register') }}" method="POST">
                             @csrf
-
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul class="mb-0">
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
                             <div class="mb-3">
                                 <label class="form-label">Nama</label>
                                 <div class="input-group">
@@ -281,7 +289,7 @@
                                 <label class="form-label">Nomor HP</label>
                                 <div class="input-group">
                                     <i class="bi bi-phone input-icon"></i>
-                                    <input type="tel" class="form-control" name="nomor_hp" placeholder="Masukkan nomor HP" required>
+                                    <input type="tel" class="form-control" name="no_tlp" placeholder="Masukkan nomor HP" required>
                                 </div>
                             </div>
 

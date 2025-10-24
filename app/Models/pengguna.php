@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class pengguna extends Authenticatable
+class Pengguna extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    protected $table = 'penggunas';
+    protected $table = 'pengguna';
     protected $primaryKey = 'id_akun';
 
     protected $fillable = [

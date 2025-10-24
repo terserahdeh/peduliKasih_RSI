@@ -5,10 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Admin;
 use App\Models\Pengguna;
 
-class RegisterController
+class RegisterController extends Controller
 {
     public function showRegisterForm()
     {
@@ -18,14 +17,15 @@ class RegisterController
     public function register(Request $request)
     {
         $request->validate([
-            'username' => 'required|string|max:30|unique:pengguna|unique:admin',
+            'username' => 'required|string|max:30|unique:pengguna',
             'nama' => 'required|string|max:100',
             'no_tlp' => 'required|string|max:15',
-            'email' => 'required|email|max:50|unique:pengguna|unique:admin',
+            'email' => 'required|email|max:50|unique:pengguna',
             'password' => 'required|string|min:8|confirmed',
         ], [
             'username.unique' => 'Username sudah digunakan.',
             'email.unique' => 'Email sudah digunakan.',
+            'password.min' => 'Password minimal 8 karakter.',
             'password.confirmed' => 'Konfirmasi password tidak cocok.',
         ]);
 
@@ -37,7 +37,6 @@ class RegisterController
             'password' => Hash::make($request->password),
         ]);
 
-        Auth::guard('pengguna')->login($user);
-        return redirect()->route('pengguna.dashboard');
+        return redirect()->route('login')->with('success', 'Registrasi berhasil! Silakan login.');
     }
 }
