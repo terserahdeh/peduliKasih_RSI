@@ -33,7 +33,7 @@ class LoginController extends Controller
 
         // Try pengguna
         if (Auth::guard('pengguna')->attempt($credentials)) {
-            return redirect()->route('pengguna.dashboard');
+            return redirect()->route('home.dashboard');
         }
 
         // Try admin 

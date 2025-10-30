@@ -144,74 +144,9 @@
                         </td>
                     </tr>
                     @empty
-                    <tr class="hover:bg-gray-50 donasi-row" data-verifikasi="menunggu" data-status="tersedia">
-                        <td class="px-6 py-4 text-sm text-gray-800">Ahmad Wijaya</td>
-                        <td class="px-6 py-4 text-sm">
-                            <a href="#" class="text-blue-600 hover:text-blue-800 hover:underline font-medium">
-                                Pakaian Bekas Layak Pakai
-                            </a>
-                        </td>
-                        <td class="px-6 py-4 text-sm text-gray-800">50 potong</td>
-                        <td class="px-6 py-4 verifikasi-cell">
-                            <div class="flex space-x-2">
-                                <button onclick="updateVerifikasi(1, 'approved', 'donasi')" class="px-3 py-1 text-xs font-medium text-white bg-green-500 hover:bg-green-600 rounded-full flex items-center transition">
-                                    <i class="fas fa-check mr-1"></i> Setujui
-                                </button>
-                                <button onclick="updateVerifikasi(1, 'rejected', 'donasi')" class="px-3 py-1 text-xs font-medium text-white bg-red-500 hover:bg-red-600 rounded-full flex items-center transition">
-                                    <i class="fas fa-times mr-1"></i> Tolak
-                                </button>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4">
-                            <select onchange="updateStatusDonasi(1, this.value)" class="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">
-                                <option value="tersedia" selected>Tersedia</option>
-                                <option value="tersalurkan">Tersalurkan</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr class="hover:bg-gray-50 donasi-row" data-verifikasi="menunggu" data-status="tersedia">
-                        <td class="px-6 py-4 text-sm text-gray-800">Siti Nurhaliza</td>
-                        <td class="px-6 py-4 text-sm">
-                            <a href="#" class="text-blue-600 hover:text-blue-800 hover:underline font-medium">
-                                Buku Pelajaran SD
-                            </a>
-                        </td>
-                        <td class="px-6 py-4 text-sm text-gray-800">25 buku</td>
-                        <td class="px-6 py-4 verifikasi-cell">
-                            <div class="flex space-x-2">
-                                <button onclick="updateVerifikasi(2, 'approved', 'donasi')" class="px-3 py-1 text-xs font-medium text-white bg-green-500 hover:bg-green-600 rounded-full flex items-center transition">
-                                    <i class="fas fa-check mr-1"></i> Setujui
-                                </button>
-                                <button onclick="updateVerifikasi(2, 'rejected', 'donasi')" class="px-3 py-1 text-xs font-medium text-white bg-red-500 hover:bg-red-600 rounded-full flex items-center transition">
-                                    <i class="fas fa-times mr-1"></i> Tolak
-                                </button>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4">
-                            <select onchange="updateStatusDonasi(2, this.value)" class="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">
-                                <option value="tersedia" selected>Tersedia</option>
-                                <option value="tersalurkan">Tersalurkan</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr class="hover:bg-gray-50 donasi-row" data-verifikasi="approved" data-status="tersalurkan">
-                        <td class="px-6 py-4 text-sm text-gray-800">Budi Santoso</td>
-                        <td class="px-6 py-4 text-sm">
-                            <a href="#" class="text-blue-600 hover:text-blue-800 hover:underline font-medium">
-                                Makanan Kaleng
-                            </a>
-                        </td>
-                        <td class="px-6 py-4 text-sm text-gray-800">100 kaleng</td>
-                        <td class="px-6 py-4 verifikasi-cell">
-                            <span class="px-3 py-1 text-xs font-medium text-white bg-green-500 rounded-full inline-flex items-center">
-                                <i class="fas fa-check-circle mr-1"></i> Disetujui
-                            </span>
-                        </td>
-                        <td class="px-6 py-4">
-                            <select onchange="updateStatusDonasi(3, this.value)" class="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">
-                                <option value="tersedia">Tersedia</option>
-                                <option value="tersalurkan" selected>Tersalurkan</option>
-                            </select>
+<tr>x`
+                        <td class="px-6 py-4 text-center text-gray-500" colspan="5">
+                            Data kosong
                         </td>
                     </tr>
                     @endforelse
@@ -296,69 +231,9 @@
                         </td>
                     </tr>
                     @empty
-                    <tr class="hover:bg-gray-50 permintaan-row" data-verifikasi="menunggu" data-status="belum_terpenuhi">
-                        <td class="px-6 py-4 text-sm text-gray-800">Ibu Kartini</td>
-                        <td class="px-6 py-4 text-sm">
-                            <a href="#" class="text-blue-600 hover:text-blue-800 hover:underline font-medium">
-                                Pakaian untuk korban bencana
-                            </a>
-                        </td>
-                        <td class="px-6 py-4 text-sm text-gray-800">50 pasang</td>
-                        <td class="px-6 py-4 verifikasi-cell">
-                            <div class="flex space-x-2">
-                                <button onclick="updateVerifikasi(4, 'approved', 'permintaan')" class="px-3 py-1 text-xs font-medium text-white bg-green-500 hover:bg-green-600 rounded-full flex items-center transition">
-                                    <i class="fas fa-check mr-1"></i> Setujui
-                                </button>
-                                <button onclick="updateVerifikasi(4, 'rejected', 'permintaan')" class="px-3 py-1 text-xs font-medium text-white bg-red-500 hover:bg-red-600 rounded-full flex items-center transition">
-                                    <i class="fas fa-times mr-1"></i> Tolak
-                                </button>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4">
-                            <select onchange="updateStatusPermintaan(4, this.value)" class="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">
-                                <option value="belum_terpenuhi" selected>Belum Terpenuhi</option>
-                                <option value="terpenuhi">Terpenuhi</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr class="hover:bg-gray-50 permintaan-row" data-verifikasi="approved" data-status="terpenuhi">
-                        <td class="px-6 py-4 text-sm text-gray-800">Pak Joko</td>
-                        <td class="px-6 py-4 text-sm">
-                            <a href="#" class="text-blue-600 hover:text-blue-800 hover:underline font-medium">
-                                Alat Tulis Sekolah
-                            </a>
-                        </td>
-                        <td class="px-6 py-4 text-sm text-gray-800">30 set</td>
-                        <td class="px-6 py-4 verifikasi-cell">
-                            <span class="px-3 py-1 text-xs font-medium text-white bg-green-500 rounded-full inline-flex items-center">
-                                <i class="fas fa-check-circle mr-1"></i> Disetujui
-                            </span>
-                        </td>
-                        <td class="px-6 py-4">
-                            <select onchange="updateStatusPermintaan(5, this.value)" class="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">
-                                <option value="belum_terpenuhi">Belum Terpenuhi</option>
-                                <option value="terpenuhi" selected>Terpenuhi</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr class="hover:bg-gray-50 permintaan-row" data-verifikasi="approved" data-status="belum_terpenuhi">
-                        <td class="px-6 py-4 text-sm text-gray-800">Yayasan Harapan</td>
-                        <td class="px-6 py-4 text-sm">
-                            <a href="#" class="text-blue-600 hover:text-blue-800 hover:underline font-medium">
-                                Sembako untuk Anak Yatim
-                            </a>
-                        </td>
-                        <td class="px-6 py-4 text-sm text-gray-800">200 paket</td>
-                        <td class="px-6 py-4 verifikasi-cell">
-                            <span class="px-3 py-1 text-xs font-medium text-white bg-green-500 rounded-full inline-flex items-center">
-                                <i class="fas fa-check-circle mr-1"></i> Disetujui
-                            </span>
-                        </td>
-                        <td class="px-6 py-4">
-                            <select onchange="updateStatusPermintaan(6, this.value)" class="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">
-                                <option value="belum_terpenuhi" selected>Belum Terpenuhi</option>
-                                <option value="terpenuhi">Terpenuhi</option>
-                            </select>
+#<tr>
+                        <td class="px-6 py-4 text-center text-gray-500" colspan="5">
+                            Data kosong
                         </td>
                     </tr>
                     @endforelse
@@ -402,34 +277,9 @@
                         </td>
                     </tr>
                     @empty
-                    <tr>
-                        <td class="px-6 py-4 text-sm text-gray-800">ahmad_wijaya</td>
-                        <td class="px-6 py-4 text-sm text-gray-800">ahmad.wijaya@email.com</td>
-                        <td class="px-6 py-4 text-sm text-gray-800">15 Jan 2024</td>
-                        <td class="px-6 py-4">
-                            <button class="px-4 py-1.5 text-xs font-medium text-white bg-red-500 rounded-lg hover:bg-red-600 transition flex items-center">
-                                <i class="fas fa-trash mr-1"></i> Hapus Akun
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="px-6 py-4 text-sm text-gray-800">siti_nurhaliza</td>
-                        <td class="px-6 py-4 text-sm text-gray-800">siti.nurhaliza@email.com</td>
-                        <td class="px-6 py-4 text-sm text-gray-800">22 Jan 2024</td>
-                        <td class="px-6 py-4">
-                            <button class="px-4 py-1.5 text-xs font-medium text-white bg-red-500 rounded-lg hover:bg-red-600 transition flex items-center">
-                                <i class="fas fa-trash mr-1"></i> Hapus Akun
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="px-6 py-4 text-sm text-gray-800">budi_santoso</td>
-                        <td class="px-6 py-4 text-sm text-gray-800">budi.santoso@email.com</td>
-                        <td class="px-6 py-4 text-sm text-gray-800">28 Jan 2024</td>
-                        <td class="px-6 py-4">
-                            <button class="px-4 py-1.5 text-xs font-medium text-white bg-red-500 rounded-lg hover:bg-red-600 transition flex items-center">
-                                <i class="fas fa-trash mr-1"></i> Hapus Akun
-                            </button>
+<tr>
+                        <td class="px-6 py-4 text-center text-gray-500" colspan="5">
+                            Data kosong
                         </td>
                     </tr>
                     @endforelse
