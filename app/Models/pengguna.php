@@ -31,4 +31,19 @@ class Pengguna extends Authenticatable
             'password' => 'hashed'
         ];
     }
+
+    public function donasi()
+    {
+        return $this->hasMany(Donasi::class, 'username','username');
+    }
+
+    public function requestdonasi()
+    {
+        return $this->hasMany(RequestDonasi::class, 'username','username');
+    }
+
+    public function upvote()
+    {
+        return $this->hasMany(Upvote::class, 'username','username');
+    }
 }

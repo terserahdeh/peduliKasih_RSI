@@ -17,7 +17,9 @@ class LoginController extends Controller
         // validate inputs
         $credentials = $request->validate([
             'login' => 'required|string',
-            'password' => 'required|string',
+            'password' => 'required|string|min:8',
+        ],[
+            'password.min' => 'Password minimal 8 karakter.'
         ]);
 
         // determine whether user typed email or username
