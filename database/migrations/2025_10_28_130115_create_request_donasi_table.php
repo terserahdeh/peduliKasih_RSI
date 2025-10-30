@@ -1,0 +1,45 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('request_donasi', function (Blueprint $table) {
+            $table->increments('id_request');;
+
+            // foreign key to pengguna
+            $table->string('username', 30); 
+            $table->foreign('username')
+                ->references('username')
+                ->on('pengguna')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+
+            // other fields
+            $table->integer('jumlah_barang');
+            $table->enum('jenis_barang', ['alat rumah tangga', 'sembako','pakaian','alat tulis','lain-lain'])->default('lain-lain');
+            $table->text('deskripsi')->nullable();
+            $table->string('nama_request', 100);
+            $table->enum('status_request', ['belum terpenuhi', 'terpenuhi'])->default('belum terpenuhi');
+            $table->enum('hasil_verif', ['disetujui', 'ditolak', 'menunggu'])->default('menunggu');
+            $table->date('tanggal_upload');
+            
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('request_donasi');
+    }
+};

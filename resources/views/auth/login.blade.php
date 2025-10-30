@@ -248,27 +248,43 @@
                             <i class="bi bi-heart-fill"></i>
                         </div>
                         
-                        <h1 class="title">Buat Akun Peduli Kasih</h1>
-                        <p class="subtitle">Selamat datang! Silakan buat akun untuk bergabung</p>
+                        <h1 class="title">Login ke Peduli Kasih</h1>
+                        <p class="subtitle">Selamat datang kembali! Silahkan masuk ke akun Anda</p>
 
-                        <form action="{{ route('register') }}" method="POST">
+                        <form action="{{ route('login') }}" method="POST">
                             @csrf
 
+                            {{-- Field username/email --}}
                             <div class="mb-3">
                                 <label class="form-label">Username/Email</label>
+                                @error('login')
+                                    <div class="text-danger small mt-1">{{ $message }}</div>
+                                @enderror
                                 <div class="input-group">
-                                    <i class="bi bi-person-badge input-icon"></i>
-                                    <input type="text" class="form-control" name="username" placeholder="Masukkan username/email" required>
+                                    <span class="input-group-text"><i class="bi bi-person-badge"></i></span>
+                                    <input type="text" class="form-control @error('login') is-invalid @enderror" name="login" placeholder="Masukkan username/email" value="{{ old('login') }}" required>
                                 </div>
                             </div>
 
+                            {{-- Field password --}}
                             <div class="mb-3">
                                 <label class="form-label">Password</label>
+                                @error('password')
+                                    <div class="text-danger small mt-1">{{ $message }}</div>
+                                @enderror
                                 <div class="input-group">
-                                    <i class="bi bi-lock input-icon"></i>
-                                    <input type="password" class="form-control" name="password" id="password" placeholder="Masukkan password" required>
+                                    <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                                    <input 
+                                        type="password" 
+                                        class="form-control @error('password') is-invalid @enderror" 
+                                        name="password" 
+                                        id="password" 
+                                        placeholder="Masukkan password" 
+                                        required
+                                    >
                                     <i class="bi bi-eye password-toggle" id="togglePassword"></i>
                                 </div>
+                                
                             </div>
 
                             <button type="submit" class="btn-register mt-4">
@@ -313,6 +329,7 @@
             </div>
         </div>
     </div>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
