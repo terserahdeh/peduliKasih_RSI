@@ -82,6 +82,10 @@ Route::prefix('admin')->middleware(['auth:admin'])->group(function () {
     Route::get('/permintaan/detail/{id}', [DashboardController::class, 'showPermintaanDetail'])->name('admin.permintaan.detail');
     Route::get('/permintaan/all', [DashboardController::class, 'allPermintaan'])->name('admin.permintaan.all');
     
+    // Show table
+    Route::get('/dashboard/donasi-table', [DashboardController::class, 'donasiTable'])->name('donasi.table');
+    Route::get('/dashboard/permintaan-table', [DashboardController::class, 'permintaanTable'])->name('permintaan.table');
+
     // User Management
     Route::delete('/pengguna/delete/{id}', [DashboardController::class, 'deletePengguna'])->name('admin.pengguna.delete');
     Route::get('/pengguna/all', [DashboardController::class, 'allPengguna'])->name('admin.pengguna.all');
