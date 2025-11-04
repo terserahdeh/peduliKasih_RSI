@@ -8,6 +8,12 @@
         opacity: 0.6;
         pointer-events: none;
     }
+    select:disabled {
+    background-color: #e5e7eb !important; /* gray-200 */
+    color: #6b7280 !important; /* gray-500 */
+    cursor: not-allowed;
+    opacity: 0.7;
+}
 </style>
 @endpush
 
@@ -65,7 +71,7 @@
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm text-gray-600 mb-1">Total Terpenuhi</p>
-                    <h3 class="text-3xl font-bold text-purple-500" id="totalTerpenuhi">{{ $totalTerpenuhi ?? 892 }}</h3>
+                    <h3 class="text-3xl font-bold text-purple-500" id="totalTerpenuhi">{{ $totalTerpenuhi }}</h3>
                 </div>
                 <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
                     <i class="fas fa-check-circle text-purple-500 text-xl"></i>
@@ -83,8 +89,8 @@
                     <select id="filterVerifikasiDonasi" class="px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <option value="">Semua Verifikasi</option>
                         <option value="menunggu">Menunggu</option>
-                        <option value="approved">Disetujui</option>
-                        <option value="rejected">Ditolak</option>
+                        <option value="disetujui">Disetujui</option>
+                        <option value="ditolak">Ditolak</option>
                     </select>
                     <select id="filterStatusDonasi" class="px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <option value="">Semua Status</option>
@@ -115,41 +121,56 @@
                                 {{ $donasi->nama_donasi }}
                             </a>
                         </td>
-                        <td class="px-6 py-4 text-sm text-gray-800">{{ $donasi->jumlah_barang}}</td>
+                        <td class="px-6 py-4 text-sm text-gray-800">{{ $donasi->jumlah_barang }}</td>
                         <td class="px-6 py-4 verifikasi-cell">
-                            @if($donasi->hasil_verif == 'menunggu')
+                            @if($donasi->hasil_verif === 'menunggu')
                             <div class="flex space-x-2">
-                                <button onclick="updateVerifikasi({{ $donasi->id }}, 'approved', 'donasi')" class="px-3 py-1 text-xs font-medium text-white bg-green-500 hover:bg-green-600 rounded-full flex items-center transition">
+                                <button onclick="updateVerifikasi(this, {{ $donasi->id_donasi }}, 'disetujui', 'donasi')"
+                                        class="px-3 py-1 text-xs font-medium text-white bg-green-500 hover:bg-green-600 rounded-full flex items-center transition">
                                     <i class="fas fa-check mr-1"></i> Setujui
                                 </button>
-                                <button onclick="updateVerifikasi({{ $donasi->id }}, 'rejected', 'donasi')" class="px-3 py-1 text-xs font-medium text-white bg-red-500 hover:bg-red-600 rounded-full flex items-center transition">
+                                <button onclick="updateVerifikasi(this, {{ $donasi->id_donasi }}, 'ditolak', 'donasi')"
+                                        class="px-3 py-1 text-xs font-medium text-white bg-red-500 hover:bg-red-600 rounded-full flex items-center transition">
                                     <i class="fas fa-times mr-1"></i> Tolak
                                 </button>
                             </div>
-                            @elseif($donasi->hasil_verif == 'approved')
+                            @elseif($donasi->hasil_verif === 'disetujui')
                             <span class="px-3 py-1 text-xs font-medium text-white bg-green-500 rounded-full inline-flex items-center">
                                 <i class="fas fa-check-circle mr-1"></i> Disetujui
                             </span>
-                            @else
+                            @elseif($donasi->hasil_verif === 'ditolak')
                             <span class="px-3 py-1 text-xs font-medium text-white bg-red-500 rounded-full inline-flex items-center">
                                 <i class="fas fa-times-circle mr-1"></i> Ditolak
+                            </span>
+                            @else
+                            <span class="px-3 py-1 text-xs font-medium text-gray-700 rounded-full inline-flex items-center">
+                                {{ $donasi->hasil_verif }}
                             </span>
                             @endif
                         </td>
                         <td class="px-6 py-4">
-                            <select onchange="updateStatusDonasi({{ $donasi->id }}, this.value)" class="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">
-                                <option value="tersedia" {{ $donasi->status_donasi == 'tersedia' ? 'selected' : '' }}>Tersedia</option>
-                                <option value="tersalurkan" {{ $donasi->status_donasi == 'tersalurkan' ? 'selected' : '' }}>Tersalurkan</option>
+                            <select 
+                                onchange="updateStatusDonasi(this, {{ $donasi->id_donasi }}, this.value)"
+                                class="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                                @if($donasi->hasil_verif == 'menunggu' || $donasi->hasil_verif == 'ditolak') disabled @endif
+                            >
+                                <option value="tersedia" {{ $donasi->status_donasi == 'tersedia' ? 'selected' : '' }}>
+                                    Tersedia
+                                </option>
+                                <option value="tersalurkan" {{ $donasi->status_donasi == 'tersalurkan' ? 'selected' : '' }}>
+                                    Tersalurkan
+                                </option>
                             </select>
                         </td>
                     </tr>
                     @empty
-<tr>x`
+                    <tr>
                         <td class="px-6 py-4 text-center text-gray-500" colspan="5">
                             Data kosong
                         </td>
                     </tr>
                     @endforelse
+
                 </tbody>
             </table>
         </div>
@@ -170,12 +191,12 @@
                     <select id="filterVerifikasiPermintaan" class="px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <option value="">Semua Verifikasi</option>
                         <option value="menunggu">Menunggu</option>
-                        <option value="approved">Disetujui</option>
-                        <option value="rejected">Ditolak</option>
+                        <option value="disetujui">Disetujui</option>
+                        <option value="ditolak">Ditolak</option>
                     </select>
                     <select id="filterStatusPermintaan" class="px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <option value="">Semua Status</option>
-                        <option value="belum_terpenuhi">Belum Terpenuhi</option>
+                        <option value="belum terpenuhi">Belum Terpenuhi</option>
                         <option value="terpenuhi">Terpenuhi</option>
                     </select>
                 </div>
@@ -195,7 +216,7 @@
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200" id="permintaanTableBody">
                     @forelse($permintaanList ?? [] as $permintaan)
-                    <tr class="hover:bg-gray-50 permintaan-row" data-verifikasi="{{ $permintaan->hasil_verif }}" data-status="{{ $permintaan->status_permintaan }}">
+                    <tr class="hover:bg-gray-50 permintaan-row" data-verifikasi="{{ $permintaan->hasil_verif }}" data-status="{{ $permintaan->status_request }}">
                         <td class="px-6 py-4 text-sm text-gray-800">{{ $permintaan->username }}</td>
                         <td class="px-6 py-4 text-sm">
                             <a href="#" class="text-blue-600 hover:text-blue-800 hover:underline font-medium">
@@ -206,14 +227,17 @@
                         <td class="px-6 py-4 verifikasi-cell">
                             @if($permintaan->hasil_verif == 'menunggu')
                             <div class="flex space-x-2">
-                                <button onclick="updateVerifikasi({{ $permintaan->id }}, 'approved', 'permintaan')" class="px-3 py-1 text-xs font-medium text-white bg-green-500 hover:bg-green-600 rounded-full flex items-center transition">
+                                <button onclick="updateVerifikasi(this, {{ $permintaan->id_request }}, 'disetujui', 'permintaan')" 
+                                    class="px-3 py-1 text-xs font-medium text-white bg-green-500 rounded-lg hover:bg-green-600 transition mr-2">
                                     <i class="fas fa-check mr-1"></i> Setujui
                                 </button>
-                                <button onclick="updateVerifikasi({{ $permintaan->id }}, 'rejected', 'permintaan')" class="px-3 py-1 text-xs font-medium text-white bg-red-500 hover:bg-red-600 rounded-full flex items-center transition">
+
+                                <button onclick="updateVerifikasi(this, {{ $permintaan->id_request }}, 'ditolak', 'permintaan')" 
+                                    class="px-3 py-1 text-xs font-medium text-white bg-red-500 rounded-lg hover:bg-red-600 transition">
                                     <i class="fas fa-times mr-1"></i> Tolak
                                 </button>
                             </div>
-                            @elseif($permintaan->hasil_verif == 'approved')
+                            @elseif($permintaan->hasil_verif == 'disetujui')
                             <span class="px-3 py-1 text-xs font-medium text-white bg-green-500 rounded-full inline-flex items-center">
                                 <i class="fas fa-check-circle mr-1"></i> Disetujui
                             </span>
@@ -224,14 +248,22 @@
                             @endif
                         </td>
                         <td class="px-6 py-4">
-                            <select onchange="updateStatusPermintaan({{ $permintaan->id }}, this.value)" class="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">
-                                <option value="belum_terpenuhi" {{ $permintaan->status_permintaan == 'belum_terpenuhi' ? 'selected' : '' }}>Belum Terpenuhi</option>
-                                <option value="terpenuhi" {{ $permintaan->status_permintaan == 'terpenuhi' ? 'selected' : '' }}>Terpenuhi</option>
+                            <select 
+                                onchange="updateStatusPermintaan(this, {{ $permintaan->id_request }}, this.value)"
+                                class="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                                @if($permintaan->hasil_verif == 'menunggu' || $permintaan->hasil_verif == 'ditolak') disabled @endif
+                            >
+                                <option value="belum_terpenuhi" {{ $permintaan->status_request == 'belum_terpenuhi' ? 'selected' : '' }}>
+                                    Belum Terpenuhi
+                                </option>
+                                <option value="terpenuhi" {{ $permintaan->status_request == 'terpenuhi' ? 'selected' : '' }}>
+                                    Terpenuhi
+                                </option>
                             </select>
                         </td>
                     </tr>
                     @empty
-#<tr>
+                    <tr>
                         <td class="px-6 py-4 text-center text-gray-500" colspan="5">
                             Data kosong
                         </td>
@@ -247,7 +279,11 @@
             </a>
         </div>
     </div>
-
+    @if(session('success'))
+        <div class="p-4 mb-4 text-green-700 bg-green-100 rounded-lg text-sm">
+            {{ session('success') }}
+        </div>
+    @endif
     <!-- Daftar Pengguna -->
     <div class="bg-white rounded-lg shadow-sm border border-gray-100">
         <div class="p-6 border-b border-gray-100">
@@ -271,13 +307,21 @@
                         <td class="px-6 py-4 text-sm text-gray-800">{{ $pengguna->email }}</td>
                         <td class="px-6 py-4 text-sm text-gray-800">{{ $pengguna->created_at->format('d-m-Y') }}</td>
                         <td class="px-6 py-4">
-                            <button class="px-4 py-1.5 text-xs font-medium text-white bg-red-500 rounded-lg hover:bg-red-600 transition flex items-center">
-                                <i class="fas fa-trash mr-1"></i> Hapus Akun
-                            </button>
+                            <!-- ✅ Delete Form -->
+                            <form action="{{ route('admin.pengguna.delete', $pengguna->id_akun) }}"
+                                method="POST" class="inline-block"
+                                onsubmit="return confirm('Yakin ingin menghapus pengguna ini?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit"
+                                        class="px-4 py-1.5 text-xs font-medium text-white bg-red-500 rounded-lg hover:bg-red-600 transition flex items-center">
+                                    <i class="fas fa-trash mr-1"></i> Hapus Akun
+                                </button>
+                            </form>
                         </td>
                     </tr>
                     @empty
-<tr>
+                    <tr>
                         <td class="px-6 py-4 text-center text-gray-500" colspan="5">
                             Data kosong
                         </td>
@@ -295,110 +339,105 @@
         </div>
     </div>
 </div>
+@endsection
 
+@push('scripts')
 <script>
-    // Update Verifikasi Status (Setujui/Tolak)
-    function updateVerifikasi(id, status, type) {
-        const row = event.target.closest('tr');
+    function updateVerifikasi(button, id, status, type) {
+        // basic UI guard
+        if (!button || !id || !status || !type) {
+            console.error('updateVerifikasi: missing args', { button, id, status, type });
+            return;
+        }
+
+        const row = button.closest('tr');
         const cell = row.querySelector('.verifikasi-cell');
-        
-        // Add loading state
+
+        // UI: disable buttons inside the cell while updating
+        const buttons = cell.querySelectorAll('button');
+        buttons.forEach(b => b.disabled = true);
         cell.classList.add('status-updating');
-        
-        fetch(`/admin/${type}/verifikasi/${id}`, {
+
+        // Build URL
+        const url = `/admin/${type}/verifikasi/${id}`;
+        console.log('updateVerifikasi ->', { url, status });
+
+        // Prepare CSRF
+        const meta = document.querySelector('meta[name="csrf-token"]');
+        const csrf = meta ? meta.getAttribute('content') : null;
+        if (!csrf) console.warn('CSRF token not found in meta tag');
+
+        fetch(url, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                'X-CSRF-TOKEN': csrf,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({ status: status })
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                // Update verifikasi cell
-                if (status === 'approved') {
+        .then(async (response) => {
+            console.log('HTTP status:', response.status);
+            // Try to parse JSON safely
+            let data = null;
+            try { data = await response.json(); } catch (e) { console.warn('No JSON body', e); }
+            return { ok: response.ok, status: response.status, data };
+        })
+        .then(({ ok, status: httpStatus, data }) => {
+            // enable buttons again
+            buttons.forEach(b => b.disabled = false);
+            cell.classList.remove('status-updating');
+
+            console.log('Response data:', data);
+
+            if (!ok) {
+                // show useful message
+                const msg = (data && (data.message || JSON.stringify(data))) || `Request failed (${httpStatus})`;
+                showNotification(msg, 'error');
+                return;
+            }
+
+            if (data && data.success) {
+                // update UI to reflect new verifikasi
+                if (status === 'disetujui') {
                     cell.innerHTML = `
                         <span class="px-3 py-1 text-xs font-medium text-white bg-green-500 rounded-full inline-flex items-center">
                             <i class="fas fa-check-circle mr-1"></i> Disetujui
                         </span>
                     `;
-                } else {
+                } else if (status === 'ditolak') {
                     cell.innerHTML = `
                         <span class="px-3 py-1 text-xs font-medium text-white bg-red-500 rounded-full inline-flex items-center">
                             <i class="fas fa-times-circle mr-1"></i> Ditolak
                         </span>
                     `;
+                } else {
+                    cell.textContent = status;
                 }
-                
-                // Update data attribute
+
+                // update data attribute
                 row.setAttribute('data-verifikasi', status);
-                
-                // Update statistics cards
+
+                // update stats
                 updateStatisticsCards();
-                
-                // Remove loading state
-                cell.classList.remove('status-updating');
-                
-                // Show success notification
+
                 showNotification('Verifikasi berhasil diperbarui', 'success');
+            } else {
+                const msg = (data && (data.message || JSON.stringify(data))) || 'Gagal memperbarui verifikasi';
+                showNotification(msg, 'error');
             }
         })
-        .catch(error => {
-            console.error('Error:', error);
+        .catch((err) => {
+            console.error('Fetch error:', err);
+            buttons.forEach(b => b.disabled = false);
             cell.classList.remove('status-updating');
-            showNotification('Gagal memperbarui verifikasi', 'error');
+            showNotification('Terjadi kesalahan jaringan saat memperbarui verifikasi', 'error');
         });
     }
-
-    // Update Status Donasi
-    function updateStatusDonasi(id, status) {
-        const select = event.target;
-        const row = select.closest('tr');
-        
-        // Add loading state
-        select.disabled = true;
-        select.classList.add('status-updating');
-        
-        fetch(`/admin/donasi/status/${id}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-            },
-            body: JSON.stringify({ status: status })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                // Update data attribute
-                row.setAttribute('data-status', status);
-                
-                // Update statistics cards
-                updateStatisticsCards();
-                
-                // Remove loading state
-                select.disabled = false;
-                select.classList.remove('status-updating');
-                
-                // Show success notification
-                showNotification('Status donasi berhasil diperbarui', 'success');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            select.disabled = false;
-            select.classList.remove('status-updating');
-            showNotification('Gagal memperbarui status donasi', 'error');
-        });
-    }
-
     // Update Status Permintaan
-    function updateStatusPermintaan(id, status) {
-        const select = event.target;
+    function updateStatusPermintaan(select, id, status) {
         const row = select.closest('tr');
         
-        // Add loading state
         select.disabled = true;
         select.classList.add('status-updating');
         
@@ -410,30 +449,104 @@
             },
             body: JSON.stringify({ status: status })
         })
-        .then(response => response.json())
+        .then(res => res.json())
         .then(data => {
-            if (data.success) {
-                // Update data attribute
-                row.setAttribute('data-status', status);
-                
-                // Update statistics cards
-                updateStatisticsCards();
-                
-                // Remove loading state
-                select.disabled = false;
-                select.classList.remove('status-updating');
-                
-                // Show success notification
-                showNotification('Status permintaan berhasil diperbarui', 'success');
-            }
+            if (!data.success) throw new Error("Update status gagal");
+            
+            row.setAttribute('data-status', status);
+
+            // ✅ Tambahkan ini supaya "Total Terpenuhi" ikut update
+            updateStatisticsCards();
+
+            select.disabled = false;
+            select.classList.remove('status-updating');
+            showNotification('Status permintaan berhasil diperbarui!', 'success');
         })
-        .catch(error => {
-            console.error('Error:', error);
+        .catch(err => {
+            console.error(err);
             select.disabled = false;
             select.classList.remove('status-updating');
             showNotification('Gagal memperbarui status permintaan', 'error');
         });
     }
+
+
+    // Update Status Donasi
+    function updateStatusDonasi(select, id, status) {
+        const row = select.closest('tr');
+
+        select.disabled = true;
+        select.classList.add('status-updating');
+        
+        fetch(`/admin/donasi/status/${id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify({ status: status })
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (!data.success) throw new Error("Update gagal");
+            
+            row.dataset.status = status;
+
+            select.disabled = false;
+            select.classList.remove('status-updating');
+
+            showNotification('Status donasi berhasil diperbarui!', 'success');
+        })
+        .catch(error => {
+            console.error(error);
+            select.disabled = false;
+            select.classList.remove('status-updating');
+            showNotification('Gagal memperbarui status donasi', 'error');
+        });
+    }
+
+
+    // // Update Status Permintaan
+    // function updateStatusPermintaan(id, status) {
+    //     const select = event.target;
+    //     const row = select.closest('tr');
+        
+    //     // Add loading state
+    //     select.disabled = true;
+    //     select.classList.add('status-updating');
+        
+    //     fetch(`/admin/permintaan/status/${id}`, {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+    //         },
+    //         body: JSON.stringify({ status: status })
+    //     })
+    //     .then(response => response.json())
+    //     .then(data => {
+    //         if (data.success) {
+    //             // Update data attribute
+    //             row.setAttribute('data-status', status);
+                
+    //             // Update statistics cards
+    //             updateStatisticsCards();
+                
+    //             // Remove loading state
+    //             select.disabled = false;
+    //             select.classList.remove('status-updating');
+                
+    //             // Show success notification
+    //             showNotification('Status permintaan berhasil diperbarui', 'success');
+    //         }
+    //     })
+    //     .catch(error => {
+    //         console.error('Error:', error);
+    //         select.disabled = false;
+    //         select.classList.remove('status-updating');
+    //         showNotification('Gagal memperbarui status permintaan', 'error');
+    //     });
+    // }
 
     // Delete Pengguna
     function deletePengguna(id) {
@@ -498,7 +611,12 @@
                 animateValue('donasiMenunggu', parseInt(document.getElementById('donasiMenunggu').textContent), data.donasiMenunggu, 500);
                 animateValue('permintaanMenunggu', parseInt(document.getElementById('permintaanMenunggu').textContent), data.permintaanMenunggu, 500);
                 animateValue('penggunaAktif', parseInt(document.getElementById('penggunaAktif').textContent.replace(/,/g, '')), data.penggunaAktif, 500);
-                animateValue('totalTerpenuhi', parseInt(document.getElementById('totalTerpenuhi').textContent), data.totalTerpenuhi, 500);
+                animateValue(
+                    'totalTerpenuhi',
+                    parseInt(document.getElementById('totalTerpenuhi').textContent.replace(/,/g, '')),
+                    data.totalTerpenuhi,
+                    500
+                );            
             }
         })
         .catch(error => {
@@ -623,5 +741,21 @@
         }
     `;
     document.head.appendChild(style);
+    document.addEventListener('click', function(e) {
+        if (e.target.matches('.btn-delete')) {
+            const id = e.target.dataset.id;
+
+            if(confirm('Yakin ingin menghapus pengguna ini?')) {
+                fetch(`/admin/pengguna/delete/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    }
+                })
+                .then(res => res.json())
+                .then(() => location.reload());
+            }
+        }
+    });
 </script>
-@endsection
+@endpush

@@ -53,7 +53,7 @@ class DashboardController extends Controller
     public function updateVerifikasiPermintaan(Request $request, $id)
     {
         $request->validate([
-            'status' => 'required|in:approved,rejected'
+            'status' => 'required|in:disetujui,ditolak'
         ]);
         
         $permintaan = RequestDonasi::findOrFail($id);
@@ -87,7 +87,7 @@ class DashboardController extends Controller
     public function updateStatusPermintaan(Request $request, $id)
     {
         $request->validate([
-            'status' => 'required|in:belum_terpenuhi,terpenuhi'
+            'status' => 'required|in:belum terpenuhi,terpenuhi'
         ]);
         
         $permintaan = RequestDonasi::findOrFail($id);
@@ -105,11 +105,8 @@ class DashboardController extends Controller
     {
         $pengguna = Pengguna::findOrFail($id);
         $pengguna->delete();
-        
-        return response()->json([
-            'success' => true,
-            'message' => 'Pengguna berhasil dihapus'
-        ]);
+
+        return redirect()->back()->with('success', 'Pengguna berhasil dihapus');
     }
     
     // Get statistics
