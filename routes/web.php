@@ -38,9 +38,22 @@ Route::post('/register', [RegisterController::class, 'register']);
 |--------------------------------------------------------------------------
 */
 
-Route::middleware('auth:pengguna')->get('/home/dashboard', function () {
-    return view('home.dashboard');
-})->name('home.dashboard');
+use App\Http\Controllers\ProfileController;
+
+Route::middleware(['auth:pengguna'])->group(function () {
+    // Dashboard
+    // Route::get('/home/dashboard', function () {
+    //     return view('home.dashboard');
+    // })->name('home.dashboard');
+    Route::get('/home/dashboard', [DashboardController::class, 'dashboard'])->name('home.dashboard');
+
+
+    // Profile
+    Route::get('/home/profile', [ProfileController::class, 'show'])->name('home.show'); 
+    Route::get('/home/edit', [ProfileController::class, 'edit'])->name('home.edit'); 
+    Route::post('/home/update', [ProfileController::class, 'update'])->name('home.update');
+});
+
 
 
 /*

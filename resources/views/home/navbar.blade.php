@@ -41,10 +41,9 @@
                 <!-- Navigation Links -->
                 <div class="hidden md:flex items-center space-x-8">
                     <a href="#" class="text-blue-600 font-semibold hover:text-blue-700 transition">Beranda</a>
-                    <a href="#" class="text-gray-600 hover:text-gray-900 transition">Donasi</a>
-                    <a href="#" class="text-gray-600 hover:text-gray-900 transition">Transaksi Donasi</a>
-                    <a href="#" class="text-gray-600 hover:text-gray-900 transition">Konversi</a>
-                    <a href="#" class="text-gray-600 hover:text-gray-900 transition">Akun</a>
+                <a href="#" class="text-gray-600 hover:text-gray-900 transition">Donasi</a>
+                    <a href="#" class="text-gray-600 hover:text-gray-900 transition">Request Donasi</a>
+                    <a href="#" class="text-gray-600 hover:text-gray-900 transition">Riwayat</a>
                 </div>
                 
                 <!-- Auth Buttons -->
@@ -52,14 +51,12 @@
                     @guest
                         <a href="{{ route('login') }}" class="px-5 py-2 text-blue-600 font-medium hover:bg-blue-50 rounded-lg transition">Login / Registrasi</a>
                     @else
-                        <div class="relative">
-                            <button class="flex items-center space-x-2 px-4 py-2 rounded-lg hover:bg-gray-100 transition">
-                                <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-                                    <span class="text-white text-sm font-semibold">{{ substr(auth()->user()->name, 0, 1) }}</span>
-                                </div>
-                                <span class="text-gray-700 font-medium">{{ auth()->user()->name }}</span>
-                            </button>
-                        </div>
+                        <a href="{{ route('home.show') }}" class="flex items-center space-x-2 py-2 hover:bg-gray-100 rounded-lg transition px-2">
+                            <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+                                <span class="text-white text-sm font-semibold">{{ substr(auth()->user()->nama, 0, 1) }}</span>
+                            </div>
+                            <span class="text-gray-700 font-medium">{{ auth()->user()->nama }}</span>
+                        </a>
                     @endguest
                 </div>
                 
@@ -77,18 +74,17 @@
             <div class="px-4 py-3 space-y-3">
                 <a href="#" class="block text-blue-600 font-semibold py-2">Beranda</a>
                 <a href="#" class="block text-gray-600 py-2">Donasi</a>
-                <a href="#" class="block text-gray-600 py-2">Transaksi Donasi</a>
-                <a href="#" class="block text-gray-600 py-2">Konversi</a>
-                <a href="#" class="block text-gray-600 py-2">Akun</a>
+                <a href="#" class="block text-gray-600 py-2">Request Donasi</a>
+                <a href="#" class="block text-gray-600 py-2">Riwayat</a>
                 <div class="pt-3 border-t">
                     @guest
                         <a href="{{ route('login') }}" class="block w-full text-center px-4 py-2 bg-blue-600 text-white rounded-lg font-medium">Login / Registrasi</a>
                     @else
                         <div class="flex items-center space-x-2 py-2">
                             <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-                                <span class="text-white text-sm font-semibold">{{ substr(auth()->user()->name, 0, 1) }}</span>
+                                <span class="text-white text-sm font-semibold">{{ substr(auth()->user()->nama, 0, 1) }}</span>
                             </div>
-                            <span class="text-gray-700 font-medium">{{ auth()->user()->name }}</span>
+                            <span class="text-gray-700 font-medium">{{ auth()->user()->nama }}</span>
                         </div>
                     @endguest
                 </div>
@@ -124,9 +120,8 @@
                     <ul class="space-y-2 text-gray-400 text-sm">
                         <li><a href="#" class="hover:text-white transition">Beranda</a></li>
                         <li><a href="#" class="hover:text-white transition">Donasi</a></li>
-                        <li><a href="#" class="hover:text-white transition">Transparansi</a></li>
-                        <li><a href="#" class="hover:text-white transition">Konversi</a></li>
-                        <li><a href="#" class="hover:text-white transition">Tentang</a></li>
+                        <li><a href="#" class="hover:text-white transition">Request Donasi</a></li>
+                        <li><a href="#" class="hover:text-white transition">Riwayat</a></li>
                     </ul>
                 </div>
                 
@@ -173,7 +168,37 @@
             menu.classList.toggle('hidden');
         });
     </script>
+
+    <script>
+    // Mobile Menu Toggle
+    document.getElementById('mobile-menu-button').addEventListener('click', function() {
+        const menu = document.getElementById('mobile-menu');
+        menu.classList.toggle('hidden');
+    });
+
+    // Popup Login Alert
+    function showLoginAlert() {
+        document.getElementById('loginAlertModal').classList.remove('hidden');
+    }
+
+    function closeLoginAlert() {
+        document.getElementById('loginAlertModal').classList.add('hidden');
+    }
+    </script>
+
     
+    <!-- Popup Modal -->
+    <div id="loginAlertModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-xl shadow-lg max-w-sm w-full p-6 text-center">
+            <h2 class="text-lg font-semibold text-gray-800 mb-3">Akses Ditolak</h2>
+            <p class="text-gray-600 mb-6">Anda harus login terlebih dahulu untuk mengakses halaman akun.</p>
+            <div class="flex justify-center space-x-3">
+                <button onclick="closeLoginAlert()" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition">Tutup</button>
+                <a href="{{ route('login') }}" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">Login</a>
+            </div>
+        </div>
+    </div>
     @yield('extra-js')
+    @stack('scripts')
 </body>
 </html>
