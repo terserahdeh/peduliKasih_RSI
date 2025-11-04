@@ -15,8 +15,8 @@ class HomeController extends Controller
         $donations = Donasi::latest()->take(3)->get();
 
         // ambil tips (6)
-        $tips = TipsnEdukasi::latest()->take(6)->get();
-
+        $tips = TipsnEdukasi::orderBy('id_tipsnedukasi', 'desc')->take(6)->get();
+        
         // ambil faq
         $faqs = Faq::all();
 
