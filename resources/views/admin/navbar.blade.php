@@ -45,11 +45,15 @@
                 
                 <!-- User Profile -->
                 <div class="flex items-center">
-                    <div class="relative">
-                        <button class="flex items-center space-x-2 focus:outline-none" id="userMenuButton">
-                            <img src="{{ asset('images/avatar.png') }}" alt="User Avatar" class="w-10 h-10 rounded-full border-2 border-blue-500">
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" 
+                                class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition">
+                            Logout
                         </button>
-                    </div>
+                    </form>
+                </div>
+
                 </div>
             </div>
         </div>
