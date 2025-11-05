@@ -49,13 +49,27 @@
                 <!-- Auth Buttons -->
                 <div class="hidden md:flex items-center space-x-3">
                     @guest
-                        <a href="{{ route('login') }}" class="px-5 py-2 text-blue-600 font-medium hover:bg-blue-50 rounded-lg transition">Login / Registrasi</a>
+                        <a href="{{ route('login') }}" 
+                        class="px-5 py-2 text-blue-600 font-medium hover:bg-blue-50 rounded-lg transition">
+                        Login / Registrasi
+                        </a>
                     @else
-                        <a href="{{ route('home.show') }}" class="flex items-center space-x-2 py-2 hover:bg-gray-100 rounded-lg transition px-2">
+                        <a href="{{ route('home.show') }}" 
+                        class="flex items-center space-x-2 py-2 hover:bg-gray-100 rounded-lg transition px-2">
+                        
+                        @if(auth()->user()->avatar && file_exists(public_path(auth()->user()->avatar)))
+                            <img src="{{ asset(auth()->user()->avatar) }}" 
+                                    alt="Profile" 
+                                    class="w-8 h-8 rounded-full object-cover border border-gray-300">
+                        @else
                             <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-                                <span class="text-white text-sm font-semibold">{{ substr(auth()->user()->nama, 0, 1) }}</span>
+                                <span class="text-white text-sm font-semibold">
+                                    {{ strtoupper(substr(auth()->user()->nama, 0, 1)) }}
+                                </span>
                             </div>
-                            <span class="text-gray-700 font-medium">{{ auth()->user()->nama }}</span>
+                        @endif
+
+                        <span class="text-gray-700 font-medium">{{ auth()->user()->nama }}</span>
                         </a>
                     @endguest
                 </div>

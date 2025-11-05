@@ -43,9 +43,11 @@ rofil - Peduli Kasih')
                 <div class="flex items-start mb-8">
                     <div class="relative">
                         <img id="profilePreview" 
-                             src="{{ auth()->user()->avatar ?? 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->nama) . '&size=120' }}" 
-                             alt="Profile Picture" 
-                             class="w-28 h-28 rounded-full object-cover border-4 border-gray-200">
+                             src="{{ auth()->user()->avatar && file_exists(public_path(auth()->user()->avatar)) 
+                                    ? asset(auth()->user()->avatar) 
+                                    : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->nama) . '&size=120' }}"
+                            alt="Profile Picture"
+                            class="w-28 h-28 rounded-full object-cover border-4 border-gray-200">
                         
                         <!-- Edit Button Overlay -->
                         <label for="avatar" class="absolute bottom-0 right-0 bg-blue-600 text-white p-2 rounded-full cursor-pointer hover:bg-blue-700 transition">

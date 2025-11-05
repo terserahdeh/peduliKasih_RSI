@@ -45,7 +45,7 @@ Route::middleware(['auth:pengguna'])->group(function () {
     // Route::get('/home/dashboard', function () {
     //     return view('home.dashboard');
     // })->name('home.dashboard');
-    Route::get('/home/dashboard', [DashboardController::class, 'dashboard'])->name('home.dashboard');
+    Route::get('/home/dashboard', [HomeController::class, 'index'])->name('home.dashboard');
 
 
     // Profile
