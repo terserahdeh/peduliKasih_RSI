@@ -6,6 +6,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\TipsnEdukasiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +16,8 @@ use App\Http\Controllers\DashboardController;
 
 // Halaman beranda utama (home)
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/home/tipsnedukasi/{id}', [HomeController::class, 'showTipsnEdukasi'])->name('home.showtipsnedukasi');
+
 
 
 /*
@@ -46,7 +49,6 @@ Route::middleware(['auth:pengguna'])->group(function () {
     //     return view('home.dashboard');
     // })->name('home.dashboard');
     Route::get('/home/dashboard', [HomeController::class, 'index'])->name('home.dashboard');
-
 
     // Profile
     Route::get('/home/profile', [ProfileController::class, 'show'])->name('home.show'); 
@@ -92,6 +94,8 @@ Route::prefix('admin')->middleware(['auth:admin'])->group(function () {
     
     // Other pages
     Route::get('/riwayat', [DashboardController::class, 'riwayat'])->name('admin.riwayat');
-    Route::get('/edukasi', [DashboardController::class, 'edukasi'])->name('admin.edukasi');
+    Route::get('/edukasi', [TipsnEdukasiController::class, 'index'])->name('admin.edukasintips');
+    Route::get('/edukasi/{edukasintip}/edit', [TipsnEdukasiController::class, 'edit'])->name('admin.edukasintips.edit');
+    Route::post('/edukasi/{edukasintip}', [TipsnEdukasiController::class, 'update'])->name('admin.edukasintips.update');
     Route::get('/faq', [DashboardController::class, 'faq'])->name('admin.faq');
 });

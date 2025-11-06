@@ -35,7 +35,7 @@
                     <a href="#" class="text-gray-600 hover:text-blue-500 font-medium transition">
                         Riwayat
                     </a>
-                    <a href="#" class="text-gray-600 hover:text-blue-500 font-medium transition">
+                    <a href="{{ route('admin.edukasintips') }}" class="text-gray-600 hover:text-blue-500 font-medium transition">
                         Edukasi & Tips
                     </a>
                     <a href="#" class="text-gray-600 hover:text-blue-500 font-medium transition">
