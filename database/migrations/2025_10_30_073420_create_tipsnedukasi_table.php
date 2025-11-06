@@ -11,14 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('admin', function (Blueprint $table) {
-            $table->increments('id_akun'); // Primary key
-            $table->string('username', 30)->unique();
-            $table->string('nama', 100);
-            $table->string('no_tlp', 15);
-            $table->string('email', 50)->unique();
-            $table->string('password');
-            $table->rememberToken();
+        Schema::create('tipsnedukasi', function (Blueprint $table) {
+            $table->increments('id_tipsnedukasi');
+            $table->string('judul_tipsnedukasi');
+            $table->string('konten_tipsnedukasi');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });
@@ -29,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('admin');
+        Schema::dropIfExists('tipsnedukasi');
     }
 };

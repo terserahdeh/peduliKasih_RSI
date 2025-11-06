@@ -17,7 +17,9 @@ class LoginController extends Controller
         // validate inputs
         $credentials = $request->validate([
             'login' => 'required|string',
-            'password' => 'required|string',
+            'password' => 'required|string|min:8',
+        ],[
+            'password.min' => 'Password minimal 8 karakter.'
         ]);
 
         // determine whether user typed email or username
@@ -31,7 +33,7 @@ class LoginController extends Controller
 
         // Try pengguna
         if (Auth::guard('pengguna')->attempt($credentials)) {
-            return redirect()->route('pengguna.dashboard');
+            return redirect()->route('home.dashboard');
         }
 
         // Try admin 
