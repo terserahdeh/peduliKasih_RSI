@@ -2,108 +2,128 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\RequestDonation;
-use App\Models\User;
+use App\Models\RequestDonasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
-
-class RequestDonationController extends Controller
+class RequestController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth:pengguna');
     }
 
-    // Public list: accepted requests (Daftar Request Donasi)
-    public function acceptedList()
+    // 🟢 Landing Page Request Donasi (Hero Section dengan 2 tombol)
+    public function landing()
     {
-        // Include user relationship to access username
-        $requests = RequestDonation::with('user')
-            ->where('status', 'Diterima')
-            ->latest()
+        return view('home.landing-request');
+    }
+
+    // 🟢 Halaman Daftar Request yang Disetujui (Card-card)
+    public function index()
+    {
+        $requests = RequestDonasi::with('pengguna')
+            ->where('hasil_verif', 'disetujui')
+            ->latest('tanggal_upload')
             ->paginate(12);
 
-        return view('request_donasi.accepted', compact('requests'));
+        return view('home.index-request', compact('requests'));
     }
 
-    // Create form
+    // 🟢 Form membuat request donasi baru
     public function create()
     {
-        return view('request_donasi.create');
+        return view('home.Request');
     }
 
-    // Store new request
+    // 🟢 Menyimpan request donasi baru
     public function store(Request $request)
     {
         $data = $request->validate([
-            'jenis_donasi' => 'required|in:Barang,Uang,Lainnya',
-            'nama_barang'  => 'required|string|max:255',
-            'jumlah'       => 'nullable|integer|min:1',
-            'deskripsi'    => 'required|string',
-            'foto'         => 'nullable|image|mimes:jpg,jpeg,png|max:4096',
+            'jenis_barang'  => 'required|in:alat rumah tangga,sembako,pakaian,alat tulis,lain-lain',
+            'nama_request'  => 'required|string|max:100',
+            'jumlah_barang' => 'nullable|integer|min:1',
+            'deskripsi'     => 'required|string|min:20',
+            'foto'          => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
+        ], [
+            'jenis_barang.required' => 'Jenis barang harus dipilih',
+            'nama_request.required' => 'Nama request harus diisi',
+            'nama_request.max' => 'Nama request maksimal 100 karakter',
+            'deskripsi.required' => 'Deskripsi harus diisi',
+            'deskripsi.min' => 'Deskripsi minimal 20 karakter',
+            'foto.image' => 'File harus berupa gambar',
+            'foto.max' => 'Ukuran gambar maksimal 5MB',
         ]);
 
-        $path = $request->hasFile('foto')
-            ? $request->file('foto')->store('request_donasi', 'public')
-            : null;
+        $path = null;
+        if ($request->hasFile('foto')) {
+            $path = $request->file('foto')->store('request_donasi', 'public');
+        }
 
-        RequestDonation::create([
-            'user_id'       => Auth::id(),
-            'nama_pengaju'  => Auth::user()->username, // Ganti ke username
-            'jenis_donasi'  => $data['jenis_donasi'],
-            'nama_barang'   => $data['nama_barang'],
-            'jumlah'        => $data['jumlah'],
-            'deskripsi'     => $data['deskripsi'],
-            'foto'          => $path,
-            'status'        => 'Menunggu',
+        RequestDonasi::create([
+            'username'       => Auth::user()->username,
+            'jenis_barang'   => $data['jenis_barang'],
+            'nama_request'   => $data['nama_request'],
+            'jumlah_barang'  => $data['jumlah_barang'] ?? null,
+            'deskripsi'      => $data['deskripsi'],
+            'foto'           => $path,
+            'status_request' => 'belum terpenuhi',
+            'hasil_verif'    => 'menunggu',
+            'tanggal_upload' => now()->format('Y-m-d'),
         ]);
 
-        return redirect()->route('request.status')->with('success', 'Request Donasi berhasil dikirim dan menunggu verifikasi admin.');
+        return redirect()->route('request-donasi.status')
+            ->with('success', 'Request Donasi berhasil dikirim dan menunggu verifikasi admin.');
     }
 
-    // User's status page
-    public function index()
+    // 🟢 Halaman status request donasi milik pengguna
+    public function status()
     {
-        $requests = RequestDonation::with('user')
-            ->where('user_id', Auth::id())
-            ->latest()
+        $requests = RequestDonasi::with('pengguna')
+            ->where('username', Auth::user()->username)
+            ->latest('tanggal_upload')
             ->paginate(10);
 
-        return view('request_donasi.status', compact('requests'));
+        return view('home.status-request', compact('requests'));
     }
 
-    // Show single request detail
-    public function show($id)
+    // 🟢 Menampilkan detail request donasi (untuk AJAX/Modal)
+    public function show($id_request)
     {
-        $req = RequestDonation::with('user')->findOrFail($id);
-        return view('request_donasi.show', compact('req'));
+        $req = RequestDonasi::with('pengguna')->findOrFail($id_request);
+        
+        // Cek apakah user adalah pemilik request
+        $isOwner = Auth::check() && Auth::user()->username === $req->username;
+        
+        return view('home.detail-request', compact('req', 'isOwner'));
     }
 
-    // Edit form
-    public function edit($id)
+    // 🟢 Form edit request donasi (hanya untuk request yang sudah disetujui)
+    public function edit($id_request)
     {
-        $req = RequestDonation::where('id', $id)
-            ->where('user_id', Auth::id())
+        $req = RequestDonasi::where('id_request', $id_request)
+            ->where('username', Auth::user()->username)
+            ->where('hasil_verif', 'disetujui') // Hanya bisa edit yang sudah disetujui
             ->firstOrFail();
 
-        return view('request_donasi.edit', compact('req'));
+        return view('home.edit-request', compact('req'));
     }
 
-    // Update
-    public function update(Request $request, $id)
+    // 🟢 Proses update data request donasi
+    public function update(Request $request, $id_request)
     {
-        $req = RequestDonation::where('id', $id)
-            ->where('user_id', Auth::id())
+        $req = RequestDonasi::where('id_request', $id_request)
+            ->where('username', Auth::user()->username)
+            ->where('hasil_verif', 'disetujui') // Hanya bisa update yang sudah disetujui
             ->firstOrFail();
 
         $data = $request->validate([
-            'jenis_donasi' => 'required|in:Barang,Uang,Lainnya',
-            'nama_barang'  => 'required|string|max:255',
-            'jumlah'       => 'nullable|integer|min:1',
-            'deskripsi'    => 'required|string',
-            'foto'         => 'nullable|image|mimes:jpg,jpeg,png|max:4096',
+            'jenis_barang'  => 'required|in:alat rumah tangga,sembako,pakaian,alat tulis,lain-lain',
+            'nama_request'  => 'required|string|max:100',
+            'jumlah_barang' => 'nullable|integer|min:1',
+            'deskripsi'     => 'required|string|min:20',
+            'foto'          => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
         ]);
 
         if ($request->hasFile('foto')) {
@@ -113,21 +133,22 @@ class RequestDonationController extends Controller
             $data['foto'] = $request->file('foto')->store('request_donasi', 'public');
         }
 
-        if ($req->status === 'Ditolak') {
-            $data['status'] = 'Menunggu';
-            $data['alasan_penolakan'] = null;
-        }
+        // Setelah diedit, status kembali ke menunggu verifikasi
+        $data['hasil_verif'] = 'menunggu';
+        $data['status_request'] = 'belum terpenuhi';
 
         $req->update($data);
 
-        return redirect()->route('request.status')->with('success', 'Request Donasi berhasil diperbarui.');
+        return redirect()->route('request-donasi.index')
+            ->with('success', 'Request Donasi berhasil diperbarui dan akan diverifikasi kembali oleh admin.');
     }
 
-    // Delete
-    public function destroy($id)
+    // 🟢 Menghapus request donasi (hanya untuk request yang sudah disetujui)
+    public function destroy($id_request)
     {
-        $req = RequestDonation::where('id', $id)
-            ->where('user_id', Auth::id())
+        $req = RequestDonasi::where('id_request', $id_request)
+            ->where('username', Auth::user()->username)
+            ->where('hasil_verif', 'disetujui')
             ->firstOrFail();
 
         if ($req->foto) {
@@ -136,15 +157,7 @@ class RequestDonationController extends Controller
 
         $req->delete();
 
-        return back()->with('success', 'Request Donasi berhasil dihapus.');
-    }
-
-    // Upvote
-    public function upvote($id)
-    {
-        $req = RequestDonation::findOrFail($id);
-        $req->increment('upvote_count');
-
-        return back()->with('success', 'Terima kasih atas dukunganmu!');
+        return redirect()->route('request-donasi.index')
+            ->with('success', 'Request Donasi berhasil dihapus.');
     }
 }
