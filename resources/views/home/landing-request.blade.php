@@ -1,5 +1,8 @@
-@include('home.navbar')
+@extends('home.navbar')
 
+@section('title', 'Dashboard - Peduli Kasih')
+
+@section('content')
 <!-- Full Page with Gradient Background -->
 <div class="bg-gradient-to-b from-blue-50 to-white min-h-screen">
     <!-- Hero Section -->
@@ -184,11 +187,10 @@
         </div>
     </div>
 </div>
-
-@include('home.footer')
-
 </main>
+@endsection
 
+@push('styles')
 <style>
     /* Hide scrollbar but keep functionality */
     .scrollbar-hide::-webkit-scrollbar {
@@ -199,7 +201,9 @@
         scrollbar-width: none;
     }
 </style>
+@endpush
 
+@push('scripts')
 <script>
 function showDetail(id) {
     const modal = document.getElementById('detailModal');
@@ -257,6 +261,4 @@ document.getElementById('mobile-menu-button')?.addEventListener('click', () => {
     menu.classList.toggle('hidden');
 });
 </script>
-
-</body>
-</html>
+@endpush
