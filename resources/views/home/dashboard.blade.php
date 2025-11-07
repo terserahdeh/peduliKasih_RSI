@@ -162,7 +162,7 @@
         </div>
         
         <div class="text-center">
-            <a href="#" class="inline-block px-6 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition">
+            <a href="{{ route('donasi.index') }}" class="inline-block px-6 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition">
                 Lihat Semua Donasi
             </a>
         </div>

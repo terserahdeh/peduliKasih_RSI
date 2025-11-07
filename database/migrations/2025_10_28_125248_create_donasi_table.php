@@ -12,26 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('donasi', function (Blueprint $table) {
-            $table->increments('id_donasi');;
-
-            // foreign key to pengguna
-            $table->string('username', 30); 
-            $table->foreign('username')
-                ->references('username')
-                ->on('pengguna')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
-
-            // other fields
-            $table->integer('jumlah_barang');
-            $table->enum('jenis_barang', ['alat rumah tangga', 'sembako','pakaian','alat tulis','lain-lain'])->default('lain-lain');
-            $table->text('deskripsi')->nullable();
-            $table->string('nama_donasi', 100);
-            $table->enum('status_donasi', ['tersedia', 'tersalurkan'])->default('tersedia');
-            $table->enum('hasil_verif', ['disetujui', 'ditolak', 'menunggu'])->default('menunggu');
-            $table->string('foto')->nullable();
-            $table->date('tanggal_upload');
-
+            $table->id('id_donasi');
+            $table->string('username');
+            $table->string('jumlah_barang');
+            $table->string('jenis_barang');
+            $table->text('deskripsi');
+            $table->string('nama_donasi');
+            $table->enum('status_donasi', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->string('hasil_verif')->nullable();
+            $table->string('foto');
+            $table->date('tanggal_upload')->nullable();
             $table->timestamps();
         });
     }
