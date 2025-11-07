@@ -9,29 +9,67 @@ use App\Models\Pengguna;
 
 class DashboardController extends Controller
 {
-    // Display dashboard
-    public function dashboard()
+    public function dashboard(Request $request)
     {
+        // Statistik
         $donasiMenunggu = Donasi::where('hasil_verif', 'menunggu')->count();
         $permintaanMenunggu = RequestDonasi::where('hasil_verif', 'menunggu')->count();
         $penggunaAktif = Pengguna::count();
         $totalTerpenuhi = RequestDonasi::where('status_request', 'terpenuhi')->count();
-        
-        $donasiList = Donasi::with('Pengguna')->latest()->take(5)->get();
-        $permintaanList = RequestDonasi::with('Pengguna')->latest()->take(5)->get();
+
+        // Latest 5 Donasi
+        $donasiList = Donasi::with('Pengguna')->orderBy('created_at','desc')->take(5)->get();
+
+        // Latest 5 Permintaan
+        $permintaanList = RequestDonasi::with('Pengguna')->orderBy('created_at','desc')->take(5)->get();
+
+        // Latest 5 Pengguna
         $penggunaList = Pengguna::latest()->take(5)->get();
-        
+
+        // Kirim semua ke view
         return view('admin.dashboard', compact(
             'donasiMenunggu',
             'permintaanMenunggu',
             'penggunaAktif',
             'totalTerpenuhi',
-            'donasiList',
-            'permintaanList',
+            'donasiList',  
+            'permintaanList',  
             'penggunaList'
         ));
     }
-    
+
+    public function donasiTable(Request $request)
+    {
+        $query = Donasi::with('Pengguna');
+        
+        if ($request->filterVerifikasiDonasi) {
+            $query->where('hasil_verif', $request->filterVerifikasiDonasi);
+        }
+        if ($request->filterStatusDonasi) {
+            $query->where('status_donasi', $request->filterStatusDonasi);
+        }
+        
+        $donasiList = $query->orderBy('created_at','desc')->take(5)->get();
+
+        return view('admin.donasi_table', compact('donasiList'))->render();
+    }
+
+    public function permintaanTable(Request $request)
+    {
+        $query = RequestDonasi::with('Pengguna');
+
+        if ($request->filterVerifikasiPermintaan) {
+            $query->where('hasil_verif', $request->filterVerifikasiPermintaan);
+        }
+        if ($request->filterStatusPermintaan) {
+            $query->where('status_request', $request->filterStatusPermintaan);
+        }
+
+        $permintaanList = $query->orderBy('created_at','desc')->take(5)->get();
+
+        return view('admin.permintaan_table', compact('permintaanList'))->render();
+    }
+
     // Update verifikasi status for Donasi
     public function updateVerifikasiDonasi(Request $request, $id)
     {
@@ -53,7 +91,7 @@ class DashboardController extends Controller
     public function updateVerifikasiPermintaan(Request $request, $id)
     {
         $request->validate([
-            'status' => 'required|in:approved,rejected'
+            'status' => 'required|in:disetujui,ditolak'
         ]);
         
         $permintaan = RequestDonasi::findOrFail($id);
@@ -87,7 +125,7 @@ class DashboardController extends Controller
     public function updateStatusPermintaan(Request $request, $id)
     {
         $request->validate([
-            'status' => 'required|in:belum_terpenuhi,terpenuhi'
+            'status' => 'required|in:belum terpenuhi,terpenuhi'
         ]);
         
         $permintaan = RequestDonasi::findOrFail($id);
@@ -105,11 +143,8 @@ class DashboardController extends Controller
     {
         $pengguna = Pengguna::findOrFail($id);
         $pengguna->delete();
-        
-        return response()->json([
-            'success' => true,
-            'message' => 'Pengguna berhasil dihapus'
-        ]);
+
+        return redirect()->back()->with('success', 'Pengguna berhasil dihapus');
     }
     
     // Get statistics
