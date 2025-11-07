@@ -3,49 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>@yield('title', 'Peduli Kasih - Platform Donasi')</title>
-    
-    <!-- Tailwind CSS CDN -->
+    <title>{{ $title ?? 'Peduli Kasih - Platform Donasi' }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    
     <style>
+        html, body {
+            height: 100%;
+        }
         body {
-            font-family: 'Inter', sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+        main {
+            flex: 1 0 auto;
+        }
+        footer {
+            flex-shrink: 0;
         }
     </style>
-    
-    @yield('extra-css')
 </head>
 <body class="bg-gray-50">
+
     <!-- Navbar -->
     <nav class="bg-white shadow-sm sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="container mx-auto px-4">
             <div class="flex justify-between items-center h-16">
                 <!-- Logo -->
                 <div class="flex items-center">
-                    <div class="flex items-center space-x-2">
-                        <div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
-                            <i class="fas fa-hand-holding-heart text-white text-sm"></i>
+                    <a href="{{ route('home') }}" class="flex items-center space-x-2">
+                        <div class="w-9 h-9 bg-blue-500 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-hand-holding-heart text-white"></i>
                         </div>
                         <span class="text-xl font-bold text-gray-900">Peduli Kasih</span>
-                    </div>
+                    </a>
                 </div>
-                
+
                 <!-- Navigation Links -->
                 <div class="hidden md:flex items-center space-x-8">
                     <a href="#" class="text-blue-600 font-semibold hover:text-blue-700 transition">Beranda</a>
                 <a href="#" class="text-gray-600 hover:text-gray-900 transition">Donasi</a>
-                    <a href="#" class="text-gray-600 hover:text-gray-900 transition">Request Donasi</a>
+                    <a href="{{ route('request-donasi.landing') }}" class="text-gray-600 hover:text-gray-900 transition">Request Donasi</a>
                     <a href="#" class="text-gray-600 hover:text-gray-900 transition">Riwayat</a>
                 </div>
-                
+
                 <!-- Auth Buttons -->
                 <div class="hidden md:flex items-center space-x-3">
                     @guest
@@ -73,7 +73,7 @@
                         </a>
                     @endguest
                 </div>
-                
+
                 <!-- Mobile Menu Button -->
                 <div class="md:hidden">
                     <button id="mobile-menu-button" class="text-gray-600 hover:text-gray-900 focus:outline-none">
@@ -82,17 +82,17 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
             <div class="px-4 py-3 space-y-3">
                 <a href="#" class="block text-blue-600 font-semibold py-2">Beranda</a>
                 <a href="#" class="block text-gray-600 py-2">Donasi</a>
-                <a href="#" class="block text-gray-600 py-2">Request Donasi</a>
+                <a href="{{ route('request-donasi.landing') }}" class="block text-gray-600 py-2">Request Donasi</a>
                 <a href="#" class="block text-gray-600 py-2">Riwayat</a>
                 <div class="pt-3 border-t">
-                    @guest
-                        <a href="{{ route('login') }}" class="block w-full text-center px-4 py-2 bg-blue-600 text-white rounded-lg font-medium">Login / Registrasi</a>
+                    @guest('pengguna')
+                        <a href="{{ route('login.form') }}" class="block w-full text-center px-4 py-2 bg-blue-500 text-white rounded-lg font-medium">Login / Registrasi</a>
                     @else
                         <div class="flex items-center space-x-2 py-2">
                             <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">

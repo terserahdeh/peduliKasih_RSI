@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('request_donasi', function (Blueprint $table) {
-            $table->increments('id_request');;
+            $table->increments('id_request');
 
             // foreign key to pengguna
             $table->string('username', 30); 
@@ -23,16 +23,14 @@ return new class extends Migration
                 ->onUpdate('cascade');
 
             // other fields
-            $table->integer('jumlah_barang');
+            $table->integer('jumlah_barang')->nullable();
             $table->enum('jenis_barang', ['alat rumah tangga', 'sembako','pakaian','alat tulis','lain-lain'])->default('lain-lain');
             $table->text('deskripsi')->nullable();
             $table->string('nama_request', 100);
             $table->enum('status_request', ['belum terpenuhi', 'terpenuhi'])->default('belum terpenuhi');
             $table->enum('hasil_verif', ['disetujui', 'ditolak', 'menunggu'])->default('menunggu');
             $table->date('tanggal_upload');
-            
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
+
         });
     }
 

@@ -1,11 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\RequestController;
 use App\Http\Controllers\TipsnEdukasiController;
 
 /*
@@ -13,11 +13,8 @@ use App\Http\Controllers\TipsnEdukasiController;
 | Public Landing Page
 |--------------------------------------------------------------------------
 */
-
-// Halaman beranda utama (home)
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/home/tipsnedukasi/{id}', [HomeController::class, 'showTipsnEdukasi'])->name('home.showtipsnedukasi');
-
 
 
 /*
@@ -25,19 +22,15 @@ Route::get('/home/tipsnedukasi/{id}', [HomeController::class, 'showTipsnEdukasi'
 | Authentication Routes
 |--------------------------------------------------------------------------
 */
-
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login.form');
 Route::post('/login', [LoginController::class, 'login'])->name('login');
-
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-
 Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register']);
 
-
 /*
 |--------------------------------------------------------------------------
-| Dashboard Pengguna (User)
+| User Dashboard & Request Donasi Routes
 |--------------------------------------------------------------------------
 */
 
@@ -54,6 +47,27 @@ Route::middleware(['auth:pengguna'])->group(function () {
     Route::get('/home/profile', [ProfileController::class, 'show'])->name('home.show'); 
     Route::get('/home/edit', [ProfileController::class, 'edit'])->name('home.edit'); 
     Route::post('/home/update', [ProfileController::class, 'update'])->name('home.update');
+  
+    Route::prefix('request-donasi')->name('request-donasi.')->group(function () {
+        // Landing Page (Hero Section) - Ini yang muncul pertama dari navbar
+        Route::get('/', [RequestController::class, 'landing'])->name('landing');
+        
+        // Daftar Request yang Disetujui (Card-card dengan Edit & Hapus)
+        Route::get('/daftar', [RequestController::class, 'index'])->name('index');
+        
+        // Form Ajukan Request Baru
+        Route::get('/create', [RequestController::class, 'create'])->name('create');
+        Route::post('/', [RequestController::class, 'store'])->name('store');
+        
+        // Status Pengajuan User
+        Route::get('/status', [RequestController::class, 'status'])->name('status');
+        
+        // Detail, Edit, Delete
+        Route::get('/{id_request}', [RequestController::class, 'show'])->name('show');
+        Route::get('/{id_request}/edit', [RequestController::class, 'edit'])->name('edit');
+        Route::put('/{id_request}', [RequestController::class, 'update'])->name('update');
+        Route::delete('/{id_request}', [RequestController::class, 'destroy'])->name('destroy');
+    });
 });
 
 
@@ -63,13 +77,8 @@ Route::middleware(['auth:pengguna'])->group(function () {
 | Admin Routes
 |--------------------------------------------------------------------------
 */
-
 Route::prefix('admin')->middleware(['auth:admin'])->group(function () {
-
-    // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('admin.dashboard');
-    
-    // Statistics API
     Route::get('/statistics', [DashboardController::class, 'getStatistics'])->name('admin.statistics');
 
     // Donasi Management
@@ -89,8 +98,8 @@ Route::prefix('admin')->middleware(['auth:admin'])->group(function () {
     Route::get('/dashboard/permintaan-table', [DashboardController::class, 'permintaanTable'])->name('permintaan.table');
 
     // User Management
-    Route::delete('/pengguna/delete/{id}', [DashboardController::class, 'deletePengguna'])->name('admin.pengguna.delete');
-    Route::get('/pengguna/all', [DashboardController::class, 'allPengguna'])->name('admin.pengguna.all');
+    Route::delete('/pengguna/delete/{id}', [DashboardController::class, 'deletepengguna'])->name('admin.pengguna.delete');
+    Route::get('/pengguna/all', [DashboardController::class, 'allpengguna'])->name('admin.pengguna.all');
     
     // Other pages
     Route::get('/riwayat', [DashboardController::class, 'riwayat'])->name('admin.riwayat');
