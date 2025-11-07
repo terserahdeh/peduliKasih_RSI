@@ -31,7 +31,8 @@ return new class extends Migration
             $table->enum('hasil_verif', ['disetujui', 'ditolak', 'menunggu'])->default('menunggu');
             $table->date('tanggal_upload');
             
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });
     }
 

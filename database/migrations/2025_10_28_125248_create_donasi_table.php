@@ -32,7 +32,8 @@ return new class extends Migration
             $table->string('foto')->nullable();
             $table->date('tanggal_upload');
 
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });
     }
 

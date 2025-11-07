@@ -6,6 +6,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\TipsnEdukasiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +16,8 @@ use App\Http\Controllers\DashboardController;
 
 // Halaman beranda utama (home)
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/home/tipsnedukasi/{id}', [HomeController::class, 'showTipsnEdukasi'])->name('home.showtipsnedukasi');
+
 
 
 /*
@@ -38,9 +41,21 @@ Route::post('/register', [RegisterController::class, 'register']);
 |--------------------------------------------------------------------------
 */
 
-Route::middleware('auth:pengguna')->get('/home/dashboard', function () {
-    return view('home.dashboard');
-})->name('home.dashboard');
+use App\Http\Controllers\ProfileController;
+
+Route::middleware(['auth:pengguna'])->group(function () {
+    // Dashboard
+    // Route::get('/home/dashboard', function () {
+    //     return view('home.dashboard');
+    // })->name('home.dashboard');
+    Route::get('/home/dashboard', [HomeController::class, 'index'])->name('home.dashboard');
+
+    // Profile
+    Route::get('/home/profile', [ProfileController::class, 'show'])->name('home.show'); 
+    Route::get('/home/edit', [ProfileController::class, 'edit'])->name('home.edit'); 
+    Route::post('/home/update', [ProfileController::class, 'update'])->name('home.update');
+});
+
 
 
 /*
@@ -69,12 +84,18 @@ Route::prefix('admin')->middleware(['auth:admin'])->group(function () {
     Route::get('/permintaan/detail/{id}', [DashboardController::class, 'showPermintaanDetail'])->name('admin.permintaan.detail');
     Route::get('/permintaan/all', [DashboardController::class, 'allPermintaan'])->name('admin.permintaan.all');
     
+    // Show table
+    Route::get('/dashboard/donasi-table', [DashboardController::class, 'donasiTable'])->name('donasi.table');
+    Route::get('/dashboard/permintaan-table', [DashboardController::class, 'permintaanTable'])->name('permintaan.table');
+
     // User Management
     Route::delete('/pengguna/delete/{id}', [DashboardController::class, 'deletePengguna'])->name('admin.pengguna.delete');
     Route::get('/pengguna/all', [DashboardController::class, 'allPengguna'])->name('admin.pengguna.all');
     
     // Other pages
     Route::get('/riwayat', [DashboardController::class, 'riwayat'])->name('admin.riwayat');
-    Route::get('/edukasi', [DashboardController::class, 'edukasi'])->name('admin.edukasi');
+    Route::get('/edukasi', [TipsnEdukasiController::class, 'index'])->name('admin.edukasintips');
+    Route::get('/edukasi/{edukasintip}/edit', [TipsnEdukasiController::class, 'edit'])->name('admin.edukasintips.edit');
+    Route::post('/edukasi/{edukasintip}', [TipsnEdukasiController::class, 'update'])->name('admin.edukasintips.update');
     Route::get('/faq', [DashboardController::class, 'faq'])->name('admin.faq');
 });
