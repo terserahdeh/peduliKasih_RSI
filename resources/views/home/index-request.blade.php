@@ -1,5 +1,8 @@
-@include('home.navbar')
+@extends('home.navbar')
 
+@section('title', 'Request Donasi Full')
+
+@section('content')
 <!-- Hero Section -->
 <div class="bg-gradient-to-br from-blue-50 via-blue-50 to-white py-16 lg:py-20">
     <div class="container mx-auto px-4 lg:px-8">
@@ -146,16 +149,24 @@
                         </div>
 
                         <!-- Progress Bar -->
-                        <div class="mt-5 pt-5 border-t border-gray-100">
-                            <div class="flex items-center text-sm text-gray-600 mb-2">
-                                <i class="fas fa-heart text-red-500 mr-2"></i>
-                                <span class="font-semibold">+{{ $req->upvote->count() ?? 132 }}</span>
-                                <span class="ml-1 text-gray-500">dukungan</span>
-                            </div>
-                            <div class="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
-                                <div class="bg-gradient-to-r from-yellow-400 to-orange-400 h-full rounded-full transition-all duration-500" 
-                                     style="width: {{ min(($req->upvote->count() ?? 132) / 2, 100) }}%"></div>
-                            </div>
+                        <div class="flex items-center text-sm text-gray-600 mb-1 space-x-2">
+                            @php
+                                $hasUpvoted = $req->upvote->contains('username', Auth::user()->username ?? '');
+                                $count = $req->upvote->count();
+                            @endphp
+
+                            <button 
+                                id="heart-btn-{{ $req->id_request }}"
+                                onclick="toggleUpvote({{ $req->id_request }})"
+                                class="flex items-center gap-2 focus:outline-none transition"
+                            >
+                                <i id="heart-icon-{{ $req->id_request }}"
+                                class="fas fa-heart text-xl transition-all duration-300 {{ $hasUpvoted ? 'text-red-500 scale-110' : 'text-gray-400 hover:text-red-400' }}">
+                                </i>
+                                <span id="upvote-count-{{ $req->id_request }}" class="font-semibold text-gray-700">
+                                    +{{ $count }}
+                                </span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -203,11 +214,10 @@
     @csrf
     @method('DELETE')
 </form>
-
-@include('home.footer')
-
 </main>
+@endsection
 
+@push('scripts')
 <script>
 let isLoading = false;
 
@@ -337,7 +347,46 @@ document.getElementById('mobile-menu-button')?.addEventListener('click', () => {
     const menu = document.getElementById('mobile-menu');
     menu.classList.toggle('hidden');
 });
-</script>
 
-</body>
-</html>
+function toggleUpvote(id) {
+    const token = '{{ csrf_token() }}';
+    const heartIcon = document.getElementById(`heart-icon-${id}`);
+    const countSpan = document.getElementById(`upvote-count-${id}`);
+    const progressBar = document.getElementById(`progress-${id}`);
+
+    fetch(`/request-donasi/${id}/upvote`, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': token,
+            'Accept': 'application/json'
+        }
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (!data || data.count === undefined) {
+            console.error("Response error:", data);
+            return;
+        }
+
+        // Update count safely
+        countSpan.textContent = `+${data.count}`;
+
+        // Update heart style (clicked vs unclicked)
+        if (data.status === 'added') {
+            heartIcon.classList.remove('text-gray-400', 'hover:text-red-400');
+            heartIcon.classList.add('text-red-500');
+            heartIcon.style.transform = 'scale(1.2)';
+            setTimeout(() => heartIcon.style.transform = 'scale(1)', 200);
+        } else {
+            heartIcon.classList.remove('text-red-500');
+            heartIcon.classList.add('text-gray-400', 'hover:text-red-400');
+        }
+
+        // Update progress bar
+        const width = Math.min(data.count / 2, 100);
+        progressBar.style.width = `${width}%`;
+    })
+    .catch(err => console.error('Upvote error:', err));
+}
+</script>
+@endpush

@@ -30,6 +30,7 @@ return new class extends Migration
             $table->enum('status_request', ['belum terpenuhi', 'terpenuhi'])->default('belum terpenuhi');
             $table->enum('hasil_verif', ['disetujui', 'ditolak', 'menunggu'])->default('menunggu');
             $table->date('tanggal_upload');
+            $table->string('foto')->nullable();
 
         });
     }
