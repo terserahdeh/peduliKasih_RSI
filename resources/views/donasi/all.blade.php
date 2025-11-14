@@ -1,353 +1,282 @@
 @extends('home.navbar')
 
-@section('title', 'Semua Donasi')
+@section('title', 'Daftar Request Donasi')
 
 @section('content')
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+/>
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+  rel="stylesheet"
+/>
+
 <style>
-    /* ====== WARNA & GAYA GLOBAL ====== */
-    .bg-purple { background-color: #9277EF !important; }
-    
-    /* ====== HERO SECTION ====== */
-    .hero-section {
-        background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
-        padding: 60px 0;
-        margin-bottom: 60px;
-    }
-    
-    .hero-content {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 20px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 40px;
-    }
-    
-    .hero-text {
-        flex: 1;
-    }
-    
-    .hero-section h1 {
-        font-weight: 700;
-        color: #1E293B;
-        font-size: 42px;
-        line-height: 1.3;
-        margin-bottom: 24px;
-    }
-    
-    .hero-section h1 .highlight {
-        color: #3B82F6;
-    }
-    
-    .hero-btn {
-        background-color: #3B82F6;
-        border: none;
-        padding: 14px 32px;
-        font-weight: 600;
-        border-radius: 8px;
-        color: white;
-        transition: 0.3s;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 15px;
-    }
-    
-    .hero-btn:hover {
-        background-color: #2563EB;
-        color: white;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
-    }
-    
-    .hero-image {
-        flex: 0 0 400px;
-        text-align: right;
-    }
-    
-    .hero-image img {
-        max-width: 100%;
-        height: auto;
-    }
+/* ===================== GLOBAL ===================== */
+.bg-purple { background-color: #9277EF !important; }
 
-    /* ====== SECTION TITLE ====== */
-    .section-title {
-        text-align: center;
-        margin-bottom: 40px;
-    }
-    
-    .section-title h2 {
-        font-size: 32px;
-        font-weight: 700;
-        color: #1F2937;
-        margin-bottom: 12px;
-    }
-    
-    .section-title p {
-        font-size: 15px;
-        color: #6B7280;
-    }
+.icon-small {
+    font-size: 16px;
+    width: 20px;
+    margin-right: 10px;
+    color: #3B82F6;
+}
 
-    /* ====== FILTER BUTTON ====== */
-    .filter-container {
-        display: flex;
-        justify-content: center;
-        gap: 12px;
-        margin-bottom: 40px;
-        flex-wrap: wrap;
-    }
-    
-    .filter-btn {
-        border: 1px solid #3B82F6;
-        background-color: white;
-        color: #3B82F6;
-        border-radius: 8px;
-        padding: 10px 24px;
-        font-weight: 500;
-        font-size: 14px;
-        transition: all 0.3s ease;
-        cursor: pointer;
-        text-decoration: none;
-    }
-    
-    .filter-btn:hover,
-    .filter-btn.active {
-        background-color: #3B82F6;
-        color: white;
-        border-color: #3B82F6;
-    }
+/* ===================== LANDING HERO ===================== */
+.landing-hero {
+    background: linear-gradient(135deg, #EEF2FF 0%, #DBEAFE 100%);
+    padding: 80px 0;
+    margin-bottom: 60px;
+}
 
-    /* ====== LAYOUT 3 KOLOM ====== */
-    .donation-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 20px 80px;
-    }
-    
-    .donation-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 30px;
-    }
-    
-    /* ====== EMPTY STATE ====== */
-    .empty-state {
-        text-align: center;
-        padding: 60px 20px;
-        color: #6B7280;
-    }
-    
-    .empty-state svg {
-        width: 120px;
-        height: 120px;
-        margin-bottom: 20px;
-        color: #D1D5DB;
-    }
-    
-    .empty-state h3 {
-        font-size: 20px;
-        font-weight: 600;
-        color: #374151;
-        margin-bottom: 8px;
-    }
-    
-    .empty-state p {
-        font-size: 14px;
-        margin-bottom: 24px;
-    }
-    
-    @media (max-width: 992px) {
-        .hero-content {
-            flex-direction: column;
-            text-align: center;
-        }
-        
-        .hero-image {
-            flex: 0 0 auto;
-        }
-        
-        .donation-grid {
-            grid-template-columns: repeat(2, 1fr);
-        }
-    }
-    
-    @media (max-width: 576px) {
-        .hero-section h1 {
-            font-size: 32px;
-        }
-        
-        .donation-grid {
-            grid-template-columns: 1fr;
-        }
-    }
+.landing-wrapper {
+    max-width: 1200px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    padding: 0 20px;
+}
 
-    /* ====== CARD DONASI ====== */
-    .donation-card {
-        background: white;
-        border-radius: 16px;
-        overflow: hidden;
-        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-        transition: all 0.3s ease;
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-    }
-    
-    .donation-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-    }
-    
-    .card-image {
-        width: 100%;
-        height: 200px;
-        object-fit: cover;
-    }
-    
-    .card-content {
-        padding: 20px;
-        display: flex;
-        flex-direction: column;
-        flex: 1;
-    }
-    
-    .card-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 12px;
-    }
-    
-    .card-badge {
-        font-size: 11px;
-        font-weight: 600;
-        padding: 5px 12px;
-        border-radius: 10px;
-        display: inline-block;
-    }
-    
-    .badge-sembako {
-        background-color: #10B981;
-        color: white;
-    }
-    
-    .badge-alat-tulis {
-        background-color: #3B82F6;
-        color: white;
-    }
-    
-    .badge-pakaian {
-        background-color: #9277EF;
-        color: white;
-    }
-    
-    .badge-alat-rumah-tangga {
-        background-color: #6B7280;
-        color: white;
-    }
-    
-    .card-time {
-        font-size: 12px;
-        color: #9CA3AF;
-        font-weight: 400;
-    }
-    
-    .card-title {
-        font-weight: 700;
-        color: #1F2937;
-        font-size: 17px;
-        margin-bottom: 10px;
-        line-height: 1.4;
-    }
-    
-    .card-description {
-        font-size: 13px;
-        color: #6B7280;
-        line-height: 1.6;
-        margin-bottom: 16px;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        flex: 1;
-    }
-    
-    .card-location {
-        font-size: 13px;
-        color: #6B7280;
-        margin-bottom: 16px;
-        display: flex;
-        align-items: center;
-        gap: 4px;
-    }
-    
-    .card-location i {
-        font-size: 14px;
-    }
-    
-    .btn-detail {
-        background-color: #3B82F6;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        padding: 10px 20px;
-        font-size: 14px;
-        font-weight: 600;
-        transition: 0.3s;
-        display: block;
-        width: 100%;
-        text-align: center;
-        text-decoration: none;
-    }
-    
-    .btn-detail:hover {
-        background-color: #2563EB;
-        color: white;
-        transform: translateY(-2px);
-    }
+.landing-text h1 {
+    font-size: 44px;
+    font-weight: 700;
+    color: #1E293B;
+    line-height: 1.3;
+    margin-bottom: 20px;
+}
 
-    /* Success Alert */
-    .alert-success {
-        background-color: #D1FAE5;
-        color: #065F46;
-        border: 1px solid #6EE7B7;
-        padding: 16px 20px;
-        border-radius: 8px;
-        margin-bottom: 30px;
-        font-size: 14px;
-    }
+.landing-text p {
+    font-size: 17px;
+    color: #475569;
+    margin-bottom: 30px;
+}
+
+.hero-primary {
+    background: #3B82F6;
+    padding: 14px 32px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    color: white;
+    text-decoration: none;
+    transition: .3s;
+}
+
+.hero-primary:hover {
+    background: #2563EB;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(59,130,246,.4);
+}
+
+.landing-image img {
+    width: 430px;
+    border-radius: 14px;
+}
+
+/* ===================== SECTION TITLE ===================== */
+.section-title {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.section-title h2 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #1F2937;
+    margin-bottom: 12px;
+}
+
+.section-title p {
+    font-size: 15px;
+    color: #6B7280;
+    margin-bottom: 15px;
+}
+
+/* ====== FILTER BUTTON ====== */
+.filter-container {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    border: 1px solid #3B82F6;
+    background-color: white;
+    color: #3B82F6;
+    border-radius: 8px;
+    padding: 10px 24px;
+    font-weight: 500;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+    background-color: #3B82F6;
+    color: white;
+    border-color: #3B82F6;
+}
+
+/* ====== GRID ====== */
+.donation-container {
+    max-width: 1400px;
+    margin: auto;
+    padding: 0 20px 80px;
+}
+
+.donation-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 28px;
+    margin: auto;
+}
+
+/* ====== CARD ====== */
+.donation-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 2px 14px rgba(0,0,0,0.07);
+    transition: .3s;
+    display:flex;
+    flex-direction: column;
+}
+
+.donation-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 22px rgba(0,0,0,0.12);
+}
+
+.card-image-wrapper {
+    position: relative;
+    overflow: hidden;
+    height: 190px;
+    border-radius: 16px 16px 0 0;
+}
+
+.card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* STATUS BADGE */
+.card-status-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #FBBF24;
+    color: #78350F;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 6px;
+}
+
+/* CONTENT */
+.card-content { padding: 15px 20px; }
+
+.card-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: #1F2937;
+    margin-bottom: 14px;
+}
+
+.card-info-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #4B5563;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+/* FOOTER */
+.card-footer {
+    margin-top: 10px;
+    border-top: 1px solid #F3F4F6;
+    padding-top: 12px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-detail {
+    background: #3B82F6;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: .3s;
+}
+
+.btn-detail:hover { opacity:.9; }
+
+/* ====== MODAL FIX ====== */
+.modal.show {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-dialog {
+    margin: 0 auto;
+    transform: none !important;
+    animation: zoomIn .3s ease;
+}
+
+@keyframes zoomIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.modal-backdrop.show {
+    opacity: 0.6;
+}
+
+/* RESPONSIVE */
+@media (max-width:1200px){
+    .donation-grid { grid-template-columns: repeat(3,1fr); }
+}
+@media (max-width:900px){
+    .donation-grid { grid-template-columns: repeat(2,1fr); }
+}
+@media (max-width:600px){
+    .donation-grid { grid-template-columns: repeat(1,1fr); }
+}
 </style>
 
-{{-- ================= HERO SECTION ================= --}}
-<section class="hero-section">
-    <div class="hero-content">
-        <div class="hero-text">
-            <h1>
-                Berbagi Kebaikan,<br>
-                <span class="highlight">donasikan barang yang tidak kamu pakai lagi</span>
-            </h1>
-            <a href="{{ route('donasi.create') }}" class="hero-btn">
+{{-- ===================== LANDING SECTION ===================== --}}
+<section class="landing-hero">
+    <div class="landing-wrapper">
+        <div class="landing-text">
+            <h1>Berbagi Kebaikan,<br><span class="highlight">bantu mereka yang membutuhkan</span></h1>
+            <p>Temukan daftar kebutuhan yang benar-benar urgent dan bantu dengan donasi barang layak pakai.</p>
+            <a href="{{ route('donasi.create') }}" class="hero-primary">
                 Mulai Donasi Sekarang
             </a>
         </div>
-        <div class="hero-image">
-            <!-- <img src="{{ asset('images/hero-donasi.png') }}" alt="Hero Image"> -->
-        </div>
+        <img src="https://ik.imagekit.io/ncqn8tn87/imagee.svg?updatedAt=1762781336398"
+             style="max-width:50%; border-radius:10px;"
+             alt="Donasi">
     </div>
 </section>
 
-{{-- ================= SECTION SEMUA DONASI ================= --}}
+{{-- ===================== SECTION CONTENT ===================== --}}
 <div class="donation-container">
-    {{-- Success Message --}}
-    @if(session('success'))
-        <div class="alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
 
     <div class="section-title">
-        <h2>Donasi Terbaru</h2>
-        <p>Lihat bagaimana kebaikan terus mengalir setiap hari</p>
+        <h2>Daftar Request Donasi</h2>
+        <p>Pilih kategori kebutuhan yang ingin kamu bantu</p>
     </div>
 
     {{-- Filter Button --}}
@@ -373,53 +302,100 @@
         </a>
     </div>
 
-    {{-- Kartu Donasi dari Database --}}
-    @if($donasi->count() > 0)
-        <div class="donation-grid">
-            @foreach($donasi as $item)
-            <div class="donation-card">
-                <img src="{{ $item->foto_url}}" class="card-image" alt="{{ $item->judul_donasi }}">
-                <div class="card-content">
-                    <div class="card-header">
-                        <span class="card-badge 
-                            @if($item->kategori == 'Sembako') badge-sembako
-                            @elseif($item->kategori == 'Alat Tulis') badge-alat-tulis
-                            @elseif($item->kategori == 'Pakaian') badge-pakaian
-                            @else badge-alat-rumah-tangga
-                            @endif">
-                            {{ $item->jenis_barang }}
-                        </span>
-                        <span class="card-time">{{ $item->formatted_date }}</span>
-                    </div>
+    @if($donasi->count())
+    <div class="donation-grid">
+        @foreach($donasi as $item)
+        <div class="donation-card">
+            <div class="card-image-wrapper">
+                <img src="{{ asset('foto/' . $item->foto) }}" class="card-image">
+                @if($item->status_request != 'Terpenuhi')
+                    <span class="card-status-badge">Belum Terpenuhi</span>
+                @endif
+            </div>
 
-                    <h5 class="card-title">{{ $item->nama_donasi }}</h5>
-                    
-                    <p class="card-description">
-                        {{ $item->deskripsi }}
-                    </p>
-                    
-                    <div class="card-location">
-                        <i class="bi bi-geo-alt-fill"></i>
-                        <span>{{ $item->lokasi }}</span>
-                    </div>
-                    
-                    <a href="#" class="btn-detail">Lihat Detail</a>
+            <div class="card-content">
+                <h5 class="card-title">{{ $item->nama_donasi }}</h5>
+
+                <div class="card-info-item"><i class="bi bi-tags-fill icon-small"></i>{{ $item->jenis_barang ?? 'Tidak Diketahui' }}</div>
+                <div class="card-info-item"><i class="bi bi-box-seam icon-small"></i>{{ $item->jumlah_barang ?? 0 }} unit</div>
+                <div class="card-info-item"><i class="bi bi-calendar-event icon-small"></i>{{ \Carbon\Carbon::parse($item->tanggal_request)->format('d M Y') }}</div>
+
+                <div class="card-footer">
+                    <span><i class="bi bi-heart-fill text-danger"></i> +{{ $item->total_likes ?? 0 }}</span>
+                    <button type="button" class="btn-detail" data-bs-toggle="modal" data-bs-target="#detailModal{{ $item->id_donasi }}">
+                        Detail
+                    </button>
                 </div>
             </div>
-            @endforeach
         </div>
-    @else
-        {{-- Empty State --}}
-        <div class="empty-state">
-            <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
-            </svg> -->
-            <h3>Belum Ada Donasi</h3>
-            <p>Belum ada donasi yang tersedia saat ini. Jadilah yang pertama berbagi kebaikan!</p>
-            <a href="{{ route('donasi.create') }}" class="hero-btn">
-                Mulai Donasi
-            </a>
+
+        <!-- MODAL DETAIL -->
+        <div class="modal fade" id="detailModal{{ $item->id_donasi }}" tabindex="-1" aria-labelledby="detailModalLabel{{ $item->id_donasi }}" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content rounded-3xl shadow-lg border-0">
+
+                    <div class="modal-header bg-primary text-white rounded-top">
+                        <h5 class="modal-title" id="detailModalLabel{{ $item->id_donasi }}">
+                            Detail Donasi - {{ $item->nama_donasi }}
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <div class="modal-body bg-light">
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <img src="{{ asset('foto/' . $item->foto) }}" alt="{{ $item->nama_donasi }}" class="img-fluid rounded">
+                            </div>
+                            <div class="col-md-6">
+                                <h4 class="fw-bold">{{ $item->nama_donasi }}</h4>
+                                <p><i class="bi bi-tags-fill text-primary"></i> {{ $item->jenis_barang }}</p>
+                                <p><i class="bi bi-box-seam text-primary"></i> {{ $item->jumlah_barang }}</p>
+                                <p><i class="bi bi-calendar-event text-primary"></i> {{ \Carbon\Carbon::parse($item->created_at)->format('d M Y') }}</p>
+                                <p><i class="bi bi-telephone text-success"></i> {{ $item->nomor_telepon ?? 'Tidak tersedia' }}</p>
+                                <hr>
+                                <p>{{ $item->deskripsi ?? 'Tidak ada deskripsi.' }}</p>
+
+                                @if($item->nomor_telepon)
+                                <a href="https://wa.me/{{ $item->nomor_telepon }}?text=Halo,%20saya%20tertarik%20dengan%20donasi%20{{ urlencode($item->nama_donasi) }}" 
+                                target="_blank" class="btn btn-success mt-2">
+                                    <i class="bi bi-whatsapp"></i> Hubungi via WhatsApp
+                                </a>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer bg-white d-flex justify-content-between">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                        
+                        {{-- Tombol Edit/Hapus hanya muncul jika donasi milik user yang login --}}
+                        @auth('pengguna')
+                            @if($item->username === auth()->user()->username)
+                            <div class="d-flex gap-2">
+                                <a href="{{ route('donasi.edit', $item->id_donasi) }}" class="btn btn-warning text-white">
+                                    <i class="bi bi-pencil"></i> Edit
+                                </a>
+                                <form action="{{ route('donasi.destroy', $item->id_donasi) }}" method="POST" 
+                                    onsubmit="return confirm('Yakin ingin menghapus donasi ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger font-medium">
+                                        <i class="bi bi-trash"></i> Hapus
+                                    </button>
+                                </form>
+                            </div>
+                            @endif
+                        @endauth
+                    </div>
+
+                </div>
+            </div>
         </div>
+        @endforeach
+    </div>
     @endif
 </div>
+
+{{-- Bootstrap JS --}}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 @endsection

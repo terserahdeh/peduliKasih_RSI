@@ -1,11 +1,17 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+// Import Controllers yang digunakan (Pastikan ini sudah benar)
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DonasiController;
+use App\Http\Controllers\RequestController;
+use App\Http\Controllers\TipsnEdukasiController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\FaqController;
+use App\Http\Controllers\AdminFaqController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,142 +19,148 @@ use App\Http\Controllers\DonasiController;
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Homepage/Beranda (Publik)
+// Route::get('/', function () { return view('welcome'); }); // Dihapus, menggunakan Controller
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
+// Tips & Edukasi Public Detail
+Route::get('/home/tipsnedukasi/{id}', [HomeController::class, 'showTipsnEdukasi'])->name('home.showtipsnedukasi');
 
 // Authentication Routes
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login.form');
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-
 Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register']);
 
 // Donasi Routes (Public)
 Route::get('/donasi', [DonasiController::class, 'index'])->name('donasi.index');
-Route::get('/donasi/all', [DonasiController::class, 'index'])->name('donasi.index'); // semua donasi    
+Route::get('/donasi/all', [DonasiController::class, 'index'])->name('donasi.all');
 Route::get('/donasi/filter', [DonasiController::class, 'filter'])->name('donasi.filter');
-Route::get('/donasi/create', [App\Http\Controllers\DonasiController::class, 'detail']); // <--- INI KEMUNGKINAN BESAR SUMBER MASALAH
+// Perbaikan: Rute Donasi Detail (Publik)
+Route::get('/donasi/{id}', [DonasiController::class, 'show'])->name('donasi.show'); 
+
+Route::get('/donasi/create', [DonasiController::class, 'index'])->name('donasi.create');
+
+// Tampilan FAQ User (Publik - Untuk section di beranda)
+Route::get('/faq', [FaqController::class, 'showUserFaq'])->name('faq.user.index');
+
+Route::get('/donasi/{id}/edit', [DonasiController::class, 'edit'])->name('donasi.edit');
+Route::delete('/donasi/{id}', [DonasiController::class, 'destroy'])->name('donasi.destroy');
+
+
+
+
 
 /*
 |--------------------------------------------------------------------------
-| Authenticated User Routes
+| Authenticated User Routes (Middleware: auth:pengguna)
 |--------------------------------------------------------------------------
 */
+Route::middleware(['auth:pengguna'])->group(function () {
+    // Dashboard User
+    Route::get('/home/dashboard', [HomeController::class, 'index'])->name('home.dashboard');
 
-Route::middleware('auth:pengguna')->group(function () {
+    // Profile User
+    Route::get('/home/profile', [ProfileController::class, 'show'])->name('home.show'); 
+    Route::get('/home/edit', [ProfileController::class, 'edit'])->name('home.edit'); 
+    Route::post('/home/update', [ProfileController::class, 'update'])->name('home.update');
+ 
+    // Group Request Donasi
+    Route::prefix('request-donasi')->name('request-donasi.')->group(function () {
+        Route::get('/', [RequestController::class, 'landing'])->name('landing');
+        Route::get('/daftar', [RequestController::class, 'index'])->name('index');
+        Route::get('/create', [RequestController::class, 'create'])->name('create');
+        Route::post('/', [RequestController::class, 'store'])->name('store');
+        Route::get('/status', [RequestController::class, 'status'])->name('status');
+        Route::get('/{id_request}', [RequestController::class, 'show'])->name('show');
+        Route::get('/{id_request}/edit', [RequestController::class, 'edit'])->name('edit');
+        Route::put('/{id_request}', [RequestController::class, 'update'])->name('update');
+        Route::delete('/{id_request}', [RequestController::class, 'destroy'])->name('destroy');
+    });
 
-    // Dashboard user
-    Route::get('/home/dashboard', function () {
-        return view('home.dashboard');
-    })->name('home.dashboard');
+    // Group Donasi (Transaksi)
+    Route::prefix('donasi')->name('donasi.')->group(function () {
+        Route::get('/create', [DonasiController::class, 'create'])->name('create');
+        Route::post('/', [DonasiController::class, 'store'])->name('store');
+        Route::get('/barang/create', [DonasiController::class, 'createBarang'])->name('barang.create');
+        Route::get('/uang/create', [DonasiController::class, 'createUang'])->name('uang.create');
+        Route::post('/barang/store', [DonasiController::class, 'storeBarang'])->name('barang.store');
+        Route::post('/uang/store', [DonasiController::class, 'storeUang'])->name('uang.store');
+        Route::get('/upload-bukti/{id}', [DonasiController::class, 'showUploadBukti'])->name('upload.form');
+        Route::post('/upload-bukti/{id}', [DonasiController::class, 'uploadBukti'])->name('upload.store');
+        Route::get('/riwayat', [DonasiController::class, 'riwayat'])->name('riwayat');
 
-    // Donasi create (pilih jenis)
-    Route::get('/donasi/create', [DonasiController::class, 'create'])->name('donasi.create');
-    Route::post('donasi', [DonasiController::class, 'store'])->name('donasi.store'); // Simpan data
+        // Request Donasi (User)
+        Route::get('/request', [DonasiController::class, 'createRequest'])->name('request.create');
+        Route::post('/request/store', [DonasiController::class, 'storeRequest'])->name('request.store');
+        Route::get('/request/edit/{id}', [DonasiController::class, 'editRequest'])->name('request.edit');
+        Route::put('/request/update/{id}', [DonasiController::class, 'updateRequest'])->name('request.update');
+        Route::delete('/request/delete/{id}', [DonasiController::class, 'deleteRequest'])->name('request.delete');
+        
+        // Rute Edit/Hapus Donasi User
+        // Rute Edit/Hapus Donasi User (sudah diperbaiki)
+        Route::get('/{id}/edit', [DonasiController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [DonasiController::class, 'requestUpdate'])->name('update');
+        Route::delete('/{id}', [DonasiController::class, 'destroy'])->name('destroy');
 
-    // Form create donasi barang & uang
-    Route::get('/donasi/barang/create', [DonasiController::class, 'createBarang'])->name('donasi.barang.create');
-    Route::get('/donasi/uang/create', [DonasiController::class, 'createUang'])->name('donasi.uang.create');
-
-    // Simpan donasi
-    Route::post('/donasi/barang/store', [DonasiController::class, 'storeBarang'])->name('donasi.barang.store');
-    Route::post('/donasi/uang/store', [DonasiController::class, 'storeUang'])->name('donasi.uang.store');
-
-    // Upload bukti pengiriman (donasi barang)
-    Route::get('/donasi/upload-bukti/{id}', [DonasiController::class, 'showUploadBukti'])->name('donasi.upload.form');
-    Route::post('/donasi/upload-bukti/{id}', [DonasiController::class, 'uploadBukti'])->name('donasi.upload.store');
-
-    // Riwayat donasi user
-    Route::get('/donasi/riwayat', [DonasiController::class, 'riwayat'])->name('donasi.riwayat');
-
-    // Request Donasi (User)
-    Route::get('/donasi/request', [DonasiController::class, 'createRequest'])->name('donasi.request.create');
-    Route::post('/donasi/request/store', [DonasiController::class, 'storeRequest'])->name('donasi.request.store');
-
-    // Edit & Update request donasi
-    Route::get('/donasi/request/edit/{id}', [DonasiController::class, 'editRequest'])->name('donasi.request.edit');
-    Route::put('/donasi/request/update/{id}', [DonasiController::class, 'updateRequest'])->name('donasi.request.update');
-
-    // Delete request donasi
-    Route::delete('/donasi/request/delete/{id}', [DonasiController::class, 'deleteRequest'])->name('donasi.request.delete');
+    });
 });
 
+
 /*
 |--------------------------------------------------------------------------
-| Admin Routes
+| Admin Routes (Middleware: auth:admin)
 |--------------------------------------------------------------------------
 */
+Route::prefix('admin')->middleware(['auth:admin'])->name('admin.')->group(function () {
+    // Dashboard Admin
+    Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
+    Route::get('/statistics', [DashboardController::class, 'getStatistics'])->name('statistics');
+    Route::get('/riwayat', [DashboardController::class, 'riwayat'])->name('riwayat');
 
-Route::prefix('admin')->middleware(['auth:admin'])->group(function () {
-
-    // Dashboard
-    Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('admin.dashboard');
-
-    // Statistic API
-    Route::get('/statistics', [DashboardController::class, 'getStatistics'])->name('admin.statistics');
-
-    // Donasi Management
-    Route::post('/donasi/verifikasi/{id}', [DashboardController::class, 'updateVerifikasiDonasi'])->name('admin.donasi.verifikasi');
-    Route::post('/donasi/status/{id}', [DashboardController::class, 'updateStatusDonasi'])->name('admin.donasi.status');
-    Route::get('/donasi/detail/{id}', [DashboardController::class, 'showDonasiDetail'])->name('admin.donasi.detail');
-    Route::get('/donasi/all', [DashboardController::class, 'allDonasi'])->name('admin.donasi.all');
-
-    // Halaman post donasi admin (drop-off manual)
-    Route::get('/donasi', [DonasiController::class, 'PostDonasi'])->name('admin.donasi.PostDonasi');
-
-    // Admin approve & delete request donasi
-    Route::post('/donasi/approve/{id}', [DonasiController::class, 'approveRequest'])->name('admin.donasi.approve');
-    Route::delete('/donasi/delete/{id}', [DonasiController::class, 'adminDeleteDonasi'])->name('admin.donasi.delete');
+    // Donasi Management (Detail/Status)
+    Route::get('/donasi/all', [DashboardController::class, 'allDonasi'])->name('donasi.all');
+    Route::get('/donasi/detail/{id}', [DashboardController::class, 'showDonasiDetail'])->name('donasi.detail');
+    Route::post('/donasi/verifikasi/{id}', [DashboardController::class, 'updateVerifikasiDonasi'])->name('donasi.verifikasi');
+    Route::post('/donasi/status/{id}', [DashboardController::class, 'updateStatusDonasi'])->name('donasi.status');
+    Route::post('/donasi/approve/{id}', [DonasiController::class, 'approveRequest'])->name('donasi.approve');
+    Route::delete('/donasi/delete/{id}', [DonasiController::class, 'DeleteDonasi'])->name('donasi.delete'); // Admin delete donasi
+    
+    // Admin Post Donasi (Drop-off manual)
+    Route::get('/donasi', [DonasiController::class, 'PostDonasi'])->name('donasi.PostDonasi'); 
 
     // Permintaan Management
-    Route::post('/permintaan/verifikasi/{id}', [DashboardController::class, 'updateVerifikasiPermintaan'])->name('admin.permintaan.verifikasi');
-    Route::post('/permintaan/status/{id}', [DashboardController::class, 'updateStatusPermintaan'])->name('admin.permintaan.status');
-    Route::get('/permintaan/detail/{id}', [DashboardController::class, 'showPermintaanDetail'])->name('admin.permintaan.detail');
-    Route::get('/permintaan/all', [DashboardController::class, 'allPermintaan'])->name('admin.permintaan.all');
+    Route::get('/permintaan/all', [DashboardController::class, 'allPermintaan'])->name('permintaan.all');
+    Route::get('/permintaan/detail/{id}', [DashboardController::class, 'show'])->name('permintaan.detail');
+    Route::post('/permintaan/verifikasi/{id}', [DashboardController::class, 'updateVerifikasiPermintaan'])->name('permintaan.verifikasi');
+    Route::post('/permintaan/status/{id}', [DashboardController::class, 'updateStatusPermintaan'])->name('permintaan.status');
 
     // User Management
-    Route::delete('/pengguna/delete/{id}', [DashboardController::class, 'deletePengguna'])->name('admin.pengguna.delete');
-    Route::get('/pengguna/all', [DashboardController::class, 'allPengguna'])->name('admin.pengguna.all');
+    Route::get('/pengguna/all', [DashboardController::class, 'allPengguna'])->name('pengguna.all');
+    Route::delete('/pengguna/delete/{id}', [DashboardController::class, 'deletePengguna'])->name('pengguna.delete');
 
-    // Other pages
-    Route::get('/riwayat', [DashboardController::class, 'riwayat'])->name('admin.riwayat');
-    Route::get('/edukasi', [DashboardController::class, 'edukasi'])->name('admin.edukasi');
-    Route::get('/faq', [DashboardController::class, 'faq'])->name('admin.faq');
+    // Tips & Edukasi Management
+    Route::get('/edukasi', [TipsnEdukasiController::class, 'index'])->name('edukasintips');
+    Route::get('/edukasi/{edukasintip}/edit', [TipsnEdukasiController::class, 'edit'])->name('edukasintips.edit');
+    Route::post('/edukasi/{edukasintip}', [TipsnEdukasiController::class, 'update'])->name('edukasintips.update');
 
-    // Route untuk menampilkan detail donasi (dipanggil oleh tombol 'Lihat Detail')
-    Route::get('/admin/donasi/{id_donasi}', [DonasiController::class, 'show'])->name('admin.donasi.show');
-    Route::post('/admin/donasi/update-status/{id}', [DonasiController::class, 'updateStatus'])->name('admin.donasi.update-status'); // <--- PASTIKAN NAMA INI SAMA
-
-    // Route untuk memproses persetujuan atau penolakan
-    Route::post('/admin/donasi/{id_donasi}/update-status', [DonasiController::class, 'updateStatus'])->name('admin.donasi.update-status');
-
-    Route::get('/donasi/{id}', [DonasiController::class, 'showUserDetail'])->name('donasi.show');
-
-    Route::delete('/admin/donasi/{id}', [DonasiController::class, 'destroy'])->name('admin.donasi.destroy');
-
-    // Contoh: Controller yang benar mungkin adalah DashboardController
-    Route::get('/admin/dashboard', [App\Http\Controllers\DashboardController::class, 'dashboard'])->name('admin.dashboard');
-
-    Route::delete('/donasi/delete/{id}', [DonasiController::class, 'deleteDonasi'])->name('admin.donasi.delete');
-
-    // 1. Route untuk Menghapus Donasi (Langsung)
-    Route::delete('/donasi/{id}', [DonasiController::class, 'destroy'])->name('user.donasi.delete');
-
-    // 2. Route untuk Menampilkan Form Edit
-    Route::get('/donasi/{id}/edit', [DonasiController::class, 'edit'])->name('user.donasi.edit');
-
-    // 3. Route untuk Mengajukan Permintaan Edit (Update ke status 'menunggu_edit')
-    Route::put('/donasi/{id}', [DonasiController::class, 'requestEdit'])->name('user.donasi.requestEdit');
-
-    Route::group(['prefix' => 'donasi', 'as' => 'donasi.', 'middleware' => 'auth'], function () {
-    // Menampilkan form edit (GET /donasi/{id}/edit)
-    Route::get('/{id}/edit', [DonasiController::class, 'edit'])->name('edit'); 
+    /*
+    |--------------------------------------------------------------------------
+    | ✅ PERBAIKAN: FAQ Admin CRUD (AdminFaqController)
+    |--------------------------------------------------------------------------
+    */
+    // Menggantikan Route::get('/faq', [DashboardController::class, 'faq']) yang error
+    Route::resource('faq', AdminFaqController::class); // <-- HANYA INI
     
-    // Menyimpan pengajuan perubahan (PUT/PATCH /donasi/{id})
-    Route::put('/{id}', [DonasiController::class, 'requestUpdate'])->name('requestUpdate'); 
+    // Route khusus untuk toggle is_active (Perlu disesuaikan)
+    Route::get('faq/{faq}/toggle', [AdminFaqController::class, 'toggleActive'])->name('faq.toggle');
+    Route::post('/donasi/process-edit/{id}', [DonasiController::class, 'processEditRequest'])->name('donasi.processEdit');
+    Route::post('/admin/donasi/process-edit/{id}', [DashboardController::class, 'processEditDonasi']);
 
-    Route::delete('/donasi/{id}', [DonasiController::class, 'destroy'])->name('admin.donasi.delete');
-});
+    /*
+    |--------------------------------------------------------------------------
+    | Rute yang tidak terpakai/duplikat Dihapus dari bawah
+    |--------------------------------------------------------------------------
+    */
 });

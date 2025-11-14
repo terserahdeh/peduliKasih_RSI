@@ -39,8 +39,8 @@ return [
 
     'providers' => [
         'pengguna' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\pengguna::class,
+        'driver' => 'eloquent',
+        'model' => App\Models\pengguna::class,
         ],
 
         'admin' => [

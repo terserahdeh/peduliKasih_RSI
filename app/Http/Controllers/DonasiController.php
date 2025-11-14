@@ -4,13 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Donasi;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class DonasiController extends Controller
 {
-    /**
-     * Tampilkan semua donasi yang sudah disetujui.
-     */
+    /** 🟦 Tampilkan semua donasi yang sudah disetujui */
     public function index()
     {
         $donasi = Donasi::where('hasil_verif', 'disetujui')
@@ -20,17 +17,13 @@ class DonasiController extends Controller
         return view('donasi.all', compact('donasi'));
     }
 
-    /**
-     * Form tambah donasi.
-     */
+    /** 🟩 Form tambah donasi */
     public function create()
     {
         return view('donasi.create');
     }
 
-    /**
-     * Simpan donasi baru ke database.
-     */
+    /** 🟨 Simpan donasi baru ke database */
     public function storeBarang(Request $request)
     {
         $validated = $request->validate([
@@ -39,10 +32,10 @@ class DonasiController extends Controller
             'jumlah_barang' => 'required|string|max:100',
             'deskripsi'     => 'required|string',
             'foto'          => 'required|image|mimes:jpeg,png,jpg|max:5120',
+            'nomor_telepon' => 'nullable|string|max:20',
         ]);
 
         $filename = null;
-
         if ($request->hasFile('foto')) {
             $file     = $request->file('foto');
             $filename = time() . '_' . $file->getClientOriginalName();
@@ -55,19 +48,17 @@ class DonasiController extends Controller
             'jumlah_barang' => $validated['jumlah_barang'],
             'deskripsi'     => $validated['deskripsi'],
             'foto'          => $filename,
+            'nomor_telepon' => $validated['nomor_telepon'] ?? null,
             'status_donasi' => 'tersedia',
             'hasil_verif'   => 'menunggu',
             'username'      => auth()->user()->username
         ]);
 
-        return redirect()
-            ->route('donasi.index')
-            ->with('success', 'Donasi berhasil diajukan! Menunggu verifikasi admin.');
+        return redirect()->route('donasi.index')
+                         ->with('success', 'Donasi berhasil diajukan! Menunggu verifikasi admin.');
     }
 
-    /**
-     * Form edit donasi (pemilik saja).
-     */
+    /** 🟧 Form edit donasi */
     public function edit($id)
     {
         $donasi = Donasi::where('id_donasi', $id)
@@ -87,9 +78,7 @@ class DonasiController extends Controller
         return view('donasi.edit', compact('donasi'));
     }
 
-    /**
-     * Ajukan perubahan donasi ke Admin (draft).
-     */
+    /** 🟨 Ajukan perubahan ke admin */
     public function requestUpdate(Request $request, $id)
     {
         $donasi = Donasi::where('id_donasi', $id)
@@ -102,10 +91,10 @@ class DonasiController extends Controller
             'jumlah_barang' => 'required|string|max:100',
             'deskripsi'     => 'required|string',
             'foto_baru'     => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
+            'nomor_telepon' => 'nullable|string|max:20',
         ]);
 
         $fotoDraftPath = $donasi->foto;
-
         if ($request->hasFile('foto_baru')) {
             $file     = $request->file('foto_baru');
             $filename = 'draft_' . time() . '_' . $file->getClientOriginalName();
@@ -119,6 +108,7 @@ class DonasiController extends Controller
             'jumlah_barang_draft' => $validated['jumlah_barang'],
             'deskripsi_draft'     => $validated['deskripsi'],
             'foto_draft'          => $fotoDraftPath,
+            'nomor_telepon'       => $validated['nomor_telepon'] ?? $donasi->nomor_telepon,
             'status_edit'         => 'menunggu_edit',
         ]);
 
@@ -126,37 +116,32 @@ class DonasiController extends Controller
                          ->with('success', 'Permintaan perubahan donasi telah dikirim.');
     }
 
-    /**
-     * Hapus donasi (pemilik).
-     */
+    /** 🟥 Hapus donasi */
     public function destroy($id)
     {
-        $donasi = Donasi::where('id_donasi', $id)
-                        ->where('username', auth()->user()->username)
-                        ->firstOrFail();
+        $donasi = Donasi::find($id);
 
+        if (!$donasi) {
+            return redirect()->back()->with('error', 'Donasi tidak ditemukan.');
+        }
+        
         if ($donasi->foto && file_exists(public_path('foto/' . $donasi->foto))) {
             unlink(public_path('foto/' . $donasi->foto));
         }
 
         $donasi->delete();
 
-        return redirect()->route('donasi.index')
-                         ->with('success', 'Donasi berhasil dihapus.');
+        return redirect()->back()->with('success', 'Donasi berhasil dihapus.');
     }
 
-    /**
-     * Detail donasi publik.
-     */
-    public function show($id)
+    /** 🔍 Tampilkan detail donasi publik */
+    public function show(Donasi $donasi)
     {
-        $donasi = Donasi::findOrFail($id);
-        return view('admin.donasi.show', compact('donasi'));
+        $pemilik = $donasi->user; 
+        return view('donasi.create', compact('donasi', 'pemilik'));
     }
 
-    /**
-     * Filter donasi berdasarkan kategori.
-     */
+    /** 🔎 Filter donasi berdasarkan kategori */
     public function filter(Request $request)
     {
         $kategori = $request->query('kategori');
@@ -173,9 +158,7 @@ class DonasiController extends Controller
         return view('donasi.all', compact('donasi'));
     }
 
-    /**
-     * Update status verifikasi (Admin).
-     */
+    /** 🧩 Admin update status verifikasi */
     public function updateStatus(Request $request, $id)
     {
         $donasi = Donasi::findOrFail($id);
@@ -202,7 +185,6 @@ class DonasiController extends Controller
                              ->with('success', 'Donasi berhasil ditolak.');
         }
 
-        // Jika disetujui
         $donasi->update([
             'hasil_verif'   => 'disetujui',
             'status_donasi' => 'tersedia',
@@ -213,11 +195,11 @@ class DonasiController extends Controller
                          ->with('success', 'Donasi berhasil disetujui.');
     }
 
+
+    /** 🧩 Admin proses edit */
     public function processEditRequest(Request $request, $id)
     {
-        // Pastikan hanya Admin yang bisa mengakses (asumsi sudah dilindungi middleware)
         $donasi = Donasi::findOrFail($id);
-        
         $action = $request->input('edit_action');
         
         if ($donasi->status_edit !== 'menunggu_edit') {
@@ -225,50 +207,69 @@ class DonasiController extends Controller
         }
 
         if ($action === 'approve') {
-            // 1. Salin data draft ke kolom utama
             $donasi->nama_donasi   = $donasi->nama_donasi_draft;
             $donasi->jenis_barang  = $donasi->jenis_barang_draft;
             $donasi->jumlah_barang = $donasi->jumlah_barang_draft;
             $donasi->deskripsi     = $donasi->deskripsi_draft;
 
-            // 2. Jika ada foto draft, ganti foto utama dan hapus foto draft lama
             if ($donasi->foto_draft && $donasi->foto_draft !== $donasi->foto) {
-                // Opsional: hapus foto lama jika Anda yakin file-nya ada di public/foto
-                // if (file_exists(public_path('foto/' . $donasi->foto))) {
-                //     unlink(public_path('foto/' . $donasi->foto));
-                // }
                 $donasi->foto = $donasi->foto_draft;
             }
-            
+
             $message = 'Perubahan donasi berhasil disetujui dan data telah diperbarui.';
             
         } elseif ($action === 'reject') {
-            $message = 'Permintaan perubahan donasi berhasil ditolak. Data tetap menggunakan versi lama.';
-            
+            $message = 'Permintaan perubahan donasi berhasil ditolak.';
         } else {
             return back()->with('error', 'Aksi tidak valid.');
         }
 
-        // 3. Bersihkan kolom draft dan reset status
         $donasi->nama_donasi_draft   = null;
         $donasi->jenis_barang_draft  = null;
         $donasi->jumlah_barang_draft = null;
         $donasi->deskripsi_draft     = null;
         $donasi->foto_draft          = null;
         $donasi->status_edit         = null;
-        
         $donasi->save();
 
         return redirect()->route('admin.dashboard')->with('success', $message);
     }
 
-    public function deleteDonasi($id) // Tambahkan method ini
+    /** 🧨 Admin hapus donasi */
+    public function deleteDonasi($id)
     {
-        // Cari donasi berdasarkan ID dan hapus
         $donasi = Donasi::findOrFail($id);
         $donasi->delete(); 
-        
-        // Redirect kembali ke halaman dashboard atau daftar
         return redirect()->route('admin.dashboard')->with('success', 'Donasi berhasil dihapus.');
     }
+
+    public function processEditDonasi(Request $request, $id)
+{
+    $request->validate([
+        'edit_action' => 'required|in:approve,reject',
+    ]);
+
+    $donasi = Donasi::findOrFail($id);
+
+    if ($request->edit_action === 'approve') {
+        $donasi->status_edit = 'disetujui';
+
+        // Jika disetujui, kamu bisa tambahkan logika di sini untuk 
+        // menerapkan perubahan dari tabel edit (kalau kamu simpan di tempat terpisah)
+        // contoh: $donasi->update([...]);
+    } else {
+        $donasi->status_edit = 'ditolak';
+        // Jika ditolak, tidak ada perubahan data
+    }
+
+    $donasi->save();
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Permintaan edit donasi berhasil diproses.'
+    ]);
+}
+
+
+
 }

@@ -15,16 +15,8 @@ class Donasi extends Model
     protected $primaryKey = 'id_donasi';
 
     protected $fillable = [
-        'username',
-        'jumlah_barang',
-        'jenis_barang',
-        'deskripsi',
-        'nama_donasi',
-        'status_donasi',
-        'hasil_verif',
-        'foto',
-        'tanggal_upload',
-        'alasan_tolak',
+    'nama_donasi', 'jenis_barang', 'jumlah_barang', 'deskripsi',
+    'foto', 'nomor_telepon', 'status_donasi', 'hasil_verif', 'username'
     ];
 
     // Accessor untuk format tanggal

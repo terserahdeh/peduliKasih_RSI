@@ -25,7 +25,8 @@ return new class extends Migration
             // prevent duplicate upvotes by same user
             $table->unique(['username', 'id_request']);
 
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });
     }
 

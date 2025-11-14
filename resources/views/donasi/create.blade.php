@@ -236,7 +236,7 @@
         }
         
         .btn-cancel,
-        .btn-submit {
+        .btn-submit {S
             width: 100%;
         }
     }
@@ -335,6 +335,12 @@
                 required
             >{{ old('deskripsi') }}</textarea>
 
+            <div class="mb-3">
+                <label for="nomor_telepon" class="form-label">Nomor WhatsApp</label>
+                <input type="text" name="nomor_telepon" id="nomor_telepon" class="form-control" placeholder="Contoh: 6281234567890" value="{{ old('nomor_telepon') }}">
+                <small class="text-muted">Gunakan format internasional (misalnya 6281234567890 tanpa +).</small>
+            </div>
+
             {{-- Upload Foto Barang --}}
             <label class="form-label">Upload Foto Barang</label>
             <div class="upload-area" onclick="document.getElementById('fileInput').click()">
@@ -357,12 +363,12 @@
                     Pilih File
                 </button>
                 <div id="fileName" class="file-name-display"></div>
-            </div>
+            </div>  
 
             {{-- Action Buttons --}}
             <div class="action-buttons">
                 <a href="{{ route('donasi.index') }}" class="btn-cancel">Batal</a>
-                <button type="submit" class="btn-submit">Request Posting</button>
+                <button type="submit" class="btn-submit">Ajukan Postingan</button>
             </div>
 
         </form>

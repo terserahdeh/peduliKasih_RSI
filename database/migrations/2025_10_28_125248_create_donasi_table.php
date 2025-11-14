@@ -6,31 +6,32 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+    public function up()
     {
         Schema::create('donasi', function (Blueprint $table) {
             $table->id('id_donasi');
             $table->string('username');
-            $table->string('jumlah_barang');
-            $table->string('jenis_barang');
-            $table->text('deskripsi');
             $table->string('nama_donasi');
-            $table->enum('status_donasi', ['pending', 'approved', 'rejected'])->default('pending');
-            $table->string('hasil_verif')->nullable();
-            $table->string('foto');
-            $table->date('tanggal_upload')->nullable();
+            $table->enum('jenis_barang', ['Alat Rumah Tangga', 'Sembako', 'Pakaian', 'Alat Tulis']);
+            $table->string('jumlah_barang', 50);
+            $table->string('lokasi')->nullable();
+            $table->text('deskripsi');
+            $table->string('nomor_telepon')->nullable();
+            $table->string('foto')->nullable();
+            $table->enum('status_donasi', ['tersedia', 'tersalurkan'])->default('tersedia');
+            $table->enum('hasil_verif', ['menunggu', 'disetujui', 'ditolak'])->default('menunggu');
+            $table->text('alasan_tolak')->nullable();
+            $table->enum('status_edit', ['menunggu_edit', 'diedit', ''])->nullable();
+            $table->timestamp('tanggal_upload')->nullable();
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
-        Schema::dropIfExists('donasi');
+            Schema::dropIfExists('donasi');
+            Schema::table('donasi', function (Blueprint $table) {
+                $table->dropColumn('nomor_telepon');
+        });
     }
 };
