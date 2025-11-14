@@ -43,10 +43,37 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden md:flex items-center space-x-8">
+<<<<<<< HEAD
                     <a href="#" class="text-blue-600 font-semibold hover:text-blue-700 transition">Beranda</a>
                 <a href="{{ route('donasi.index') }}" class="text-gray-600 hover:text-gray-900 transition">Donasi</a>
+=======
+                    <a href="{{ route('home.dashboard') }}" class="text-blue-600 font-semibold hover:text-blue-700 transition">Beranda</a>
+                    @guest
+                    <a href="javascript:void(0);" onclick="showLoginAlert()" class="text-gray-600 hover:text-gray-900 transition">
+                        Donasi
+                    </a>
+                    @else
+                    <a href="#" class="text-gray-600 hover:text-gray-900 transition">
+                        Donasi
+                    </a>
+                    @endguest
+
+                    @guest
+                    <a href="javascript:void(0);" onclick="showLoginAlert()" class="text-gray-600 hover:text-gray-900 transition">
+                        Request Donasi
+                    </a>
+                    @else
+>>>>>>> a23f29b33db9e82ced0eafd3152939e96cd75095
                     <a href="{{ route('request-donasi.landing') }}" class="text-gray-600 hover:text-gray-900 transition">Request Donasi</a>
+                    @endguest
+
+                    @guest
+                    <a href="javascript:void(0);" onclick="showLoginAlert()" class="text-gray-600 hover:text-gray-900 transition">
+                        Riwayat
+                    </a>
+                    @else
                     <a href="#" class="text-gray-600 hover:text-gray-900 transition">Riwayat</a>
+                    @endguest
                 </div>
 
                 <!-- Auth Buttons -->

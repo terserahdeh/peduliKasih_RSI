@@ -12,6 +12,7 @@ use App\Http\Controllers\TipsnEdukasiController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\AdminFaqController;
+use App\Http\Controllers\UpvoteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -77,6 +78,9 @@ Route::middleware(['auth:pengguna'])->group(function () {
         Route::get('/{id_request}/edit', [RequestController::class, 'edit'])->name('edit');
         Route::put('/{id_request}', [RequestController::class, 'update'])->name('update');
         Route::delete('/{id_request}', [RequestController::class, 'destroy'])->name('destroy');
+
+        //upvote
+        Route::post('/{id_request}/upvote', [UpvoteController::class, 'toggle'])->name('upvote');
     });
 
     // Group Donasi (Transaksi)

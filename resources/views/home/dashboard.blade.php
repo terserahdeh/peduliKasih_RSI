@@ -15,13 +15,25 @@
                     Platform donasi yang memudahkan Anda peduli dengan mereka yang membutuhkan. Mari bersama menciptakan dampak positif untuk sesama.
                 </p>
                 <div class="flex flex-wrap gap-4">
-                    {{-- Ganti '#' dengan rute yang benar --}}
+                    @guest
+                    <a href="javascript:void(0);" onclick="showLoginAlert()" class="px-6 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition shadow-lg">
+                        Mulai Donasi Sekarang
+                    </a>
+                    @else
                     <a href="#" class="px-6 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition shadow-lg">
                         Mulai Donasi Sekarang
                     </a>
+                    @endguest
+
+                    @guest
+                    <a href="javascript:void(0);" onclick="showLoginAlert()" class="px-6 py-3 bg-white text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition border border-gray-300">
+                        Request Bantuan
+                    </a>
+                    @else
                     <a href="#" class="px-6 py-3 bg-white text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition border border-gray-300">
                         Request Bantuan
                     </a>
+                    @endguest
                 </div>
             </div>
             
@@ -79,9 +91,16 @@
                         <span class="text-sm text-gray-600">
                             <i class="fas fa-clock mr-1"></i> {{ $donation->created_at->diffForHumans() }}
                         </span>
+
+                        @guest
+                        <a href="javascript:void(0);" onclick="showLoginAlert()" class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">
+                            Lihat Detail
+                        </a>
+                        @else
                         <a href="#" class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">
                             Lihat Detail
                         </a>
+                        @endguest
                     </div>
                 </div>
             </div>
@@ -93,9 +112,19 @@
         </div>
         
         <div class="text-center">
+<<<<<<< HEAD
             <a href="{{ route('donasi.index') }}" class="inline-block px-6 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition">
+=======
+            @guest
+            <a href="javascript:void(0);" onclick="showLoginAlert()" class="inline-block px-6 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition">
+                Lihat Semua Donasi
+                </a>
+            @else
+            <a href="#" class="inline-block px-6 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition">
+>>>>>>> a23f29b33db9e82ced0eafd3152939e96cd75095
                 Lihat Semua Donasi
             </a>
+            @endguest
         </div>
     </div>
 </section>
@@ -231,17 +260,6 @@
                 <h3 class="text-lg font-bold text-gray-900 mb-2">4. Berbagi</h3>
                 <p class="text-gray-600 text-sm">Donasi terdistribusi kepada yang membutuhkan</p>
             </div>
-        </div>
-    </div>
-</section>
-
-<section class="py-16 bg-gradient-to-r from-blue-600 to-blue-700">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Mulai Berbagi Kebaikan Hari Ini</h2>
-        <p class="text-blue-100 text-lg mb-8">Bergabunglah dengan ribuan orang yang telah memberikan manfaat untuk sesama</p>
-        <div class="flex flex-wrap justify-center gap-4">
-            <a href="#" class="px-8 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:bg-gray-100 transition shadow-lg">Mulai Donasi</a>
-            <a href="#" class="px-8 py-3 bg-transparent border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-blue-600 transition">Ajukan Bantuan</a>
         </div>
     </div>
 </section>

@@ -1,5 +1,8 @@
-@include('home.navbar')
+@extends('home.navbar')
 
+@section('title', 'Edit Request Donasi')
+
+@section('content')
 <div class="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 py-12">
     <div class="container mx-auto px-4">
         <div class="max-w-3xl mx-auto">
@@ -170,7 +173,9 @@
         </div>
     </div>
 </div>
+@endsection
 
+@push('scripts')
 <script>
 function previewImage(input) {
     if (input.files && input.files[0]) {
@@ -188,3 +193,4 @@ function removeImage() {
     document.getElementById('imagePreview').classList.add('hidden');
 }
 </script>
+@endpush

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->increments('id_tipsnedukasi');
             $table->string('judul_tipsnedukasi');
             $table->string('konten_tipsnedukasi');
+            $table->string('deskripsi_tipsnedukasi');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });

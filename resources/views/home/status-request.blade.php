@@ -1,5 +1,8 @@
-@include('home.navbar')
+@extends('home.navbar')
 
+@section('title', 'Status Request')
+
+@section('content')
 <div class="min-h-screen bg-gradient-to-b from-blue-50 to-white py-12">
     <div class="container mx-auto px-4">
         <div class="max-w-5xl mx-auto">
@@ -190,7 +193,9 @@
         <div class="p-6" id="modalContent"></div>
     </div>
 </div>
+@endsection
 
+@push('scripts')
 <script>
 function showDetail(id) {
     const modal = document.getElementById('detailModal');
@@ -233,3 +238,4 @@ document.addEventListener('keydown', function(e) {
     if(e.key === 'Escape') closeModal();
 });
 </script>
+@endpush
