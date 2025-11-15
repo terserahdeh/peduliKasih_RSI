@@ -1,11 +1,8 @@
 @extends('home.navbar')
-<<<<<<< HEAD
 
 @section('title', 'Request Donasi - Peduli Kasih')
 
 @section('content')
-=======
->>>>>>> a23f29b33db9e82ced0eafd3152939e96cd75095
 
 @section('title', 'Request Donasi')
 
@@ -203,17 +200,11 @@
         </div>
     </div>
 </div>
-<<<<<<< HEAD
 
 @endsection
 
 
 </main>
-=======
-</main>
-@endsection
-
->>>>>>> a23f29b33db9e82ced0eafd3152939e96cd75095
 @push('styles')
 <style>
     /* Hide scrollbar but keep functionality */
