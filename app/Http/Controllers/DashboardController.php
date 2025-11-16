@@ -146,6 +146,22 @@ class DashboardController extends Controller
 
         return redirect()->back()->with('success', 'Pengguna berhasil dihapus');
     }
+
+    public function searchPengguna(Request $request)
+    {
+        $search = $request->searchPengguna;
+
+        $penggunaList = Pengguna::when($search, function ($q) use ($search) {
+                $q->where('username', 'like', "%$search%")
+                ->orWhere('email', 'like', "%$search%");
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('admin.pengguna_table', [
+            'penggunaList' => $penggunaList
+        ]);
+    }
     
     // Get statistics
     public function getStatistics()
@@ -163,18 +179,29 @@ class DashboardController extends Controller
             'totalTerpenuhi' => $totalTerpenuhi
         ]);
     }
-    
-    // Show donasi detail
-    public function showDonasiDetail($id)
+
+    public function getDetail($type, $id)
     {
-        $donasi = Donasi::with('Pengguna')->findOrFail($id);
-        return view('admin.donasi.detail', compact('donasi'));
-    }
-    
-    // Show permintaan detail
-    public function showPermintaanDetail($id)
-    {
-        $permintaan = RequestDonasi::with('Pengguna')->findOrFail($id);
-        return view('admin.permintaan.detail', compact('permintaan'));
+        try {
+            if ($type === 'permintaan') {
+                $data = RequestDonasi::with('pengguna')->findOrFail($id);
+                return view('admin.detail_post', [
+                    'data' => $data,
+                    'type' => 'permintaan'
+                ]);
+            }
+
+            if ($type === 'donasi') {
+                $data = Donasi::with('pengguna')->findOrFail($id);
+                return view('admin.detail_post', [
+                    'data' => $data,
+                    'type' => 'donasi'
+                ]);
+            }
+
+            return response()->json(['error' => 'Invalid type'], 400);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Data tidak ditemukan: ' . $e->getMessage()], 404);
+        }
     }
 }

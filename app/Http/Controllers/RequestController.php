@@ -24,8 +24,11 @@ class RequestController extends Controller
     public function index()
     {
         $requests = RequestDonasi::with('pengguna')
+            ->withCount('upvote')
             ->where('hasil_verif', 'disetujui')
-            ->latest('tanggal_upload')
+            ->orderByRaw('CASE WHEN upvote_count = 0 THEN 1 ELSE 0 END')
+            ->orderBy('upvote_count', 'desc')
+            ->orderBy('tanggal_upload', 'desc')
             ->paginate(12);
 
         return view('home.index-request', compact('requests'));
@@ -157,7 +160,7 @@ class RequestController extends Controller
 
         $req->delete();
 
-        return redirect()->route('request-donasi.index')
+        return redirect()->route('request-donasi.landing')
             ->with('success', 'Request Donasi berhasil dihapus.');
     }
 }

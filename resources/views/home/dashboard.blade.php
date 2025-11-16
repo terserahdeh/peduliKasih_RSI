@@ -49,8 +49,6 @@
     </div>
 </section>
 
----
-
 <section class="py-12 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
@@ -67,8 +65,6 @@
         </div>
     </div>
 </section>
-
----
 
 <section class="py-16 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -129,7 +125,6 @@
     </div>
 </section>
 
----
 
 <section class="py-16 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -165,8 +160,6 @@
     </div>
 </section>
 
----
-
 <section class="py-16 bg-gray-50">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
@@ -191,8 +184,6 @@
         </div>
     </div>
 </section>
-
----
 
 <section class="py-16 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

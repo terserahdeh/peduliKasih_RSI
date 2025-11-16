@@ -2,9 +2,9 @@
 <tr class="hover:bg-gray-50 permintaan-row" data-verifikasi="{{ $permintaan->hasil_verif }}" data-status="{{ $permintaan->status_request }}">
     <td class="px-6 py-4 text-sm text-gray-800">{{ $permintaan->username }}</td>
     <td class="px-6 py-4 text-sm">
-        <a href="#" class="text-blue-600 hover:text-blue-800 hover:underline font-medium">
-            {{ $permintaan->nama_request }}
-        </a>
+        <button type="button" onclick="showDetail({{ $permintaan->id_request }}, 'permintaan')" class="open-detail text-blue-600 hover:text-blue-800 hover:underline font-medium bg-transparent p-0 border-0 cursor-pointer focus:outline-none" data-type="permintaan" data-id="{{ $permintaan->id_permintaan }}" aria-label="Detail {{ $permintaan->nama_permintaan }}">
+        {{ $permintaan->nama_request }}
+        </button>
     </td>
     <td class="px-6 py-4 text-sm text-gray-800">{{ $permintaan->jumlah_barang }}</td>
     <td class="px-6 py-4 verifikasi-cell">

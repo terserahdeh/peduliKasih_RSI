@@ -14,6 +14,47 @@
         cursor: not-allowed;
         opacity: 0.7;
     }
+    /* Hide scrollbar but keep functionality */
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }
+    .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    #detailModal {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        z-index: 999999 !important;
+        background-color: rgba(0, 0, 0, 0.5) !important;
+    }
+
+    #detailModal.hidden {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+    }
+
+    #detailModal:not(.hidden) {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+
+    /* Pastikan modal content terlihat */
+    #detailModal > div {
+        position: relative !important;
+        z-index: 1000000 !important;
+        margin: auto !important;
+    }
+
+    /* Prevent body scroll when modal open */
+    body.modal-open {
+        overflow: hidden !important;
+    }
 </style>
 @endpush
 
@@ -159,8 +200,11 @@
     @endif
     <!-- Daftar Pengguna -->
     <div class="bg-white rounded-lg shadow-sm border border-gray-100">
-        <div class="p-6 border-b border-gray-100">
+        <div class="p-6 border-b border-gray-100 flex justify-between items-center">
             <h2 class="text-xl font-bold text-gray-800">Daftar Pengguna</h2>
+             <div class="flex space-x-3">
+                <input type="text" id="searchPengguna" placeholder="Cari pengguna..." value="{{ request('searchPengguna') }}" class="px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"></input>
+            </div>
         </div>
 
         <div class="overflow-x-auto">
@@ -173,42 +217,23 @@
                         <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                    @forelse($penggunaList ?? [] as $pengguna)
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 text-sm text-gray-800">{{ $pengguna->username }}</td>
-                        <td class="px-6 py-4 text-sm text-gray-800">{{ $pengguna->email }}</td>
-                        <td class="px-6 py-4 text-sm text-gray-800">{{ $pengguna->created_at->format('d-m-Y') }}</td>
-                        <td class="px-6 py-4">
-                            <!-- ✅ Delete Form -->
-                            <form action="{{ route('admin.pengguna.delete', $pengguna->id_akun) }}"
-                                method="POST" class="inline-block"
-                                onsubmit="return confirm('Yakin ingin menghapus pengguna ini?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit"
-                                        class="px-4 py-1.5 text-xs font-medium text-white bg-red-500 rounded-lg hover:bg-red-600 transition flex items-center">
-                                    <i class="fas fa-trash mr-1"></i> Hapus Akun
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td class="px-6 py-4 text-center text-gray-500" colspan="5">
-                            Data kosong
-                        </td>
-                    </tr>
-                    @endforelse
+                <tbody id="penggunaTableBody" class="bg-white divide-y divide-gray-200">
+                    @include('admin.pengguna_table',['penggunaList' => $penggunaList])
                 </tbody>
             </table>
         </div>
+    </div>
+    
+</div>
 
-        <div class="p-6 border-t border-gray-100 text-center">
-            <!--EDIT-->
-            <a href="{{ route('admin.dashboard') }}" class="text-blue-500 hover:text-blue-600 font-medium text-sm">
-                Lihat Semua Profil
-            </a>
+<!-- Modal Detail -->
+<div id="detailModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-[99999] flex items-center justify-center p-4" style="backdrop-filter: blur(4px);">
+    <div class="bg-white rounded-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+        <div class="p-6" id="modalContent">
+            <div class="text-center py-8">
+                <i class="fas fa-spinner fa-spin text-4xl text-blue-500"></i>
+                <p class="text-gray-600 mt-4">Memuat detail...</p>
+            </div>
         </div>
     </div>
 </div>
@@ -451,6 +476,27 @@
         });
     }
 
+    const searchInput = document.getElementById('searchPengguna');
+        searchInput.addEventListener('input', doSearch);
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault(); 
+                doSearch();         // jalankan search tanpa reload
+            }
+    });
+    function doSearch() {
+        const q = searchInput.value;
+
+        fetch(`{{ route('admin.pengguna_table') }}?searchPengguna=${encodeURIComponent(q)}`, {
+            headers: { "X-Requested-With": "XMLHttpRequest" }
+        })
+        .then(res => res.text())
+        .then(html => {
+            document.getElementById('penggunaTableBody').innerHTML = html;
+        })
+        .catch(err => console.error(err));
+    }
+
     // Update Statistics Cards
     function updateStatisticsCards() {
         fetch('/admin/statistics', {
@@ -586,6 +632,103 @@
                     document.getElementById('permintaanTableBody').innerHTML = html;
                 });
         });
+    });
+
+    function showDetail(id, type) {
+        console.log('showDetail called:', {id, type}); // Debug log
+        
+        const modal = document.getElementById("detailModal");
+        const modalContent = document.getElementById("modalContent");
+
+        if (!modal || !modalContent) {
+            console.error('Modal elements not found!');
+            return;
+        }
+
+        modal.classList.remove('hidden');
+        console.log('Modal display:', window.getComputedStyle(modal).display);
+
+        modalContent.innerHTML = `
+            <div class="text-center py-8">
+                <i class="fas fa-spinner fa-spin text-4xl text-blue-500"></i>
+                <p class="text-gray-600 mt-4">Memuat detail...</p>
+            </div>
+        `;
+
+        const url = `/admin/detail/${type}/${id}`;
+        console.log('Fetching URL:', url); // Debug log
+
+        fetch(url)
+            .then(res => {
+                console.log('Response status:', res.status); // Debug log
+                if (!res.ok) {
+                    throw new Error(`HTTP error! status: ${res.status}`);
+                }
+                return res.text();
+            })
+            .then(html => {
+                console.log('HTML received, length:', html.length); // Debug log
+                modalContent.innerHTML = html;
+
+                
+            })
+            .catch(err => {
+                console.error('Fetch error:', err); // Debug log
+                modalContent.innerHTML = `
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-6">
+                            <h2 class="text-2xl font-bold text-gray-800">Error</h2>
+                            <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 transition">
+                                <i class="fas fa-times text-2xl"></i>
+                            </button>
+                        </div>
+                        <div class="text-center py-8 text-red-500">
+                            <i class="fas fa-exclamation-circle text-4xl"></i>
+                            <p class="mt-3 font-semibold">Tidak dapat memuat detail</p>
+                            <p class="text-sm text-gray-600 mt-2">${err.message}</p>
+                        </div>
+                    </div>
+                `;
+            });
+    }
+
+    function closeModal() {
+        document.getElementById('detailModal').classList.add('hidden');
+    }
+
+    function confirmDelete(id) {
+        if(confirm('⚠️ Apakah Anda yakin ingin menghapus request donasi ini?\n\nRequest yang dihapus tidak dapat dikembalikan.')) {
+            const form = document.getElementById('deleteForm');
+            form.action = `/request-donasi/${id}`;
+            form.submit();
+        }
+    }
+
+    function scrollCards(direction) {
+        const container = document.getElementById('cardsContainer');
+        const scrollAmount = 336; // width of card (320px) + gap (16px)
+        
+        if (direction === 'left') {
+            container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+        } else {
+            container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        }
+    }
+
+    // Close on outside click
+    document.getElementById('detailModal')?.addEventListener('click', function(e) {
+        if(e.target === this) closeModal();
+    });
+
+    // Close with ESC key
+    document.addEventListener('keydown', function(e) {
+        if(e.key === 'Escape') closeModal();
+    });
+
+    // Mobile menu toggle
+    document.getElementById('mobile-menu-button')?.addEventListener('click', () => {
+        const menu = document.getElementById('mobile-menu');
+        menu.classList.toggle('hidden');
     });
 </script>
 @endpush

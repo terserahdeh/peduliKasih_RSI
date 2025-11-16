@@ -88,13 +88,11 @@ Route::prefix('admin')->middleware(['auth:admin'])->group(function () {
     // Donasi Management
     Route::post('/donasi/verifikasi/{id}', [DashboardController::class, 'updateVerifikasiDonasi'])->name('admin.donasi.verifikasi');
     Route::post('/donasi/status/{id}', [DashboardController::class, 'updateStatusDonasi'])->name('admin.donasi.status');
-    Route::get('/donasi/detail/{id}', [DashboardController::class, 'showDonasiDetail'])->name('admin.donasi.detail');
     Route::get('/donasi/all', [DashboardController::class, 'allDonasi'])->name('admin.donasi.all');
     
     // Permintaan Management
     Route::post('/permintaan/verifikasi/{id}', [DashboardController::class, 'updateVerifikasiPermintaan'])->name('admin.permintaan.verifikasi');
     Route::post('/permintaan/status/{id}', [DashboardController::class, 'updateStatusPermintaan'])->name('admin.permintaan.status');
-    Route::get('/permintaan/detail/{id}', [DashboardController::class, 'showPermintaanDetail'])->name('admin.permintaan.detail');
     Route::get('/permintaan/all', [DashboardController::class, 'allPermintaan'])->name('admin.permintaan.all');
     
     // Show table
@@ -111,4 +109,7 @@ Route::prefix('admin')->middleware(['auth:admin'])->group(function () {
     Route::get('/edukasi/{edukasintip}/edit', [TipsnEdukasiController::class, 'edit'])->name('admin.edukasintips.edit');
     Route::post('/edukasi/{edukasintip}', [TipsnEdukasiController::class, 'update'])->name('admin.edukasintips.update');
     Route::get('/faq', [DashboardController::class, 'faq'])->name('admin.faq');
+
+    Route::get('/detail/{type}/{id}', [DashboardController::class, 'getDetail'])->name('admin.detail');
+    Route::get('/pengguna/search', [DashboardController::class, 'searchPengguna'])->name('admin.pengguna_table');
 });

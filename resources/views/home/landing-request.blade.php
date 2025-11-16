@@ -62,9 +62,12 @@
             @php
                 // Ambil semua request yang sudah disetujui
                 $previewRequests = \App\Models\RequestDonasi::with('pengguna')
-                    ->where('hasil_verif', 'disetujui')
-                    ->latest('tanggal_upload')
-                    ->get();
+                ->withCount('upvote')
+                ->where('hasil_verif', 'disetujui')
+                ->orderByRaw('CASE WHEN upvote_count = 0 THEN 1 ELSE 0 END') // Upvote >0 dulu
+                ->orderBy('upvote_count', 'desc') // lalu sort by jumlah upvote
+                ->orderBy('tanggal_upload', 'desc') // kalau upvote 0, urutkan by tanggal
+                ->get();
             @endphp
 
             @if($previewRequests->count() > 0)
@@ -196,6 +199,12 @@
         </div>
     </div>
 </div>
+
+<!-- Delete Form -->
+<form id="deleteForm" method="POST" class="hidden">
+    @csrf
+    @method('DELETE')
+</form>
 </main>
 @endsection
 
@@ -241,6 +250,14 @@ function showDetail(id) {
 
 function closeModal() {
     document.getElementById('detailModal').classList.add('hidden');
+}
+
+function confirmDelete(id) {
+    if(confirm('⚠️ Apakah Anda yakin ingin menghapus request donasi ini?\n\nRequest yang dihapus tidak dapat dikembalikan.')) {
+        const form = document.getElementById('deleteForm');
+        form.action = `/request-donasi/${id}`;
+        form.submit();
+    }
 }
 
 function scrollCards(direction) {
