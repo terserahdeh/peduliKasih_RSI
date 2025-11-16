@@ -29,16 +29,19 @@
                 
                 <!-- Navigation Menu -->
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="{{ route('admin.dashboard') }}" class="text-blue-500 font-semibold border-b-2 border-blue-500 pb-1 transition">
+                    <a href="{{ route('admin.dashboard') }}" class="{{ Request::routeIs('admin.dashboard') ? 'text-blue-500 font-bold' : 'text-gray-600 font-medium hover:text-blue-500 transition' }}">
                         Dashboard
                     </a>
-                    <a href="#" class="text-gray-600 hover:text-blue-500 font-medium transition">
+
+                    <a href="#" class="{{ Request::routeIs('admin.riwayat') ? 'text-blue-500 font-bold' : 'text-gray-600 font-medium hover:text-blue-500 transition' }}">
                         Riwayat
                     </a>
-                    <a href="{{ route('admin.edukasintips') }}" class="text-gray-600 hover:text-blue-500 font-medium transition">
+
+                    <a href="{{ route('admin.edukasintips') }}" class="{{ Request::routeIs('admin.edukasintips') ? 'text-blue-500 font-bold' : 'text-gray-600 font-medium hover:text-blue-500 transition' }}">
                         Edukasi & Tips
                     </a>
-                    <a href="{{ route('admin.faq.index') }}" class="text-gray-600 hover:text-blue-500 font-medium transition">
+
+                    <a href="{{ route('admin.faq.index') }}"  class="{{ Request::routeIs('admin.faq.index') ? 'text-blue-500 font-bold' : 'text-gray-600 font-medium hover:text-blue-500 transition' }}">
                         FAQ
                     </a>
                 </div>

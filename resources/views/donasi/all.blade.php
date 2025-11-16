@@ -321,7 +321,6 @@
                 <div class="card-info-item"><i class="bi bi-calendar-event icon-small"></i>{{ \Carbon\Carbon::parse($item->tanggal_request)->format('d M Y') }}</div>
 
                 <div class="card-footer">
-                    <span><i class="bi bi-heart-fill text-danger"></i> +{{ $item->total_likes ?? 0 }}</span>
                     <button type="button" class="btn-detail" data-bs-toggle="modal" data-bs-target="#detailModal{{ $item->id_donasi }}">
                         Detail
                     </button>

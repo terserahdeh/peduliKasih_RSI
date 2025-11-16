@@ -33,7 +33,7 @@
             <div class="flex justify-between items-center h-16">
                 <!-- Logo -->
                 <div class="flex items-center">
-                    <a href="#" class="flex items-center space-x-2">
+                    <a href="{{ route('home.dashboard') }}" class="flex items-center space-x-2">
                         <div class="w-9 h-9 bg-blue-500 rounded-lg flex items-center justify-center">
                             <i class="fas fa-hand-holding-heart text-white"></i>
                         </div>
@@ -43,32 +43,33 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="{{ route('home.dashboard') }}" class="text-blue-600 font-semibold hover:text-blue-700 transition">Beranda</a>
+                    <a href="{{ route('home.dashboard') }}" class="{{ Request::routeIs('home.dashboard') ? 'text-blue-600 font-bold' : 'text-gray-600' }} hover:text-blue-700 transition">Beranda </a>
                     @guest
-                    <a href="javascript:void(0);" onclick="showLoginAlert()" class="text-gray-600 hover:text-gray-900 transition">
-                        Donasi
-                    </a>
+                        <a href="javascript:void(0);" onclick="showLoginAlert()" class="text-gray-600 hover:text-gray-900 transition">Donasi</a>
                     @else
-                    <a href="{{ route('donasi.index') }}" class="text-gray-600 hover:text-gray-900 transition">
-                        Donasi
-                    </a>
+                        <a href="{{ route('donasi.index') }}" class="{{ Request::routeIs('donasi.index') ? 'text-blue-600 font-bold' : 'text-gray-600' }} hover:text-gray-900 transition">
+                            Donasi
+                        </a>
                     @endguest
 
                     @guest
-                    <a href="javascript:void(0);" onclick="showLoginAlert()" class="text-gray-600 hover:text-gray-900 transition">
-                        Request Donasi
-                    </a>
+                        <a href="javascript:void(0);" onclick="showLoginAlert()" class="text-gray-600 hover:text-gray-900 transition">Request Donasi</a>
                     @else
-                    <a href="{{ route('request-donasi.landing') }}" class="text-gray-600 hover:text-gray-900 transition">Request Donasi</a>
+                        <a href="{{ route('request-donasi.landing') }}" class="{{ Request::routeIs('request-donasi.landing') ? 'text-blue-600 font-bold' : 'text-gray-600' }} hover:text-gray-900 transition">
+                            Request Donasi
+                        </a>
                     @endguest
 
                     @guest
-                    <a href="javascript:void(0);" onclick="showLoginAlert()" class="text-gray-600 hover:text-gray-900 transition">
-                        Riwayat
-                    </a>
+                        <a href="javascript:void(0);" onclick="showLoginAlert()" class="text-gray-600 hover:text-gray-900 transition">
+                            Riwayat
+                        </a>
                     @else
-                    <a href="#" class="text-gray-600 hover:text-gray-900 transition">Riwayat</a>
+                        <a href="#" class="{{ Request::is('riwayat*') ? 'text-blue-600 font-bold' : 'text-gray-600' }} hover:text-gray-900 transition">
+                            Riwayat
+                        </a>
                     @endguest
+
                 </div>
 
                 <!-- Auth Buttons -->

@@ -137,29 +137,28 @@ Route::prefix('admin')->middleware(['auth:admin'])->group(function () {
     Route::get('/dashboard/donasi-table', [DashboardController::class, 'donasiTable'])->name('donasi.table');
     Route::get('/dashboard/permintaan-table', [DashboardController::class, 'permintaanTable'])->name('permintaan.table');
     Route::get('/detail/{type}/{id}', [DashboardController::class, 'getDetail'])->name('admin.detail');
-    Route::get('/pengguna/search', [DashboardController::class, 'searchPengguna'])->name('admin.pengguna_table');
 
     // User Management
     Route::get('/pengguna/all', [DashboardController::class, 'allPengguna'])->name('pengguna.all');
-    Route::delete('/pengguna/delete/{id}', [DashboardController::class, 'deletePengguna'])->name('pengguna.delete');
+    Route::delete('/pengguna/delete/{id}', [DashboardController::class, 'deletePengguna'])->name('admin.pengguna.delete');
+    Route::get('/pengguna/search', [DashboardController::class, 'searchPengguna'])->name('admin.pengguna_table');
 
     // Tips & Edukasi Management
-    Route::get('/edukasi', [TipsnEdukasiController::class, 'index'])->name('edukasintips');
-    Route::get('/edukasi/{edukasintip}/edit', [TipsnEdukasiController::class, 'edit'])->name('edukasintips.edit');
-    Route::post('/edukasi/{edukasintip}', [TipsnEdukasiController::class, 'update'])->name('edukasintips.update');
+    Route::get('/edukasi', [TipsnEdukasiController::class, 'index'])->name('admin.edukasintips');
+    Route::get('/edukasi/{edukasintip}/edit', [TipsnEdukasiController::class, 'edit'])->name('admin.edukasintips.edit');
+    Route::post('/edukasi/{edukasintip}', [TipsnEdukasiController::class, 'update'])->name('admin.edukasintips.update');
 
     /*
     |--------------------------------------------------------------------------
     | ✅ PERBAIKAN: FAQ Admin CRUD (AdminFaqController)
     |--------------------------------------------------------------------------
     */
-    // Menggantikan Route::get('/faq', [DashboardController::class, 'faq']) yang error
-    Route::resource('faq', AdminFaqController::class); // <-- HANYA INI
+    Route::get('/faq', [AdminFaqController::class, 'index'])->name('admin.faq.index');
+    //Route::resource('faq', AdminFaqController::class); // <-- HANYA INI
     
     // Route khusus untuk toggle is_active (Perlu disesuaikan)
     Route::get('faq/{faq}/toggle', [AdminFaqController::class, 'toggleActive'])->name('faq.toggle');
     Route::post('/donasi/process-edit/{id}', [DonasiController::class, 'processEditRequest'])->name('donasi.processEdit');
-    Route::post('/admin/donasi/process-edit/{id}', [DashboardController::class, 'processEditDonasi']);
 
     /*
     |--------------------------------------------------------------------------

@@ -1,9 +1,5 @@
 @extends('home.navbar')
 
-@section('title', 'Request Donasi - Peduli Kasih')
-
-@section('content')
-
 @section('title', 'Request Donasi')
 
 @section('content')
@@ -212,8 +208,6 @@
 </main>
 @endsection
 
-
-</main>
 @push('styles')
 <style>
     /* Hide scrollbar but keep functionality */
@@ -292,8 +286,6 @@ document.getElementById('mobile-menu-button')?.addEventListener('click', () => {
     const menu = document.getElementById('mobile-menu');
     menu.classList.toggle('hidden');
 });
-<<<<<<< HEAD
-=======
 function toggleUpvote(id) {
     const token = '{{ csrf_token() }}';
     const heartIcon = document.getElementById(`heart-icon-${id}`);
@@ -334,6 +326,5 @@ function toggleUpvote(id) {
     })
     .catch(err => console.error('Upvote error:', err));
 }
->>>>>>> a23f29b33db9e82ced0eafd3152939e96cd75095
 </script>
 @endpush

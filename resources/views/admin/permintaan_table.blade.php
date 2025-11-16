@@ -6,9 +6,8 @@
         {{ $permintaan->nama_request }}
         </button>
     </td>
-
-    {{-- 4. Status Verifikasi --}}
-    <td class="px-6 py-4 verifikasi-cell whitespace-nowrap">
+    <td class="px-6 py-4 text-sm text-gray-800">{{ $permintaan->jumlah_barang }}</td>
+    <td class="px-6 py-4 verifikasi-cell">
         @if($permintaan->hasil_verif === 'menunggu')
         <div class="flex space-x-2">
             <button onclick="updateVerifikasi(this, {{ $permintaan->id_request }}, 'disetujui', 'permintaan')" 
@@ -25,25 +24,12 @@
         <span class="px-3 py-1 text-xs font-medium text-white bg-green-500 rounded-full inline-flex items-center">
             <i class="fas fa-check-circle mr-1"></i> Disetujui
         </span>
-        @elseif($permintaan->hasil_verif === 'ditolak')
+        @else
         <span class="px-3 py-1 text-xs font-medium text-white bg-red-500 rounded-full inline-flex items-center">
             <i class="fas fa-times-circle mr-1"></i> Ditolak
         </span>
-        @else
-        @php
-            $statusClass = [
-                'terpenuhi' => 'text-green-700 bg-green-100',
-                'pending' => 'text-yellow-700 bg-yellow-100',
-                'ditolak' => 'text-red-700 bg-red-100',
-            ][$permintaan->status_request ?? 'pending'];
-        @endphp
-        <span class="px-2 py-1 font-semibold leading-tight rounded-full {{ $statusClass }}">
-            {{ ucfirst($permintaan->status_request ?? 'pending') }}
-        </span>
         @endif
     </td>
-
-    {{-- 5. Status Permintaan --}}
     <td class="px-6 py-4">
         <select 
             onchange="updateStatusPermintaan(this, {{ $permintaan->id_request }}, this.value)"
@@ -58,16 +44,11 @@
             </option>
         </select>
     </td>
-
-    {{-- 6. Aksi --}}
-    <td class="px-6 py-3 border-t whitespace-nowrap text-sm font-medium">
-        <a href="#" class="text-indigo-600 hover:text-indigo-900">Lihat/Proses</a>
-    </td>
 </tr>
 @empty
-<tr class="text-gray-500">
-    <td colspan="6" class="px-6 py-4 text-center border-t">
-        <p class="py-4">Belum ada permintaan donasi terbaru.</p>
+<tr>
+    <td class="px-6 py-4 text-center text-gray-500" colspan="5">
+        Data kosong
     </td>
 </tr>
 @endforelse

@@ -23,7 +23,7 @@
 
                     <!-- User Info -->
                     <div class="text-center md:text-left">
-                        <h1 class="text-4xl font-bold text-gray-900 mb-3">{{ $user->name }}</h1>
+                        <h1 class="text-4xl font-bold text-gray-900 mb-3">{{ $user->nama }}</h1>
                         <p class="text-gray-600 mb-2 text-lg">
                             <i class="far fa-envelope mr-2"></i>{{ $user->email }}
                         </p>
@@ -33,7 +33,7 @@
                         
                         <!-- Edit Photo Link -->
                         <a href="{{ route('home.edit') }}" class="inline-block mt-4 text-blue-600 hover:text-blue-700 text-sm font-medium">
-                            <i class="fas fa-pencil-alt mr-1"></i> Edit Foto
+                            <i class="fas fa-pencil-alt mr-1"></i> Edit Profil
                         </a>
                     </div>
                 </div>

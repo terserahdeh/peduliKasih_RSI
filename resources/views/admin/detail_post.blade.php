@@ -11,7 +11,7 @@
     <!-- Image --> 
     <div class="mb-6"> 
         @if($data->foto) 
-        <img src="{{ Storage::url($data->foto) }}" alt="{{ $data->nama_request ?? $data->nama_donasi }}" class="w-full max-h-96 object-cover rounded-xl"> 
+        <img src="{{ $type === 'donasi' ? asset('foto/' . $data->foto) : Storage::url('request_donasi/' . $data->foto) }}" alt="{{ $data->nama_request ?? $data->nama_donasi }}" class="w-full max-h-96 object-cover rounded-xl"> 
         @else 
         <div class="w-full h-64 bg-gradient-to-br from-gray-200 to-gray-300 rounded-xl flex items-center justify-center"> 
             <i class="fas fa-image text-gray-400 text-6xl"></i> 

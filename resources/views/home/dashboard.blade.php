@@ -20,7 +20,7 @@
                         Mulai Donasi Sekarang
                     </a>
                     @else
-                    <a href="#" class="px-6 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition shadow-lg">
+                    <a href="{{route('donasi.all')}}" class="px-6 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition shadow-lg">
                         Mulai Donasi Sekarang
                     </a>
                     @endguest
@@ -30,7 +30,7 @@
                         Request Bantuan
                     </a>
                     @else
-                    <a href="#" class="px-6 py-3 bg-white text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition border border-gray-300">
+                    <a href="{{route('request-donasi.landing')}}" class="px-6 py-3 bg-white text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition border border-gray-300">
                         Request Bantuan
                     </a>
                     @endguest
@@ -112,16 +112,12 @@
         </div>
         
         <div class="text-center">
-<<<<<<< HEAD
-            <a href="{{ route('donasi.index') }}" class="inline-block px-6 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition">
-=======
             @guest
             <a href="javascript:void(0);" onclick="showLoginAlert()" class="inline-block px-6 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition">
                 Lihat Semua Donasi
                 </a>
             @else
-            <a href="#" class="inline-block px-6 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition">
->>>>>>> a23f29b33db9e82ced0eafd3152939e96cd75095
+            <a href="{{route ('donasi.all')}}" class="inline-block px-6 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition">
                 Lihat Semua Donasi
             </a>
             @endguest
