@@ -114,16 +114,18 @@ Route::middleware(['auth:pengguna'])->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-| Admin Routes (Middleware: auth:admin)
+| Admin Routes (Middleware: auth:admin) (Middleware: auth:admin)
 |--------------------------------------------------------------------------
 */
 Route::prefix('admin')->middleware(['auth:admin'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/statistics', [DashboardController::class, 'getStatistics'])->name('admin.statistics');
+    Route::get('/riwayat', [DashboardController::class, 'riwayat'])->name('riwayat');
 
     // Donasi Management
     Route::post('/donasi/verifikasi/{id}', [DashboardController::class, 'updateVerifikasiDonasi'])->name('admin.donasi.verifikasi');
     Route::post('/donasi/status/{id}', [DashboardController::class, 'updateStatusDonasi'])->name('admin.donasi.status');
+    Route::get('/donasi/detail/{id}', [DashboardController::class, 'showDonasiDetail'])->name('admin.donasi.detail');
     Route::get('/donasi/all', [DashboardController::class, 'allDonasi'])->name('admin.donasi.all');
     
     // Permintaan Management
@@ -138,14 +140,30 @@ Route::prefix('admin')->middleware(['auth:admin'])->group(function () {
     Route::get('/pengguna/search', [DashboardController::class, 'searchPengguna'])->name('admin.pengguna_table');
 
     // User Management
-    Route::delete('/pengguna/delete/{id}', [DashboardController::class, 'deletepengguna'])->name('admin.pengguna.delete');
-    Route::get('/pengguna/all', [DashboardController::class, 'allpengguna'])->name('admin.pengguna.all');
+    Route::get('/pengguna/all', [DashboardController::class, 'allPengguna'])->name('pengguna.all');
+    Route::delete('/pengguna/delete/{id}', [DashboardController::class, 'deletePengguna'])->name('pengguna.delete');
+
+    // Tips & Edukasi Management
+    Route::get('/edukasi', [TipsnEdukasiController::class, 'index'])->name('edukasintips');
+    Route::get('/edukasi/{edukasintip}/edit', [TipsnEdukasiController::class, 'edit'])->name('edukasintips.edit');
+    Route::post('/edukasi/{edukasintip}', [TipsnEdukasiController::class, 'update'])->name('edukasintips.update');
+
+    /*
+    |--------------------------------------------------------------------------
+    | ✅ PERBAIKAN: FAQ Admin CRUD (AdminFaqController)
+    |--------------------------------------------------------------------------
+    */
+    // Menggantikan Route::get('/faq', [DashboardController::class, 'faq']) yang error
+    Route::resource('faq', AdminFaqController::class); // <-- HANYA INI
     
-    
-    // Other pages
-    Route::get('/riwayat', [DashboardController::class, 'riwayat'])->name('admin.riwayat');
-    Route::get('/edukasi', [TipsnEdukasiController::class, 'index'])->name('admin.edukasintips');
-    Route::get('/edukasi/{edukasintip}/edit', [TipsnEdukasiController::class, 'edit'])->name('admin.edukasintips.edit');
-    Route::post('/edukasi/{edukasintip}', [TipsnEdukasiController::class, 'update'])->name('admin.edukasintips.update');
-    Route::get('/faq', [DashboardController::class, 'faq'])->name('admin.faq');
+    // Route khusus untuk toggle is_active (Perlu disesuaikan)
+    Route::get('faq/{faq}/toggle', [AdminFaqController::class, 'toggleActive'])->name('faq.toggle');
+    Route::post('/donasi/process-edit/{id}', [DonasiController::class, 'processEditRequest'])->name('donasi.processEdit');
+    Route::post('/admin/donasi/process-edit/{id}', [DashboardController::class, 'processEditDonasi']);
+
+    /*
+    |--------------------------------------------------------------------------
+    | Rute yang tidak terpakai/duplikat Dihapus dari bawah
+    |--------------------------------------------------------------------------
+    */
 });

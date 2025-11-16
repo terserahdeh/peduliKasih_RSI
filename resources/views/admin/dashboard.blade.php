@@ -60,6 +60,7 @@
 
 @section('content')
 <div class="container mx-auto px-6 py-8">
+
     <!-- Header -->
     <div class="mb-8">
         <h1 class="text-3xl font-bold text-gray-800">Dashboard Admin</h1>
@@ -143,11 +144,15 @@
             <table class="w-full">
                 <thead class="bg-gray-50 border-b border-gray-200">
                     <tr>
-                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Nama Donatur</th>
-                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Judul Donasi</th>
+                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Nama Donasi</th>
+                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Kategori Donasi</th>
                         <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Jumlah Donasi</th>
-                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Verifikasi</th>
+                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Username</th>
+                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Hasil Verifikasi</th>
                         <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Status Donasi</th>
+                        <!-- <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Status Edit</th>  -->
+                        <!-- <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Detail</th> -->
+                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200" id="donasiTableBody">
@@ -549,6 +554,42 @@
         }, 16);
     }
 
+    // ACC Edit
+    function processEditRequest(event, id, action) {
+        if (!confirm(action === 'approve' ? 'Setujui perubahan donasi ini?' : 'Tolak perubahan donasi ini?')) {
+            return;
+        }
+
+        const button = event.target;
+        button.disabled = true;
+        button.classList.add('opacity-50', 'cursor-not-allowed');
+
+        fetch(`/admin/donasi/process-edit/${id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify({ edit_action: action })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+                location.reload();
+            } else {
+                throw new Error(data.message || 'Gagal memproses permintaan');
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            button.disabled = false;
+            button.classList.remove('opacity-50', 'cursor-not-allowed');
+            alert('Terjadi kesalahan: ' + err.message);
+        });
+    }
+
+
     // Show notification
     function showNotification(message, type) {
         const notification = document.createElement('div');
@@ -579,7 +620,6 @@
             }, 300);
         }, 3000);
     }
-
 
     // Initialize notification styling
     const style = document.createElement('style');

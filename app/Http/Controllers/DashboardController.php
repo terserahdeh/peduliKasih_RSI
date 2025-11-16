@@ -17,8 +17,13 @@ class DashboardController extends Controller
         $penggunaAktif = Pengguna::count();
         $totalTerpenuhi = RequestDonasi::where('status_request', 'terpenuhi')->count();
 
-        // Latest 5 Donasi
-        $donasiList = Donasi::with('Pengguna')->orderBy('created_at','desc')->take(5)->get();
+        // Latest 5 Donasi - DITAMBAHKAN PRIORITAS UNTUK MENUNGGU EDIT
+        $donasiList = Donasi::with('Pengguna')
+            ->orderByRaw("FIELD(status_edit, 'menunggu_edit') DESC")
+            ->orderByRaw("FIELD(hasil_verif, 'menunggu') DESC")
+            ->orderBy('created_at','desc')
+            ->take(5)
+            ->get();
 
         // Latest 5 Permintaan
         $permintaanList = RequestDonasi::with('Pengguna')->orderBy('created_at','desc')->take(5)->get();
@@ -49,7 +54,12 @@ class DashboardController extends Controller
             $query->where('status_donasi', $request->filterStatusDonasi);
         }
         
-        $donasiList = $query->orderBy('created_at','desc')->take(5)->get();
+        // DITAMBAHKAN PRIORITAS UNTUK MENUNGGU EDIT
+        $donasiList = $query
+            ->orderByRaw("FIELD(status_edit, 'menunggu_edit') DESC")
+            ->orderBy('created_at','desc')
+            ->take(5)
+            ->get();
 
         return view('admin.donasi_table', compact('donasiList'))->render();
     }
@@ -204,4 +214,12 @@ class DashboardController extends Controller
             return response()->json(['error' => 'Data tidak ditemukan: ' . $e->getMessage()], 404);
         }
     }
+
+    // public function homeDashboard()
+    // {
+    //     // Anda bisa menambahkan logika atau mengambil data di sini
+        
+    //     // Mengarahkan ke resources/views/home/dashboard.blade.php
+    //     return view('home.dashboard'); 
+    // }
 }

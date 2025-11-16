@@ -112,12 +112,16 @@
         </div>
         
         <div class="text-center">
+<<<<<<< HEAD
+            <a href="{{ route('donasi.index') }}" class="inline-block px-6 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition">
+=======
             @guest
             <a href="javascript:void(0);" onclick="showLoginAlert()" class="inline-block px-6 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition">
                 Lihat Semua Donasi
                 </a>
             @else
             <a href="#" class="inline-block px-6 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition">
+>>>>>>> a23f29b33db9e82ced0eafd3152939e96cd75095
                 Lihat Semua Donasi
             </a>
             @endguest
@@ -160,27 +164,58 @@
     </div>
 </section>
 
-<section class="py-16 bg-gray-50">
+<section id="faq-section" class="py-5 bg-white"> 
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
             <h2 class="text-3xl font-bold text-gray-900 mb-3">FAQ</h2>
             <p class="text-gray-600">Proses mudah untuk berbagi dan menerima kebaikan</p>
         </div>
         
-        <div class="space-y-4">
-            {{-- Loop FAQ --}}
-            @foreach ($faqs as $faq)
-            <div class="bg-blue-500 rounded-xl overflow-hidden">
-                <button class="w-full px-6 py-4 text-left text-white font-semibold flex justify-between items-center hover:bg-blue-600 transition"
-                        data-faq-toggle="{{ $faq->id }}">
-                    <span>{{ $faq->question }}</span>
-                    <i class="fas fa-chevron-down faq-icon-{{ $faq->id }}"></i>
-                </button>
-                <div class="px-6 py-4 bg-blue-400 text-white hidden" id="faq-content-{{ $faq->id }}">
-                    {!! nl2br(e($faq->answer)) !!}
+        <div id="faqAccordionTailwind">
+            
+            {{-- PERBAIKAN: Menggunakan $faqs (collection) as $item (item) --}}
+            @forelse ($faq as $index => $item) 
+            
+            @php
+                // Logika $isLastItem untuk menentukan item mana yang terbuka default (seperti pada gambar)
+                $faqsCollection = collect($faq);
+                $isLastItem = ($index == $faqsCollection->count() - 1);
+            @endphp
+            
+            <div class="mb-3 rounded-xl overflow-hidden"> 
+                
+                {{-- Header (Tombol Pertanyaan) --}}
+                <div id="heading{{ $item->id_faq }}">
+                    <button class="w-full text-left py-3 px-4 flex justify-between items-center transition duration-300" 
+                            style="background-color: #6495ED; color: white; font-weight: 600;"
+                            onclick="toggleFaq({{ $item->id_faq }})"
+                            aria-expanded="{{ $isLastItem ? 'true' : 'false' }}" 
+                            data-faq-id="{{ $item->id_faq }}">
+                        
+                        {{ $item->question }}
+                        
+                        {{-- Icon Chevron (Kelas yang menentukan arah) --}}
+                        <i id="icon-{{ $item->id_faq }}" 
+                           class="fas ml-2 text-sm transition duration-300 {{ $isLastItem ? 'fa-chevron-up' : 'fa-chevron-down' }}">
+                        </i>
+                    </button>
+                </div>
+
+                {{-- Body (Jawaban) --}}
+                <div id="content-{{ $item->id_faq }}" 
+                     class="px-4 py-3 border border-gray-200 {{ $isLastItem ? '' : 'hidden' }}"
+                     style="background-color: #f7f7f7;">
+                    
+                    <p class="text-gray-600 text-sm">
+                        {!! nl2br(e($item->answer)) !!}
+                    </p>
                 </div>
             </div>
-            @endforeach
+            @empty
+            <div class="bg-blue-100 text-blue-800 p-4 rounded-lg text-center">
+                Belum ada pertanyaan yang tersedia saat ini.
+            </div>
+            @endforelse
         </div>
     </div>
 </section>
@@ -233,31 +268,34 @@
 
 @section('extra-js')
 <script>
-    // FAQ Accordion functionality
-    document.querySelectorAll('[data-faq-toggle]').forEach(button => {
-        button.addEventListener('click', function() {
-            const faqId = this.getAttribute('data-faq-toggle');
-            const content = document.getElementById(`faq-content-${faqId}`);
-            const icon = this.querySelector(`.faq-icon-${faqId}`);
-            
-            if (content) {
-                // Sembunyikan semua yang lain (opsional, untuk single open accordion)
-                document.querySelectorAll('[id^="faq-content-"]').forEach(item => {
-                    if (item.id !== content.id) {
-                        item.classList.add('hidden');
-                        document.querySelector(`.faq-icon-${item.id.replace('faq-content-', '')}`).classList.replace('fa-chevron-up', 'fa-chevron-down');
-                    }
-                });
+// Fungsi untuk toggle FAQ accordion
+function toggleFaq(id) {
+    const content = document.getElementById(`content-${id}`);
+    const icon = document.getElementById(`icon-${id}`);
 
-                // Toggle yang diklik
-                content.classList.toggle('hidden');
-                icon.classList.toggle('fa-chevron-down');
-                icon.classList.toggle('fa-chevron-up');
+    // Tutup semua accordion lain
+    document.querySelectorAll('[id^="content-"]').forEach(item => {
+        const itemId = item.id.replace('content-', '');
+        if (itemId != id) {
+            item.classList.add('hidden');
+            const itemIcon = document.getElementById(`icon-${itemId}`);
+            if (itemIcon) {
+                itemIcon.classList.remove('fa-chevron-up');
+                itemIcon.classList.add('fa-chevron-down');
             }
-        });
+        }
     });
-    
-    // Smooth scroll for anchor links
-    // ... (kode JS smooth scroll tetap sama) ...
+
+    // Toggle item yang diklik
+    if (content.classList.contains('hidden')) {
+        content.classList.remove('hidden');
+        icon.classList.remove('fa-chevron-down');
+        icon.classList.add('fa-chevron-up');
+    } else {
+        content.classList.add('hidden');
+        icon.classList.remove('fa-chevron-up');
+        icon.classList.add('fa-chevron-down');
+    }
+}
 </script>
 @endsection

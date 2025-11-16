@@ -6,6 +6,9 @@
     <title>{{ $title ?? 'Peduli Kasih - Platform Donasi' }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLMD/CDQ6uV/U/m6D27F5d2Kj+T2I3g9T5f5z5M1p8/5S5V5w=" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         html, body {
             height: 100%;
@@ -30,7 +33,7 @@
             <div class="flex justify-between items-center h-16">
                 <!-- Logo -->
                 <div class="flex items-center">
-                    <a href="{{ route('home') }}" class="flex items-center space-x-2">
+                    <a href="#" class="flex items-center space-x-2">
                         <div class="w-9 h-9 bg-blue-500 rounded-lg flex items-center justify-center">
                             <i class="fas fa-hand-holding-heart text-white"></i>
                         </div>
@@ -46,7 +49,7 @@
                         Donasi
                     </a>
                     @else
-                    <a href="#" class="text-gray-600 hover:text-gray-900 transition">
+                    <a href="{{ route('donasi.index') }}" class="text-gray-600 hover:text-gray-900 transition">
                         Donasi
                     </a>
                     @endguest

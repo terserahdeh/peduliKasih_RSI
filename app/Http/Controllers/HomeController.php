@@ -50,10 +50,10 @@ class HomeController extends Controller
         $tips = TipsnEdukasi::orderBy('id_tipsnedukasi', 'desc')->limit(6)->get();
         
         // Mengambil semua FAQ
-        $faqs = Faq::all(); 
+        $faq = Faq::all(); 
         
         // Mengirimkan semua data ke view
-        return view('home.dashboard', compact('latestDonations', 'tips', 'faqs', 'stats'));
+        return view('home.dashboard', compact('latestDonations', 'tips', 'faq', 'stats'));
     }
 
     /**

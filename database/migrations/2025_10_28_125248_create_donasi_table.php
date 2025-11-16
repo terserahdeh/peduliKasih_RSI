@@ -6,42 +6,32 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+    public function up()
     {
         Schema::create('donasi', function (Blueprint $table) {
-            $table->increments('id_donasi');;
-
-            // foreign key to pengguna
-            $table->string('username', 30); 
-            $table->foreign('username')
-                ->references('username')
-                ->on('pengguna')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
-
-            // other fields
-            $table->integer('jumlah_barang');
-            $table->enum('jenis_barang', ['alat rumah tangga', 'sembako','pakaian','alat tulis','lain-lain'])->default('lain-lain');
-            $table->text('deskripsi')->nullable();
-            $table->string('nama_donasi', 100);
-            $table->enum('status_donasi', ['tersedia', 'tersalurkan'])->default('tersedia');
-            $table->enum('hasil_verif', ['disetujui', 'ditolak', 'menunggu'])->default('menunggu');
+            $table->id('id_donasi');
+            $table->string('username');
+            $table->string('nama_donasi');
+            $table->enum('jenis_barang', ['Alat Rumah Tangga', 'Sembako', 'Pakaian', 'Alat Tulis']);
+            $table->string('jumlah_barang', 50);
+            $table->string('lokasi')->nullable();
+            $table->text('deskripsi');
+            $table->string('nomor_telepon')->nullable();
             $table->string('foto')->nullable();
-            $table->date('tanggal_upload');
-
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
+            $table->enum('status_donasi', ['tersedia', 'tersalurkan'])->default('tersedia');
+            $table->enum('hasil_verif', ['menunggu', 'disetujui', 'ditolak'])->default('menunggu');
+            $table->text('alasan_tolak')->nullable();
+            $table->enum('status_edit', ['menunggu_edit', 'diedit', ''])->nullable();
+            $table->timestamp('tanggal_upload')->nullable();
+            $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
-        Schema::dropIfExists('donasi');
+            Schema::dropIfExists('donasi');
+            Schema::table('donasi', function (Blueprint $table) {
+                $table->dropColumn('nomor_telepon');
+        });
     }
 };

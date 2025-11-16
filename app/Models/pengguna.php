@@ -28,7 +28,11 @@ class Pengguna extends Authenticatable
 
     protected $casts = [                  // ✅ harus property, bukan function
         'password' => 'hashed',
+        'email_verified_at' => 'datetime',
+        'created_at' => 'datetime',
     ];
+
+    
 
     // Relasi ke Donasi
     public function donasi()
