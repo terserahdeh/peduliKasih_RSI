@@ -14,7 +14,7 @@
                     <h1 class="text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
                         Jembatani kepedulian, 
                         <span class="text-blue-500">untuk kebutuhan anda</span>
-                    </h1>
+                    </h1>z
                     <p class="text-gray-600 text-lg mb-8 leading-relaxed">
                         Request Donasi Anda di sini, untuk menjadi jembatan yang membawa kehangatan dan pertolongan dari ribuan hati yang peduli.
                     </p>

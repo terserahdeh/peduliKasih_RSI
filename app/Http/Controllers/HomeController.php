@@ -18,28 +18,28 @@ class HomeController extends Controller
         // Data Statistik (Dummy)
         $stats = [
             [
-                'icon' => 'fas fa-users', 
-                'color' => 'blue', 
-                'value' => '2,450+', 
-                'label' => 'Donatur Aktif'
+                'icon' => 'fas fa-hand-holding-heart',
+                'value' => '1,234',
+                'label' => 'Total Donasi',
+                'color' => 'blue'
             ],
             [
-                'icon' => 'fas fa-hand-holding-heart', 
-                'color' => 'orange', 
-                'value' => '850+', 
-                'label' => 'Donasi Terkumpul'
+                'icon' => 'fas fa-users',
+                'value' => '567',
+                'label' => 'Donatur Aktif',
+                'color' => 'green'
             ],
             [
-                'icon' => 'fas fa-check-circle', 
-                'color' => 'green', 
-                'value' => '650+', 
-                'label' => 'Bantuan Tersalurkan'
+                'icon' => 'fas fa-smile',
+                'value' => '890',
+                'label' => 'Penerima Bantuan',
+                'color' => 'orange'
             ],
             [
-                'icon' => 'fas fa-heart', 
-                'color' => 'purple', 
-                'value' => '1,200+', 
-                'label' => 'Keluarga Terbantu'
+                'icon' => 'fas fa-check-circle',
+                'value' => '95%',
+                'label' => 'Tingkat Kepuasan',
+                'color' => 'purple'
             ],
         ];
 

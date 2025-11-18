@@ -7,10 +7,6 @@
   rel="stylesheet"
   href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
 />
-<link
-  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-  rel="stylesheet"
-/>
 
 <style>
 /* ===================== GLOBAL ===================== */
@@ -144,7 +140,7 @@
     border-radius: 16px;
     box-shadow: 0 2px 14px rgba(0,0,0,0.07);
     transition: .3s;
-    display:flex;
+    display: flex;
     flex-direction: column;
 }
 
@@ -156,7 +152,7 @@
 .card-image-wrapper {
     position: relative;
     overflow: hidden;
-    height: 190px;
+    height: 220px;
     border-radius: 16px 16px 0 0;
 }
 
@@ -180,7 +176,9 @@
 }
 
 /* CONTENT */
-.card-content { padding: 15px 20px; }
+.card-content { 
+    padding: 15px 20px; 
+}
 
 .card-title {
     font-size: 17px;
@@ -199,59 +197,386 @@
     margin-bottom: 8px;
 }
 
+
 /* FOOTER */
 .card-footer {
     margin-top: 10px;
     border-top: 1px solid #F3F4F6;
     padding-top: 12px;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
 }
 
 .btn-detail {
     background: #3B82F6;
     color: white;
-    padding: 8px 14px;
+    padding: 10px 20px;
     border-radius: 8px;
     font-size: 14px;
     font-weight: 600;
     text-decoration: none;
     transition: .3s;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+    display: block;
 }
 
-.btn-detail:hover { opacity:.9; }
+.btn-detail:hover { 
+    opacity: .9; 
+}
 
-/* ====== MODAL FIX ====== */
+/* ====== MODAL STYLING ====== */
 .modal.show {
     display: flex !important;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
+    padding: 40px 20px;
+    overflow-y: auto;
 }
 
 .modal-dialog {
     margin: 0 auto;
     transform: none !important;
     animation: zoomIn .3s ease;
+    max-width: 700px;
+    width: 100%;
+    max-height: calc(100vh - 80px);
+}
+
+.modal-dialog-centered {
+    margin: 0 auto !important;
 }
 
 @keyframes zoomIn {
-  from { transform: scale(0.9); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
+    from { 
+        transform: scale(0.9); 
+        opacity: 0; 
+    }
+    to { 
+        transform: scale(1); 
+        opacity: 1; 
+    }
 }
 
 .modal-backdrop.show {
     opacity: 0.6;
 }
 
+.modal-content {
+    border-radius: 20px !important;
+    border: none;
+    overflow: hidden;
+}
+
+/* Modal Header */
+.modal-header {
+    background: white !important;
+    border-bottom: none;
+    padding: 20px 24px 10px;
+}
+
+.modal-header .modal-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1F2937;
+}
+
+.modal-header .btn-close {
+    opacity: 0.5;
+}
+
+/* Modal Body */
+.modal-body {
+    background: white !important;
+    padding: 0 24px 24px;
+}
+
+/* Image in Modal */
+.modal-body img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+/* Status Badges in Modal */
+.status-badges {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.badge-approved {
+    background: #D1FAE5;
+    color: #065F46;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.badge-unfulfilled {
+    background: #FEF3C7;
+    color: #92400E;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Title in Modal Body */
+.modal-body h4 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1F2937;
+    margin-bottom: 16px;
+}
+
+/* Info Grid */
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.info-item-icon {
+    width: 40px;
+    height: 40px;
+    background: #EFF6FF;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.info-item-icon i {
+    font-size: 18px;
+    color: #3B82F6;
+}
+
+.info-item-content {
+    flex: 1;
+}
+
+.info-item-label {
+    font-size: 12px;
+    color: #6B7280;
+    margin-bottom: 2px;
+}
+
+.info-item-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1F2937;
+}
+
+/* Description Section */
+.description-section {
+    background: #F9FAFB;
+    padding: 16px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.description-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #3B82F6;
+    margin-bottom: 10px;
+}
+
+.description-title i {
+    font-size: 16px;
+}
+
+.description-text {
+    font-size: 14px;
+    color: #4B5563;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Action Buttons in Modal Body */
+.action-buttons {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.btn-edit-request {
+    flex: 1;
+    background: #FBBF24;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: .3s;
+    text-decoration: none;
+}
+
+.btn-edit-request:hover {
+    background: #F59E0B;
+    color: white;
+}
+
+.btn-delete-request {
+    flex: 1;
+    background: #EF4444;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: .3s;
+    cursor: pointer;
+}
+
+.btn-delete-request:hover {
+    background: #DC2626;
+}
+
+/* Info Box */
+.info-donation-box {
+    background: #EFF6FF;
+    border-left: 4px solid #3B82F6;
+    padding: 16px;
+    border-radius: 8px;
+}
+
+.info-donation-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1E40AF;
+    margin-bottom: 8px;
+}
+
+.info-donation-title i {
+    font-size: 16px;
+}
+
+.info-donation-text {
+    font-size: 13px;
+    color: #1E40AF;
+    margin: 0 0 12px 0;
+}
+
+.btn-contact-admin {
+    background: #10B981;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: .3s;
+    text-decoration: none;
+}
+
+.btn-contact-admin:hover {
+    background: #059669;
+    color: white;
+}
+
+/* Modal Footer - Hide it */
+.modal-footer {
+    display: none !important;
+}
+
 /* RESPONSIVE */
-@media (max-width:1200px){
-    .donation-grid { grid-template-columns: repeat(3,1fr); }
+@media (max-width: 1200px) {
+    .donation-grid { 
+        grid-template-columns: repeat(3, 1fr); 
+    }
 }
-@media (max-width:900px){
-    .donation-grid { grid-template-columns: repeat(2,1fr); }
+
+@media (max-width: 900px) {
+    .donation-grid { 
+        grid-template-columns: repeat(2, 1fr); 
+    }
 }
-@media (max-width:600px){
-    .donation-grid { grid-template-columns: repeat(1,1fr); }
+
+@media (max-width: 768px) {
+    .modal.show {
+        padding: 20px 15px;
+    }
+    
+    .modal-dialog {
+        margin: 20px auto;
+    }
+    
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .modal-body img {
+        height: 250px;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 600px) {
+    .donation-grid { 
+        grid-template-columns: repeat(1, 1fr); 
+    }
+    
+    .card-image-wrapper {
+        height: 250px;
+    }
+    
+    .landing-wrapper {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .landing-text h1 {
+        font-size: 32px;
+    }
+    
+    .landing-image img {
+        width: 100%;
+        max-width: 350px;
+    }
 }
 </style>
 
@@ -329,67 +654,134 @@
         </div>
 
         <!-- MODAL DETAIL -->
-        <div class="modal fade" id="detailModal{{ $item->id_donasi }}" tabindex="-1" aria-labelledby="detailModalLabel{{ $item->id_donasi }}" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered">
-                <div class="modal-content rounded-3xl shadow-lg border-0">
+<div class="modal fade" id="detailModal{{ $item->id_donasi }}" tabindex="-1" aria-labelledby="detailModalLabel{{ $item->id_donasi }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
 
-                    <div class="modal-header bg-primary text-white rounded-top">
-                        <h5 class="modal-title" id="detailModalLabel{{ $item->id_donasi }}">
-                            Detail Donasi - {{ $item->nama_donasi }}
-                        </h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                    </div>
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailModalLabel{{ $item->id_donasi }}">
+                    Detail Barang Donasi
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
 
-                    <div class="modal-body bg-light">
-                        <div class="row g-4">
-                            <div class="col-md-6">
-                                <img src="{{ asset('foto/' . $item->foto) }}" alt="{{ $item->nama_donasi }}" class="img-fluid rounded">
-                            </div>
-                            <div class="col-md-6">
-                                <h4 class="fw-bold">{{ $item->nama_donasi }}</h4>
-                                <p><i class="bi bi-tags-fill text-primary"></i> {{ $item->jenis_barang }}</p>
-                                <p><i class="bi bi-box-seam text-primary"></i> {{ $item->jumlah_barang }}</p>
-                                <p><i class="bi bi-calendar-event text-primary"></i> {{ \Carbon\Carbon::parse($item->created_at)->format('d M Y') }}</p>
-                                <p><i class="bi bi-telephone text-success"></i> {{ $item->nomor_telepon ?? 'Tidak tersedia' }}</p>
-                                <hr>
-                                <p>{{ $item->deskripsi ?? 'Tidak ada deskripsi.' }}</p>
+            <div class="modal-body">
+                <!-- Image -->
+                <img src="{{ asset('foto/' . $item->foto) }}" alt="{{ $item->nama_donasi }}">
 
-                                @if($item->nomor_telepon)
-                                <a href="https://wa.me/{{ $item->nomor_telepon }}?text=Halo,%20saya%20tertarik%20dengan%20donasi%20{{ urlencode($item->nama_donasi) }}" 
-                                target="_blank" class="btn btn-success mt-2">
-                                    <i class="bi bi-whatsapp"></i> Hubungi via WhatsApp
-                                </a>
-                                @endif
-                            </div>
+                <!-- Status Badges -->
+                <div class="status-badges">
+                    <span class="badge-approved">
+                        <i class="bi bi-check-circle-fill"></i> Disetujui
+                    </span>
+                    @if($item->status_request != 'Terpenuhi')
+                    <span class="badge-unfulfilled">
+                        <i class="bi bi-hourglass-split"></i> Belum Terpenuhi
+                    </span>
+                    @endif
+                </div>
+
+                <!-- Title -->
+                <h4>{{ $item->nama_donasi }}</h4>
+
+                <!-- Info Grid -->
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-item-icon">
+                            <i class="bi bi-person-fill"></i>
+                        </div>
+                        <div class="info-item-content">
+                            <div class="info-item-label">Pengaju</div>
+                            <div class="info-item-value">{{ $item->username ?? 'Anonim' }}</div>
                         </div>
                     </div>
 
-                    <div class="modal-footer bg-white d-flex justify-content-between">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                        
-                        {{-- Tombol Edit/Hapus hanya muncul jika donasi milik user yang login --}}
-                        @auth('pengguna')
-                            @if($item->username === auth()->user()->username)
-                            <div class="d-flex gap-2">
-                                <a href="{{ route('donasi.edit', $item->id_donasi) }}" class="btn btn-warning text-white">
-                                    <i class="bi bi-pencil"></i> Edit
-                                </a>
-                                <form action="{{ route('donasi.destroy', $item->id_donasi) }}" method="POST" 
-                                    onsubmit="return confirm('Yakin ingin menghapus donasi ini?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger font-medium">
-                                        <i class="bi bi-trash"></i> Hapus
-                                    </button>
-                                </form>
-                            </div>
-                            @endif
-                        @endauth
+                    <div class="info-item">
+                        <div class="info-item-icon">
+                            <i class="bi bi-tag-fill"></i>
+                        </div>
+                        <div class="info-item-content">
+                            <div class="info-item-label">Jenis Barang</div>
+                            <div class="info-item-value">{{ $item->jenis_barang ?? 'Tidak Diketahui' }}</div>
+                        </div>
                     </div>
 
+                    <div class="info-item">
+                        <div class="info-item-icon">
+                            <i class="bi bi-box-seam-fill"></i>
+                        </div>
+                        <div class="info-item-content">
+                            <div class="info-item-label">Jumlah</div>
+                            <div class="info-item-value">{{ $item->jumlah_barang ?? 0 }} unit</div>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-item-icon">
+                            <i class="bi bi-calendar-event-fill"></i>
+                        </div>
+                        <div class="info-item-content">
+                            <div class="info-item-label">Tanggal Upload</div>
+                            <div class="info-item-value">{{ \Carbon\Carbon::parse($item->created_at)->format('d M Y') }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div class="description-section">
+                    <div class="description-title">
+                        <i class="bi bi-file-text-fill"></i>
+                        Deskripsi Kebutuhan
+                    </div>
+                    <p class="description-text">{{ $item->deskripsi ?? 'lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis apa ya lagi tambahaaan' }}</p>
+                </div>
+
+                <!-- Action Buttons (Only for Owner) -->
+                @auth('pengguna')
+                    @if($item->username === auth()->user()->username)
+                    <div class="action-buttons">
+                        <a href="{{ route('donasi.edit', $item->id_donasi) }}" class="btn-edit-request">
+                            <i class="bi bi-pencil-fill"></i> Edit Request
+                        </a>
+                        <form action="{{ route('donasi.destroy', $item->id_donasi) }}" method="POST" 
+                            style="flex: 1; margin: 0;"
+                            onsubmit="return confirm('Yakin ingin menghapus donasi ini?')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn-delete-request" style="width: 100%;">
+                                <i class="bi bi-trash-fill"></i> Hapus Request
+                            </button>
+                        </form>
+                    </div>
+                    @endif
+                @endauth
+
+                <!-- Info Box -->
+                <div class="info-donation-box">
+                    <div class="info-donation-title">
+                        <i class="bi bi-info-circle-fill"></i>
+                        Informasi Donasi
+                    </div>
+                    <p class="info-donation-text">
+                        Untuk melakukan donasi sesuai request ini, silakan hubungi admin melalui WhatsApp:
+                    </p>
+                    @if($item->nomor_telepon)
+                    <a href="https://wa.me/{{ $item->nomor_telepon }}?text=Halo,%20saya%20tertarik%20dengan%20donasi%20{{ urlencode($item->nama_donasi) }}" 
+                       target="_blank" 
+                       class="btn-contact-admin">
+                        <i class="bi bi-whatsapp"></i> Hubungi Pengirim
+                    </a>
+                    @endif
                 </div>
             </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+            </div>
+
         </div>
+    </div>
+</div>
         @endforeach
     </div>
     @endif

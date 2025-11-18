@@ -28,109 +28,166 @@
 <body class="bg-gray-50">
 
     <!-- Navbar -->
-    <nav class="bg-white shadow-sm sticky top-0 z-50">
-        <div class="container mx-auto px-4">
-            <div class="flex justify-between items-center h-16">
-                <!-- Logo -->
-                <div class="flex items-center">
-                    <a href="{{ route('home.dashboard') }}" class="flex items-center space-x-2">
-                        <div class="w-9 h-9 bg-blue-500 rounded-lg flex items-center justify-center">
-                            <i class="fas fa-hand-holding-heart text-white"></i>
-                        </div>
-                        <span class="text-xl font-bold text-gray-900">Peduli Kasih</span>
+<!-- Navbar -->
+<nav class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="container mx-auto px-4">
+        <div class="flex justify-between items-center h-16">
+            <!-- Logo -->
+            <div class="flex items-center">
+                <a href="{{ route('home.dashboard') }}" class="flex items-center space-x-2">
+                    <div class="w-9 h-9 bg-blue-500 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-hand-holding-heart text-white"></i>
+                    </div>
+                    <span class="text-xl font-bold text-gray-900">Peduli Kasih</span>
+                </a>
+            </div>
+
+            <!-- Navigation Links -->
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="{{ route('home.dashboard') }}" 
+                   class="{{ Request::routeIs('home.dashboard') ? 'text-blue-600 font-semibold' : 'text-gray-600 hover:text-gray-900' }} transition">
+                    Beranda
+                </a>
+                
+                @guest
+                <a href="javascript:void(0);" 
+                   onclick="showLoginAlert()" 
+                   class="text-gray-600 hover:text-gray-900 transition">
+                    Donasi
+                </a>
+                @else
+                <a href="{{ route('donasi.index') }}" 
+                   class="{{ Request::routeIs('donasi.index') || Request::routeIs('donasi.filter') ? 'text-blue-600 font-semibold' : 'text-gray-600 hover:text-gray-900' }} transition">
+                    Donasi
+                </a>
+                @endguest
+
+                @guest
+                <a href="javascript:void(0);" 
+                   onclick="showLoginAlert()" 
+                   class="text-gray-600 hover:text-gray-900 transition">
+                    Request Donasi
+                </a>
+                @else
+                <a href="{{ route('request-donasi.landing') }}" 
+                   class="{{ Request::routeIs('request-donasi.landing') || Request::routeIs('donasi.create') || Request::routeIs('donasi.edit') ? 'text-blue-600 font-semibold' : 'text-gray-600 hover:text-gray-900' }} transition">
+                    Request Donasi
+                </a>
+                @endguest
+
+                @guest
+                <a href="javascript:void(0);" 
+                   onclick="showLoginAlert()" 
+                   class="text-gray-600 hover:text-gray-900 transition">
+                    Riwayat
+                </a>
+                @else
+                <a href="#" 
+                   class="{{ Request::routeIs('riwayat.*') ? 'text-blue-600 font-semibold' : 'text-gray-600 hover:text-gray-900' }} transition">
+                    Riwayat
+                </a>
+                @endguest
+            </div>
+
+            <!-- Auth Buttons -->
+            <div class="hidden md:flex items-center space-x-3">
+                @guest
+                    <a href="{{ route('login') }}" 
+                    class="px-5 py-2 text-blue-600 font-medium hover:bg-blue-50 rounded-lg transition">
+                    Login / Registrasi
                     </a>
-                </div>
-
-                <!-- Navigation Links -->
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="{{ route('home.dashboard') }}" class="{{ Request::routeIs('home.dashboard') ? 'text-blue-600 font-bold' : 'text-gray-600' }} hover:text-blue-700 transition">Beranda </a>
-                    @guest
-                        <a href="javascript:void(0);" onclick="showLoginAlert()" class="text-gray-600 hover:text-gray-900 transition">Donasi</a>
+                @else
+                    <a href="{{ route('home.show') }}" 
+                    class="flex items-center space-x-2 py-2 hover:bg-gray-100 rounded-lg transition px-2 {{ Request::routeIs('home.show') ? 'bg-blue-50' : '' }}">
+                    
+                    @if(auth()->user()->avatar && file_exists(public_path(auth()->user()->avatar)))
+                        <img src="{{ asset(auth()->user()->avatar) }}" 
+                                alt="Profile" 
+                                class="w-8 h-8 rounded-full object-cover border border-gray-300">
                     @else
-                        <a href="{{ route('donasi.index') }}" class="{{ Request::routeIs('donasi.index') ? 'text-blue-600 font-bold' : 'text-gray-600' }} hover:text-gray-900 transition">
-                            Donasi
-                        </a>
-                    @endguest
-
-                    @guest
-                        <a href="javascript:void(0);" onclick="showLoginAlert()" class="text-gray-600 hover:text-gray-900 transition">Request Donasi</a>
-                    @else
-                        <a href="{{ route('request-donasi.landing') }}" class="{{ Request::routeIs('request-donasi.landing') ? 'text-blue-600 font-bold' : 'text-gray-600' }} hover:text-gray-900 transition">
-                            Request Donasi
-                        </a>
-                    @endguest
-
-                    @guest
-                        <a href="javascript:void(0);" onclick="showLoginAlert()" class="text-gray-600 hover:text-gray-900 transition">
-                            Riwayat
-                        </a>
-                    @else
-                        <a href="#" class="{{ Request::is('riwayat*') ? 'text-blue-600 font-bold' : 'text-gray-600' }} hover:text-gray-900 transition">
-                            Riwayat
-                        </a>
-                    @endguest
-
-                </div>
-
-                <!-- Auth Buttons -->
-                <div class="hidden md:flex items-center space-x-3">
-                    @guest
-                        <a href="{{ route('login') }}" 
-                        class="px-5 py-2 text-blue-600 font-medium hover:bg-blue-50 rounded-lg transition">
-                        Login / Registrasi
-                        </a>
-                    @else
-                        <a href="{{ route('home.show') }}" 
-                        class="flex items-center space-x-2 py-2 hover:bg-gray-100 rounded-lg transition px-2">
-                        
-                        @if(auth()->user()->avatar && file_exists(public_path(auth()->user()->avatar)))
-                            <img src="{{ asset(auth()->user()->avatar) }}" 
-                                    alt="Profile" 
-                                    class="w-8 h-8 rounded-full object-cover border border-gray-300">
-                        @else
-                            <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-                                <span class="text-white text-sm font-semibold">
-                                    {{ strtoupper(substr(auth()->user()->nama, 0, 1)) }}
-                                </span>
-                            </div>
-                        @endif
-
-                        <span class="text-gray-700 font-medium">{{ auth()->user()->nama }}</span>
-                        </a>
-                    @endguest
-                </div>
-
-                <!-- Mobile Menu Button -->
-                <div class="md:hidden">
-                    <button id="mobile-menu-button" class="text-gray-600 hover:text-gray-900 focus:outline-none">
-                        <i class="fas fa-bars text-xl"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
-            <div class="px-4 py-3 space-y-3">
-                <a href="#" class="block text-blue-600 font-semibold py-2">Beranda</a>
-                <a href="#" class="block text-gray-600 py-2">Donasi</a>
-                <a href="{{ route('request-donasi.landing') }}" class="block text-gray-600 py-2">Request Donasi</a>
-                <a href="#" class="block text-gray-600 py-2">Riwayat</a>
-                <div class="pt-3 border-t">
-                    @guest('pengguna')
-                        <a href="{{ route('login.form') }}" class="block w-full text-center px-4 py-2 bg-blue-500 text-white rounded-lg font-medium">Login / Registrasi</a>
-                    @else
-                        <div class="flex items-center space-x-2 py-2">
-                            <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-                                <span class="text-white text-sm font-semibold">{{ substr(auth()->user()->nama, 0, 1) }}</span>
-                            </div>
-                            <span class="text-gray-700 font-medium">{{ auth()->user()->nama }}</span>
+                        <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+                            <span class="text-white text-sm font-semibold">
+                                {{ strtoupper(substr(auth()->user()->nama, 0, 1)) }}
+                            </span>
                         </div>
-                    @endguest
-                </div>
+                    @endif
+
+                    <span class="text-gray-700 font-medium">{{ auth()->user()->nama }}</span>
+                    </a>
+                @endguest
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <div class="md:hidden">
+                <button id="mobile-menu-button" class="text-gray-600 hover:text-gray-900 focus:outline-none">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
             </div>
         </div>
-    </nav>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+        <div class="px-4 py-3 space-y-3">
+            <a href="{{ route('home.dashboard') }}" 
+               class="block py-2 {{ Request::routeIs('home.dashboard') ? 'text-blue-600 font-semibold' : 'text-gray-600' }}">
+                Beranda
+            </a>
+            
+            @guest
+            <a href="javascript:void(0);" 
+               onclick="showLoginAlert()" 
+               class="block text-gray-600 py-2">
+                Donasi
+            </a>
+            @else
+            <a href="{{ route('donasi.index') }}" 
+               class="block py-2 {{ Request::routeIs('donasi.index') || Request::routeIs('donasi.filter') ? 'text-blue-600 font-semibold' : 'text-gray-600' }}">
+                Donasi
+            </a>
+            @endguest
+
+            @guest
+            <a href="javascript:void(0);" 
+               onclick="showLoginAlert()" 
+               class="block text-gray-600 py-2">
+                Request Donasi
+            </a>
+            @else
+            <a href="{{ route('request-donasi.landing') }}" 
+               class="block py-2 {{ Request::routeIs('request-donasi.landing') || Request::routeIs('donasi.create') || Request::routeIs('donasi.edit') ? 'text-blue-600 font-semibold' : 'text-gray-600' }}">
+                Request Donasi
+            </a>
+            @endguest
+
+            @guest
+            <a href="javascript:void(0);" 
+               onclick="showLoginAlert()" 
+               class="block text-gray-600 py-2">
+                Riwayat
+            </a>
+            @else
+            <a href="#" 
+               class="block py-2 {{ Request::routeIs('riwayat.*') ? 'text-blue-600 font-semibold' : 'text-gray-600' }}">
+                Riwayat
+            </a>
+            @endguest
+            
+            <div class="pt-3 border-t">
+                @guest('pengguna')
+                    <a href="{{ route('login.form') }}" class="block w-full text-center px-4 py-2 bg-blue-500 text-white rounded-lg font-medium">Login / Registrasi</a>
+                @else
+                    <div class="flex items-center space-x-2 py-2">
+                        <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+                            <span class="text-white text-sm font-semibold">{{ substr(auth()->user()->nama, 0, 1) }}</span>
+                        </div>
+                        <span class="text-gray-700 font-medium">{{ auth()->user()->nama }}</span>
+                    </div>
+                @endguest
+            </div>
+        </div>
+    </div>
+</nav>
     
     <!-- Main Content -->
     <main>
