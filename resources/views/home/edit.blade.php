@@ -65,7 +65,7 @@
                     <div class="ml-6 flex-1">
                         <h2 class="text-2xl font-bold text-gray-900">{{ auth()->user()->nama }}</h2>
                         <p class="text-gray-600">{{ auth()->user()->email }}</p>
-                        <p class="text-sm text-gray-500 mt-1">Bergabung sejak {{ date('F Y', strtotime(auth()->user()->created_at)) }}</p>
+                        <p class="text-sm text-gray-500 mt-1">Bergabung sejak {{ \Carbon\Carbon::parse($user->created_at)->locale('id')->translatedFormat('F Y') }}</p></p>
                     </div>
                 </div>
 

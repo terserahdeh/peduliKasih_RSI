@@ -36,6 +36,10 @@
                     <a href="#" class="{{ Request::routeIs('admin.riwayat') ? 'text-blue-500 font-bold' : 'text-gray-600 font-medium hover:text-blue-500 transition' }}">
                         Riwayat
                     </a>
+                     
+                    <a href="{{ route('admin.komentar.index') }}" class="{{ Request::routeIs('admin.komentar.index') ? 'text-blue-500 font-bold' : 'text-gray-600 font-medium hover:text-blue-500 transition' }}">
+                        Komentar
+                    </a>
 
                     <a href="{{ route('admin.edukasintips') }}" class="{{ Request::routeIs('admin.edukasintips') ? 'text-blue-500 font-bold' : 'text-gray-600 font-medium hover:text-blue-500 transition' }}">
                         Edukasi & Tips

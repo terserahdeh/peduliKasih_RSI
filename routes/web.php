@@ -13,6 +13,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\AdminFaqController;
 use App\Http\Controllers\UpvoteController;
+use App\Http\Controllers\KomentarController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -109,6 +111,11 @@ Route::middleware(['auth:pengguna'])->group(function () {
         Route::delete('/{id}', [DonasiController::class, 'destroy'])->name('destroy');
 
     });
+
+    // Komentar
+        Route::post('/donasi/{id}/komentar', [KomentarController::class, 'store'])->name('komentar.store');
+        Route::put('/komentar/{id}', [KomentarController::class, 'update'])->name('komentar.update');
+        Route::delete('/komentar/{id}', [KomentarController::class, 'destroy'])->name('komentar.destroy');
 });
 
 
@@ -147,6 +154,11 @@ Route::prefix('admin')->middleware(['auth:admin'])->group(function () {
     Route::get('/edukasi', [TipsnEdukasiController::class, 'index'])->name('admin.edukasintips');
     Route::get('/edukasi/{edukasintip}/edit', [TipsnEdukasiController::class, 'edit'])->name('admin.edukasintips.edit');
     Route::post('/edukasi/{edukasintip}', [TipsnEdukasiController::class, 'update'])->name('admin.edukasintips.update');
+
+    // Komentar Management
+    Route::get('/komentar', [KomentarController::class, 'adminIndex'])->name('admin.komentar.index');
+    Route::delete('/admin/komentar/{id}', [KomentarController::class, 'destroyAdmin'])->name('admin.komentar.delete');
+
 
     /*
     |--------------------------------------------------------------------------

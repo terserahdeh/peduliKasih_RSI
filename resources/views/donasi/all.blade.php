@@ -515,6 +515,251 @@
     color: white;
 }
 
+/* ===================== COMMENTS SECTION ===================== */
+.comments-section {
+    background: #F9FAFB;
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.comments-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #E5E7EB;
+}
+
+.comments-header i {
+    font-size: 20px;
+    color: #3B82F6;
+}
+
+.comments-header h5 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1F2937;
+    margin: 0;
+}
+
+.comments-subtitle {
+    font-size: 13px;
+    color: #6B7280;
+    margin: -8px 0 16px 30px;
+}
+
+/* Comment Form */
+.comment-form {
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 20px;
+    border: 1px solid #E5E7EB;
+}
+
+.comment-input-wrapper {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.comment-user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.comment-input-container {
+    flex: 1;
+}
+
+.comment-textarea {
+    width: 100%;
+    border: 1px solid #E5E7EB;
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 14px;
+    color: #1F2937;
+    resize: vertical;
+    min-height: 80px;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.comment-textarea:focus {
+    outline: none;
+    border-color: #3B82F6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.comment-textarea::placeholder {
+    color: #9CA3AF;
+}
+
+.comment-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.btn-comment-submit {
+    background: #3B82F6;
+    color: white;
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-comment-submit:hover {
+    background: #2563EB;
+    transform: translateY(-1px);
+}
+
+.btn-comment-submit:disabled {
+    background: #D1D5DB;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Comments List */
+.comments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.comment-item {
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid #E5E7EB;
+    transition: all 0.3s ease;
+}
+
+.comment-item:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.comment-header-info {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.comment-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.comment-user-info {
+    flex: 1;
+}
+
+.comment-username {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1F2937;
+    margin-bottom: 2px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.badge-admin {
+    background: #DBEAFE;
+    color: #1E40AF;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.comment-time {
+    font-size: 12px;
+    color: #9CA3AF;
+}
+
+.comment-content {
+    font-size: 14px;
+    color: #4B5563;
+    line-height: 1.6;
+    margin-left: 52px;
+}
+
+.comment-actions-buttons {
+    display: flex;
+    gap: 16px;
+    margin-left: 52px;
+    margin-top: 10px;
+}
+
+.comment-action-btn {
+    background: transparent;
+    border: none;
+    color: #6B7280;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.comment-action-btn:hover {
+    background: #F3F4F6;
+    color: #3B82F6;
+}
+
+.comment-action-btn i {
+    font-size: 14px;
+}
+
+.empty-comments {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.empty-comments i {
+    font-size: 48px;
+    color: #D1D5DB;
+    margin-bottom: 12px;
+}
+
+.empty-comments p {
+    font-size: 14px;
+    color: #9CA3AF;
+    margin: 0;
+}
+
 /* Modal Footer - Hide it */
 .modal-footer {
     display: none !important;
@@ -775,6 +1020,147 @@
                 </div>
             </div>
 
+             <!-- ===================== COMMENTS SECTION ===================== -->
+                        <div class="comments-section">
+                            <div class="comments-header">
+                                <i class="bi bi-chat-left-text-fill"></i>
+                                <h5>Komentar & Diskusi</h5>
+                            </div>
+                            <p class="comments-subtitle">Diskusikan lebih lanjut tentang donasi ini</p>
+
+                            <!-- Comment Form (Only for authenticated users) -->
+                            @auth('pengguna')
+                            <form action="{{ route('komentar.store', $item->id_donasi) }}" method="POST" class="comment-form">
+                                @csrf
+                                <div class="comment-input-wrapper">
+                                    <div class="comment-user-avatar">
+                                        <img src="{{ auth('pengguna')->user()->avatar ? asset(auth('pengguna')->user()->avatar) : asset('images/default-avatar.jpg') }}"
+                                            alt="{{ auth('pengguna')->user()->username }}" class="rounded-full w-10 h-10 object-cover">
+                                    </div>
+
+                                    <div class="comment-input-container">
+                                        <textarea 
+                                            name="isi_komentar" 
+                                            class="comment-textarea" 
+                                            placeholder="Tulis komentar atau pertanyaan Anda..." 
+                                            required
+                                            minlength="3"
+                                            maxlength="500"></textarea>
+                                        <div class="comment-actions">
+                                            <button type="submit" class="btn-comment-submit">
+                                                <i class="bi bi-send-fill"></i>
+                                                Kirim Komentar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            @else
+                            <div class="comment-form">
+                                <p style="text-align: center; color: #6B7280; margin: 0; font-size: 14px;">
+                                    <i class="bi bi-lock-fill"></i> 
+                                    Silakan <a href="{{ route('login') }}" style="color: #3B82F6; font-weight: 600;">login</a> untuk memberikan komentar
+                                </p>
+                            </div>
+                            @endauth
+
+                            <!-- Comments List -->
+                            <div class="comments-list">
+                                @foreach ($item->komentar()->whereNull('id_parent')->with('user', 'replies.user')->get() as $komen)
+                                    <div class="comment-item">
+                                        <div class="comment-header-info">
+                                            <div class="comment-user-avatar">
+                                                <img src="{{ $komen->user && $komen->user->avatar ? asset($komen->user->avatar) : asset('images/default-avatar.jpg') }}"
+                                                    alt="{{ $komen->user->username ?? 'User' }}" class="rounded-full w-10 h-10 object-cover">
+
+                                            </div>
+                                            <div class="comment-user-info">
+                                                <div class="comment-username">{{ $komen->user->username }}</div>
+                                                @if($komen->user->is_admin)
+                                                    <span class="badge-admin">ADMIN</span>
+                                                @endif
+                                            </div>
+                                            <div class="comment-time">{{ $komen->created_at->diffForHumans() }}</div>
+                                        </div>
+                                        <p class="comment-content" id="comment-text-{{ $komen->id_komentar }}">
+                                            {{ $komen->isi_komentar }}
+                                        </p>
+
+                                        <!-- Inline Edit Form (hidden by default) -->
+                                        <div class="comment-edit-form" id="edit-form-{{ $komen->id_komentar }}" style="display:none; margin-top:10px;">
+                                            <textarea id="edit-textarea-{{ $komen->id_komentar }}" 
+                                                    class="comment-textarea"
+                                                    style="width:100%; min-height:70px;">{{ $komen->isi_komentar }}</textarea>
+
+                                            <div style="margin-top:8px; display:flex; gap:10px;">
+                                                <button class="btn-save-edit" data-id="{{ $komen->id_komentar }}"
+                                                    style="background:#059669; color:white; border:none; padding:5px 12px; border-radius:6px;">
+                                                    Simpan
+                                                </button>
+
+                                                <button class="btn-cancel-edit" data-id="{{ $komen->id_komentar }}"
+                                                    style="background:#9CA3AF; color:white; border:none; padding:5px 12px; border-radius:6px;">
+                                                    Batal
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div class="comment-actions-buttons">
+                                            @auth('pengguna')
+                                            <!-- Tombol balas -->
+                                            <button class="comment-action-btn btn-reply" data-comment-id="{{ $komen->id_komentar }}">
+                                                <i class="bi bi-reply-fill"></i> Balas
+                                            </button>
+
+                                            <!-- Hanya tampil jika pemilik komentar -->
+                                            @if ($komen->id_akun == auth('pengguna')->id())
+                                                <!-- Tombol edit -->
+                                                <button class="comment-action-btn btn-edit" data-comment-id="{{ $komen->id_komentar }}">
+                                                    <i class="bi bi-pencil-square"></i> Edit
+                                                </button>
+
+                                                <!-- Tombol hapus -->
+                                                <form action="{{ route('komentar.destroy', $komen->id_komentar) }}"
+                                                    method="POST"
+                                                    style="display:inline-block;"
+                                                    onsubmit="return confirm('Yakin ingin menghapus komentar ini?');">
+
+                                                    @csrf
+                                                    @method('DELETE')
+
+                                                    <button type="submit" class="comment-action-btn btn-delete">
+                                                        <i class="bi bi-trash-fill"></i> Hapus
+                                                    </button>
+                                                </form>
+                                                @endif
+                                            @endauth
+                                        </div>
+
+                                        {{-- Tampilkan balasan --}}
+                                        @foreach ($komen->replies as $reply)
+                                            <div class="comment-item" style="margin-left: 40px;">
+                                                <div class="comment-header-info">
+                                                    <div class="comment-avatar">
+                                                        <img src="{{ $reply->user->avatar ? asset($reply->user->avatar) : asset('images/default-avatar.jpg') }}" 
+                                                        alt="{{ $reply->user->username }}" class="rounded-full w-10 h-10 object-cover">
+                                                    </div>
+                                                    <div class="comment-user-info">
+                                                        <div class="comment-username">{{ $reply->user->username }}</div>
+                                                        @if($reply->user->is_admin)
+                                                            <span class="badge-admin">ADMIN</span>
+                                                        @endif
+                                                    </div>
+                                                    <div class="comment-time">{{ $reply->created_at->diffForHumans() }}</div>
+                                                </div>
+                                                <p class="comment-content">{{ $reply->isi_komentar }}</p>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        <!-- ===================== END COMMENTS SECTION ===================== -->
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
             </div>
@@ -789,4 +1175,105 @@
 
 {{-- Bootstrap JS --}}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+{{-- Reply Comment Script --}}
+<script>
+/* ============================================================
+   ========== HANDLING BALAS KOMENTAR (REPLY FORM) ============
+   ============================================================ */
+document.querySelectorAll('.btn-reply').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const commentId = btn.dataset.commentId;
+
+        // cek apakah form reply sudah ada
+        if (!document.getElementById('reply-form-' + commentId)) {
+            const form = document.createElement('form');
+            form.id = 'reply-form-' + commentId;
+            form.action = '{{ route("komentar.store", $item->id_donasi) }}';
+            form.method = 'POST';
+            form.innerHTML = `
+                @csrf
+                <input type="hidden" name="id_parent" value="${commentId}">
+                <textarea name="isi_komentar" class="comment-textarea" placeholder="Tulis balasan..." required></textarea>
+                <div class="comment-actions">
+                    <button type="submit" class="btn-comment-submit">
+                        <i class="bi bi-send-fill"></i> Kirim Balasan
+                    </button>
+                </div>
+            `;
+            btn.parentElement.appendChild(form);
+
+            // Fokus ke textarea setelah dibuat
+            form.querySelector('textarea').focus();
+        }
+    });
+});
+
+
+
+/* ============================================================
+   ========== HANDLING EDIT KOMENTAR (INLINE EDIT) ============
+   ============================================================ */
+document.querySelectorAll('.btn-edit').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const id = btn.dataset.commentId;
+
+        // elemen tampilan komentar
+        const commentText = document.getElementById('comment-text-' + id);
+        // elemen form edit
+        const editForm = document.getElementById('edit-form-' + id);
+
+        // tampilkan form edit + sembunyikan teks
+        commentText.style.display = "none";
+        editForm.style.display = "block";
+    });
+});
+
+// tombol batal edit
+document.querySelectorAll('.btn-cancel-edit').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const id = btn.dataset.id;
+
+        const commentText = document.getElementById('comment-text-' + id);
+        const editForm = document.getElementById('edit-form-' + id);
+
+        // sembunyikan form edit + tampilkan teks kembali
+        editForm.style.display = "none";
+        commentText.style.display = "block";
+    });
+});
+
+// tombol simpan edit
+document.querySelectorAll('.btn-save-edit').forEach(btn => {
+    btn.addEventListener('click', async () => {
+        const id = btn.dataset.id;
+        const textarea = document.getElementById('edit-textarea-' + id);
+        const newContent = textarea.value;
+
+        // kirim AJAX PUT request
+        const response = await fetch(`/komentar/${id}`, {
+            method: 'PUT',
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+            },
+            body: JSON.stringify({
+                isi_komentar: newContent
+            })
+        });
+
+        if (response.ok) {
+            // update teks di UI tanpa reload
+            const commentText = document.getElementById('comment-text-' + id);
+            commentText.textContent = newContent;
+
+            // sembunyikan editor
+            document.getElementById('edit-form-' + id).style.display = "none";
+            commentText.style.display = "block";
+        } else {
+            alert("Gagal menyimpan perubahan.");
+        }
+    });
+});
+</script>
 @endsection

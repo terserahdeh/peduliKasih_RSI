@@ -49,4 +49,9 @@ class Donasi extends Model
         // dan kirimkan data $donasi ke view tersebut.
         return view('donasi.show', compact('donasi'));
     }
+
+    public function komentar() {
+        return $this->hasMany(Komentar::class, 'id_donasi', 'id_donasi')->latest();
+    }
+
 }

@@ -22,7 +22,7 @@
                     </div>
 
                     <!-- User Info -->
-                    <div class="text-center md:text-left">
+                    <div class="text-left">
                         <h1 class="text-4xl font-bold text-gray-900 mb-3">{{ $user->nama }}</h1>
                         <p class="text-gray-600 mb-2 text-lg">
                             <i class="far fa-envelope mr-2"></i>{{ $user->email }}
