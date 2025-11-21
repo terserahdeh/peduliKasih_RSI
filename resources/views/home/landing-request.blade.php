@@ -14,7 +14,7 @@
                     <h1 class="text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
                         Jembatani kepedulian, 
                         <span class="text-blue-500">untuk kebutuhan anda</span>
-                    </h1>z
+                    </h1>
                     <p class="text-gray-600 text-lg mb-8 leading-relaxed">
                         Request Donasi Anda di sini, untuk menjadi jembatan yang membawa kehangatan dan pertolongan dari ribuan hati yang peduli.
                     </p>
@@ -37,8 +37,8 @@
                 <div class="lg:w-1/2 flex justify-center">
                     <img src="{{ asset('images/request-illustration.png') }}" 
                          alt="Request Donasi" 
-                         class="w-full max-w-md rounded-2xl"
-                         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%23ddd%22 width=%22400%22 height=%22300%22/%3E%3Ctext fill=%22%23999%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 font-size=%2220%22%3EIllustration%3C/text%3E%3C/svg%3E'">
+                         class="w-full max-w-md rounded-2xl shadow-lg"
+                         onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22400%22%3E%3Crect fill=%22%23e5e7eb%22 width=%22600%22 height=%22400%22 rx=%2216%22/%3E%3Ctext fill=%22%239ca3af%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 font-size=%2224%22 font-family=%22Arial%22%3EIllustration%3C/text%3E%3C/svg%3E';">
                 </div>
             </div>
         </div>
@@ -64,9 +64,9 @@
                 $previewRequests = \App\Models\RequestDonasi::with('pengguna')
                 ->withCount('upvote')
                 ->where('hasil_verif', 'disetujui')
-                ->orderByRaw('CASE WHEN upvote_count = 0 THEN 1 ELSE 0 END') // Upvote >0 dulu
-                ->orderBy('upvote_count', 'desc') // lalu sort by jumlah upvote
-                ->orderBy('tanggal_upload', 'desc') // kalau upvote 0, urutkan by tanggal
+                ->orderByRaw('CASE WHEN upvote_count = 0 THEN 1 ELSE 0 END')
+                ->orderBy('upvote_count', 'desc')
+                ->orderBy('tanggal_upload', 'desc')
                 ->get();
             @endphp
 
@@ -262,7 +262,7 @@ function confirmDelete(id) {
 
 function scrollCards(direction) {
     const container = document.getElementById('cardsContainer');
-    const scrollAmount = 336; // width of card (320px) + gap (16px)
+    const scrollAmount = 336;
     
     if (direction === 'left') {
         container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
@@ -271,21 +271,19 @@ function scrollCards(direction) {
     }
 }
 
-// Close on outside click
 document.getElementById('detailModal')?.addEventListener('click', function(e) {
     if(e.target === this) closeModal();
 });
 
-// Close with ESC key
 document.addEventListener('keydown', function(e) {
     if(e.key === 'Escape') closeModal();
 });
 
-// Mobile menu toggle
 document.getElementById('mobile-menu-button')?.addEventListener('click', () => {
     const menu = document.getElementById('mobile-menu');
     menu.classList.toggle('hidden');
 });
+
 function toggleUpvote(id) {
     const token = '{{ csrf_token() }}';
     const heartIcon = document.getElementById(`heart-icon-${id}`);
@@ -306,10 +304,8 @@ function toggleUpvote(id) {
             return;
         }
 
-        // Update count safely
         countSpan.textContent = `+${data.count}`;
 
-        // Update heart style (clicked vs unclicked)
         if (data.status === 'added') {
             heartIcon.classList.remove('text-gray-400', 'hover:text-red-400');
             heartIcon.classList.add('text-red-500');
@@ -320,7 +316,6 @@ function toggleUpvote(id) {
             heartIcon.classList.add('text-gray-400', 'hover:text-red-400');
         }
 
-        // Update progress bar
         const width = Math.min(data.count / 2, 100);
         progressBar.style.width = `${width}%`;
     })
