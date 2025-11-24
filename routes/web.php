@@ -14,6 +14,8 @@ use App\Http\Controllers\FaqController;
 use App\Http\Controllers\AdminFaqController;
 use App\Http\Controllers\UpvoteController;
 use App\Http\Controllers\KomentarController;
+use App\Http\Controllers\RiwayatController;
+
 
 
 /*
@@ -116,6 +118,9 @@ Route::middleware(['auth:pengguna'])->group(function () {
         Route::post('/donasi/{id}/komentar', [KomentarController::class, 'store'])->name('komentar.store');
         Route::put('/komentar/{id}', [KomentarController::class, 'update'])->name('komentar.update');
         Route::delete('/komentar/{id}', [KomentarController::class, 'destroy'])->name('komentar.destroy');
+
+    // Riwayat
+        Route::get('/home/riwayat', [RiwayatController::class, 'index'])->name('home.riwayat');
 });
 
 

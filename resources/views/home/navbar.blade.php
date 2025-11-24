@@ -82,7 +82,7 @@
                     Riwayat
                 </a>
                 @else
-                <a href="#" 
+                <a href="{{ route('home.riwayat') }}" 
                    class="{{ Request::routeIs('riwayat.*') ? 'text-blue-600 font-semibold' : 'text-gray-600 hover:text-gray-900' }} transition">
                     Riwayat
                 </a>
