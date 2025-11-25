@@ -164,7 +164,7 @@
         </div>
         @endif
 
-        <form action="{{ route('donasi.update', $donasi->id_donasi) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('donasi.request.update', $donasi->id_donasi) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 

@@ -167,8 +167,6 @@
     position: absolute;
     top: 10px;
     right: 10px;
-    background: #FBBF24;
-    color: #78350F;
     font-size: 12px;
     font-weight: 600;
     padding: 4px 10px;
@@ -878,8 +876,14 @@
         <div class="donation-card">
             <div class="card-image-wrapper">
                 <img src="{{ asset('foto/' . $item->foto) }}" class="card-image">
-                @if($item->status_request != 'Terpenuhi')
-                    <span class="card-status-badge">Belum Terpenuhi</span>
+                @if($item->status_donasi === 'tersalurkan')
+                    <span class="card-status-badge bg-green-500 text-white px-3 py-1 rounded-full text-xs font-semibold flex items-center">
+                        <i class="fas fa-check mr-1"></i> Tersalurkan
+                    </span>
+                @else
+                    <span class="card-status-badge bg-orange-500 text-white px-3 py-1 rounded-full text-xs font-semibold flex items-center">
+                        <i class="fas fa-clock mr-1"></i> Tersedia
+                    </span>
                 @endif
             </div>
 
@@ -985,8 +989,8 @@
                 @auth('pengguna')
                     @if($item->username === auth()->user()->username)
                     <div class="action-buttons">
-                        <a href="{{ route('donasi.edit', $item->id_donasi) }}" class="btn-edit-request">
-                            <i class="bi bi-pencil-fill"></i> Edit Request
+                        <a href="{{ route('donasi.request.edit', $item->id_donasi) }}" class="btn-edit-request">
+                            <i class="bi bi-pencil-fill"></i> Edit Donasi
                         </a>
                         <form action="{{ route('donasi.destroy', $item->id_donasi) }}" method="POST" 
                             style="flex: 1; margin: 0;"
@@ -994,7 +998,7 @@
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn-delete-request" style="width: 100%;">
-                                <i class="bi bi-trash-fill"></i> Hapus Request
+                                <i class="bi bi-trash-fill"></i> Hapus Donasi
                             </button>
                         </form>
                     </div>
@@ -1108,7 +1112,7 @@
                                         <div class="comment-actions-buttons">
                                             @auth('pengguna')
                                             <!-- Tombol balas -->
-                                            <button class="comment-action-btn btn-reply" data-comment-id="{{ $komen->id_komentar }}">
+                                            <button class="comment-action-btn btn-reply" data-comment-id="{{ $komen->id_komentar }}" data-action="{{ isset($item) ? route('komentar.store', $item->id_donasi) : '' }}">
                                                 <i class="bi bi-reply-fill"></i> Balas
                                             </button>
 
@@ -1177,6 +1181,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 {{-- Reply Comment Script --}}
+
 <script>
 /* ============================================================
    ========== HANDLING BALAS KOMENTAR (REPLY FORM) ============
@@ -1185,11 +1190,13 @@ document.querySelectorAll('.btn-reply').forEach(btn => {
     btn.addEventListener('click', () => {
         const commentId = btn.dataset.commentId;
 
+        if (!actionUrl) return;
+
         // cek apakah form reply sudah ada
         if (!document.getElementById('reply-form-' + commentId)) {
             const form = document.createElement('form');
             form.id = 'reply-form-' + commentId;
-            form.action = '{{ route("komentar.store", $item->id_donasi) }}';
+            form.action = actionUrl;
             form.method = 'POST';
             form.innerHTML = `
                 @csrf

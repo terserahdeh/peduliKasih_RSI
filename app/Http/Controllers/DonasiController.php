@@ -59,9 +59,9 @@ class DonasiController extends Controller
     }
 
     /** 🟧 Form edit donasi */
-    public function edit($id)
+    public function edit($id_donasi)
     {
-        $donasi = Donasi::where('id_donasi', $id)
+        $donasi = Donasi::where('id_donasi', $id_donasi)
                         ->where('username', auth()->user()->username)
                         ->firstOrFail();
 
@@ -79,9 +79,9 @@ class DonasiController extends Controller
     }
 
     /** 🟨 Ajukan perubahan ke admin */
-    public function requestUpdate(Request $request, $id)
+    public function requestUpdate(Request $request, $id_donasi)
     {
-        $donasi = Donasi::where('id_donasi', $id)
+        $donasi = Donasi::where('id_donasi', $id_donasi)
                         ->where('username', auth()->user()->username)
                         ->firstOrFail();
 
@@ -102,15 +102,12 @@ class DonasiController extends Controller
             $fotoDraftPath = $filename;
         }
 
-        $donasi->update([
-            'nama_donasi_draft'   => $validated['nama_donasi'],
-            'jenis_barang_draft'  => $validated['jenis_barang'],
-            'jumlah_barang_draft' => $validated['jumlah_barang'],
-            'deskripsi_draft'     => $validated['deskripsi'],
-            'foto_draft'          => $fotoDraftPath,
-            'nomor_telepon'       => $validated['nomor_telepon'] ?? $donasi->nomor_telepon,
-            'status_edit'         => 'menunggu_edit',
-        ]);
+        $donasi['hasil_verif'] = 'menunggu';
+        $donasi['status_donasi'] = 'tersedia';
+        
+        $donasi->update($validated);
+
+        
 
         return redirect()->route('donasi.index')
                          ->with('success', 'Permintaan perubahan donasi telah dikirim.');

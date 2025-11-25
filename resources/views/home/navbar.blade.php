@@ -83,7 +83,7 @@
                 </a>
                 @else
                 <a href="{{ route('home.riwayat') }}" 
-                   class="{{ Request::routeIs('riwayat.*') ? 'text-blue-600 font-semibold' : 'text-gray-600 hover:text-gray-900' }} transition">
+                   class="{{ Request::routeIs('home.riwayat') ? 'text-blue-600 font-semibold' : 'text-gray-600 hover:text-gray-900' }} transition">
                     Riwayat
                 </a>
                 @endguest
@@ -167,8 +167,8 @@
                 Riwayat
             </a>
             @else
-            <a href="#" 
-               class="block py-2 {{ Request::routeIs('riwayat.*') ? 'text-blue-600 font-semibold' : 'text-gray-600' }}">
+            <a href="{{ route('home.riwayat') }}" 
+               class="block py-2 {{ Request::routeIs('home.riwayat') ? '!text-blue-600 font-semibold' : 'text-gray-600' }}">
                 Riwayat
             </a>
             @endguest
@@ -215,10 +215,50 @@
                 <div>
                     <h3 class="font-semibold mb-4">Menu Utama</h3>
                     <ul class="space-y-2 text-gray-400 text-sm">
-                        <li><a href="#" class="hover:text-white transition">Beranda</a></li>
-                        <li><a href="#" class="hover:text-white transition">Donasi</a></li>
-                        <li><a href="#" class="hover:text-white transition">Request Donasi</a></li>
-                        <li><a href="#" class="hover:text-white transition">Riwayat</a></li>
+                        <li>
+                            <a href="{{ route('home.dashboard') }}" class="hover:text-white transition">
+                                Beranda
+                            </a>
+                        </li>
+
+                        {{-- Donasi --}}
+                        <li>
+                            @guest
+                                <a href="javascript:void(0);" onclick="showLoginAlert()" class="hover:text-white transition">
+                                    Donasi
+                                </a>
+                            @else
+                                <a href="{{ route('donasi.index') }}" class="hover:text-white transition">
+                                    Donasi
+                                </a>
+                            @endguest
+                        </li>
+
+                        {{-- Request Donasi --}}
+                        <li>
+                            @guest
+                                <a href="javascript:void(0);" onclick="showLoginAlert()" class="hover:text-white transition">
+                                    Request Donasi
+                                </a>
+                            @else
+                                <a href="{{ route('request-donasi.landing') }}" class="hover:text-white transition">
+                                    Request Donasi
+                                </a>
+                            @endguest
+                        </li>
+
+                        {{-- Riwayat --}}
+                        <li>
+                            @guest
+                                <a href="javascript:void(0);" onclick="showLoginAlert()" class="hover:text-white transition">
+                                    Riwayat
+                                </a>
+                            @else
+                                <a href="{{ route('home.riwayat') }}" class="hover:text-white transition">
+                                    Riwayat
+                                </a>
+                            @endguest
+                        </li>
                     </ul>
                 </div>
                 
@@ -226,10 +266,9 @@
                 <div>
                     <h3 class="font-semibold mb-4">Bantuan</h3>
                     <ul class="space-y-2 text-gray-400 text-sm">
-                        <li><a href="#" class="hover:text-white transition">FAQ</a></li>
-                        <li><a href="#" class="hover:text-white transition">Panduan</a></li>
-                        <li><a href="#" class="hover:text-white transition">Kontak</a></li>
-                        <li><a href="#" class="hover:text-white transition">Syarat & Ketentuan</a></li>
+                        <li><a href="{{ route('home.dashboard') . '#tipsnedukasi' }}" class="hover:text-white transition">Tips & Edukasi</a></li>
+                        <li><a href="{{ route('home.dashboard') . '#faq-section' }}" class="hover:text-white transition">FAQ</a></li>
+                        <li><a href="{{ route('home.dashboard') . '#panduan' }}" class="hover:text-white transition">Panduan</a></li>
                     </ul>
                 </div>
                 

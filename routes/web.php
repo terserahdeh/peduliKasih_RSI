@@ -50,12 +50,6 @@ Route::get('/donasi/create', [DonasiController::class, 'index'])->name('donasi.c
 // Tampilan FAQ User (Publik - Untuk section di beranda)
 Route::get('/faq', [FaqController::class, 'showUserFaq'])->name('faq.user.index');
 
-Route::get('/donasi/{id}/edit', [DonasiController::class, 'edit'])->name('donasi.edit');
-Route::delete('/donasi/{id}', [DonasiController::class, 'destroy'])->name('donasi.destroy');
-
-
-
-
 
 /*
 |--------------------------------------------------------------------------
@@ -102,8 +96,8 @@ Route::middleware(['auth:pengguna'])->group(function () {
         // Request Donasi (User)
         Route::get('/request', [DonasiController::class, 'createRequest'])->name('request.create');
         Route::post('/request/store', [DonasiController::class, 'storeRequest'])->name('request.store');
-        Route::get('/request/edit/{id}', [DonasiController::class, 'editRequest'])->name('request.edit');
-        Route::put('/request/update/{id}', [DonasiController::class, 'updateRequest'])->name('request.update');
+        Route::get('/request/edit/{id}', [DonasiController::class, 'edit'])->name('request.edit');
+        Route::put('/request/update/{id}', [DonasiController::class, 'requestUpdate'])->name('request.update');
         Route::delete('/request/delete/{id}', [DonasiController::class, 'deleteRequest'])->name('request.delete');
         
         // Rute Edit/Hapus Donasi User

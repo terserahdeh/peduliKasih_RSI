@@ -20,7 +20,7 @@
                         Mulai Donasi Sekarang
                     </a>
                     @else
-                    <a href="#" class="px-6 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition shadow-lg">
+                    <a href="{{ route('donasi.index') }}" class="px-6 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition shadow-lg">
                         Mulai Donasi Sekarang
                     </a>
                     @endguest
@@ -30,7 +30,7 @@
                         Request Bantuan
                     </a>
                     @else
-                    <a href="#" class="px-6 py-3 bg-white text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition border border-gray-300">
+                    <a href="{{ route('request-donasi.landing') }}" class="px-6 py-3 bg-white text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition border border-gray-300">
                         Request Bantuan
                     </a>
                     @endguest
@@ -433,7 +433,7 @@
 </section>
 
 
-<section class="py-16 bg-white">
+<section id = "tipsnedukasi" class="py-16 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
             <h2 class="text-3xl font-bold text-gray-900 mb-3">Tips & Edukasi</h2>
@@ -523,7 +523,7 @@
     </div>
 </section>
 
-<section class="py-16 bg-white">
+<section id ="panduan" class="py-16 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
             <h2 class="text-3xl font-bold text-gray-900 mb-3">Cara Kerja Platform</h2>

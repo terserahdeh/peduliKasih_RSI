@@ -4,7 +4,7 @@
 <div class="container mt-5">
     <h3>Edit FAQ: {{ $faq->question }}</h3>
     
-    <form action="{{ route('admin.faqs.update', $faq->id_faq) }}" method="POST">
+    <form action="{{ route('admin.faq.update', $faq->id_faq) }}" method="POST">
         @csrf
         @method('PUT')
         
@@ -28,7 +28,7 @@
         </div>
 
         <button type="submit" class="btn btn-warning">Update FAQ</button>
-        <a href="{{ route('admin.faqs.index') }}" class="btn btn-secondary">Batal</a>
+        <a href="{{ route('admin.faq.index') }}" class="btn btn-secondary">Batal</a>
     </form>
 </div>
 @endsection
