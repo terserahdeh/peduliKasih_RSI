@@ -2,6 +2,7 @@
 <tr class="hover:bg-gray-50">
     <td class="px-6 py-4 text-sm text-gray-800">{{ $pengguna->username }}</td>
     <td class="px-6 py-4 text-sm text-gray-800">{{ $pengguna->email }}</td>
+    <td class="px-6 py-4 text-sm text-gray-800">{{ $pengguna->no_tlp }}</td>
     <td class="px-6 py-4 text-sm text-gray-800">
         {{ \Carbon\Carbon::parse($pengguna->created_at)->format('d-m-Y') }}
     </td>
