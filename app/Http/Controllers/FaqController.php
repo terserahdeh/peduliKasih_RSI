@@ -7,10 +7,10 @@ use Illuminate\Http\Request;
 
 class FaqController extends Controller
 {
-    public function showUserFaqs()
+    public function showUserFaq()
     {
         // Ambil HANYA FAQ yang aktif (is_active = 1)
-        $faqs = Faq::where('is_active', 1)->orderBy('id_faq', 'asc')->get();
+        $faq = Faq::where('is_active', 1)->orderBy('id_faq', 'asc')->get();
         
         // Di sini Anda bisa mengembalikan view beranda Anda
         return view('welcome', compact('faq')); 

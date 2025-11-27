@@ -50,6 +50,9 @@ Route::get('/donasi/create', [DonasiController::class, 'index'])->name('donasi.c
 // Tampilan FAQ User (Publik - Untuk section di beranda)
 Route::get('/faq', [FaqController::class, 'showUserFaq'])->name('faq.user.index');
 
+Route::get('/donasi/{id}/edit', [DonasiController::class, 'edit'])->name('donasi.edit');
+Route::delete('/donasi/{id}', [DonasiController::class, 'destroy'])->name('donasi.destroy');
+
 
 /*
 |--------------------------------------------------------------------------
@@ -164,12 +167,14 @@ Route::prefix('admin')->middleware(['auth:admin'])->group(function () {
     | ✅ PERBAIKAN: FAQ Admin CRUD (AdminFaqController)
     |--------------------------------------------------------------------------
     */
+    // FAQ Management - LENGKAP
     Route::get('/faq', [AdminFaqController::class, 'index'])->name('admin.faq.index');
-    //Route::resource('faq', AdminFaqController::class); // <-- HANYA INI
-    
-    // Route khusus untuk toggle is_active (Perlu disesuaikan)
-    Route::get('faq/{faq}/toggle', [AdminFaqController::class, 'toggleActive'])->name('faq.toggle');
-    Route::post('/donasi/process-edit/{id}', [DonasiController::class, 'processEditRequest'])->name('donasi.processEdit');
+    Route::get('/faq/create', [AdminFaqController::class, 'create'])->name('admin.faq.create');
+    Route::post('/faq', [AdminFaqController::class, 'store'])->name('admin.faq.store');
+    Route::get('/faq/{faq}/edit', [AdminFaqController::class, 'edit'])->name('admin.faq.edit');
+    Route::put('/faq/{faq}', [AdminFaqController::class, 'update'])->name('admin.faq.update');
+    Route::delete('/faq/{faq}', [AdminFaqController::class, 'destroy'])->name('admin.faq.destroy');
+    Route::patch('/faq/{faq}/toggle', [AdminFaqController::class, 'toggleActive'])->name('admin.faq.toggle');
 
     /*
     |--------------------------------------------------------------------------

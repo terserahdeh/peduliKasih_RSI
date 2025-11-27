@@ -112,7 +112,7 @@
                             </button>
                         </td>
                         <td class="px-6 py-4 text-center">
-                            <form action="#" 
+                            <form action="{{ route('admin.faq.destroy', $item->id_faq) }}"
                                   method="POST" 
                                   class="inline"
                                   onsubmit="return confirm('⚠️ Yakin ingin menghapus FAQ ini?\n\nData yang dihapus tidak dapat dikembalikan.');">
@@ -160,7 +160,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="#" method="POST">
+                <form action="{{ route('admin.faq.update', $item->id_faq) }}" method="POST">
                     @csrf
                     @method('PUT')
                     
@@ -186,13 +186,17 @@
                     </div>
 
                     <!-- ✅ TAMBAHAN: Checkbox Status Aktif -->
+                    <!-- ✅ PERBAIKAN 4: Handle checkbox is_active dengan benar -->
                     <div class="mb-6">
+                        <!-- Hidden input untuk handle unchecked checkbox -->
+                        <input type="hidden" name="is_active" value="0">
+                        
                         <label class="flex items-center cursor-pointer">
                             <input type="checkbox" 
-                                   name="is_active" 
-                                   value="1"
-                                   {{ $item->is_active ? 'checked' : '' }}
-                                   class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
+                                name="is_active" 
+                                value="1"
+                                {{ old('is_active', $item->is_active) ? 'checked' : '' }}
+                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
                             <span class="ml-2 text-sm font-semibold text-gray-700">
                                 Aktifkan FAQ ini
                             </span>
@@ -257,7 +261,7 @@
     @endforeach
 
     <div class="mt-6 text-center">
-        <a href="#" 
+        <a href="{{ route('admin.faq.create') }}"
            class="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md transition duration-150 ease-in-out">
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
