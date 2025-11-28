@@ -1189,6 +1189,7 @@
 document.querySelectorAll('.btn-reply').forEach(btn => {
     btn.addEventListener('click', () => {
         const commentId = btn.dataset.commentId;
+        const actionUrl = btn.dataset.action;
 
         if (!actionUrl) return;
 
